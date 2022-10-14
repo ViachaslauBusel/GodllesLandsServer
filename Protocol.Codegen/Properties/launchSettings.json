@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Protocol.Codogen": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\TestCodegen\\TestCodegen.csproj"
+    }
+  }
+}
