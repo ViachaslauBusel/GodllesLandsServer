@@ -2,11 +2,8 @@
 using Godless_Lands_Game.Map;
 using Godless_Lands_Game.Physics;
 using Godless_Lands_Game.Profiles;
+using RUCP;
 using RUCP.Handler;
-using RUCP.Packets;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Godless_Lands_Game.Characters
 {
@@ -19,10 +16,10 @@ namespace Godless_Lands_Game.Characters
 
             World.Enter(profile.Character);
 
-            packet = new Packet(packet.Client, RUCP.Channel.Reliable);
-            packet.WriteType(Types.MapEntrance);
+            packet = Packet.Create(RUCP.Channel.Reliable);
+            packet.OpCode = (Types.MapEntrance);
             packet.WriteVector3(profile.Character.Transform.position);
-            packet.Send();
+            profile.Owner.Send(packet);
         }
     }
 }

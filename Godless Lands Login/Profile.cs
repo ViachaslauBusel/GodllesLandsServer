@@ -17,7 +17,7 @@ namespace Godless_Lands_Login
         }
         public override void ChannelRead(Packet packet)
         {
-            handlersStorage.GetHandler(packet.OpCode)(this, packet);
+            handlersStorage.GetHandler(packet.OpCode)?.Invoke(this, packet);
         }
 
         public override void CheckingConnection()

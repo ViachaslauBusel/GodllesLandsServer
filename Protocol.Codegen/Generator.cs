@@ -181,7 +181,10 @@ namespace Protocol
             { "bool", "WriteBool" },
              { "string", "WriteString" },
         };
-        public Dictionary<string, string> castDeclarationTypes = new Dictionary<string, string>();
+        public Dictionary<string, string> castDeclarationTypes = new Dictionary<string, string>()
+        {
+          { "byte", "byte" }
+        };
         public Dictionary<string, string> namespaces = new Dictionary<string, string>();
 
         public List<FindNode> MessageObjects { get; } = new List<FindNode>();

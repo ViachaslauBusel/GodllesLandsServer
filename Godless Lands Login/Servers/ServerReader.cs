@@ -31,6 +31,7 @@ namespace Godless_Lands_Login.Servers
                     } catch { }
                 } 
             }
+            Servers = servers.ToArray();
         }
     }
 }

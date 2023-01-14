@@ -1,6 +1,7 @@
 ﻿using Godless_Lands_Game.Characters;
 using Godless_Lands_Game.Physics;
 using Godless_Lands_Game.Terrain;
+using RUCP;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Godless_Lands_Game.Map
         public static int MaxWorlds { get; private set; }
         public const double wordSize = 500.0;
         private static int tileOnWorld;
-        private static DiscreteDynamicsWorld[,] worlds;
+      //  private static DiscreteDynamicsWorld[,] worlds;
 
         private static ConcurrentDictionary<int, Character> players;
         private static TerrainReader terrainReader;
@@ -34,14 +35,14 @@ namespace Godless_Lands_Game.Map
 
             MaxWorlds = (int)((terrainReader.MapSize * 1_000.0) / wordSize);
             tileOnWorld = MaxTiles / MaxWorlds;
-            worlds = MapCreator.CreateWorlds(terrainReader, MaxWorlds);
+           // worlds = MapCreator.CreateWorlds(terrainReader, MaxWorlds);
           
             Console.WriteLine($"tiles: {MaxTiles} worlds: {MaxWorlds} tileOnWorld: {tileOnWorld}");
 
             players = new ConcurrentDictionary<int, Character>();
             Thread.Sleep(130);
            // terrainReader.Dispose();
-          Console.WriteLine($"hit { Ray.rayDown(new Vector3(50, 150, 50))}");
+       //   Console.WriteLine($"hit { Ray.rayDown(new Vector3(50, 150, 50))}");
 
         }
         public static void Enter(Character character)
@@ -59,10 +60,10 @@ namespace Godless_Lands_Game.Map
             }
         }
         internal static Tile GetTile(Location location) => tiles[location.x, location.y];
-        public static DiscreteDynamicsWorld GetWorld(Location location)
-        {
-           return worlds[location.x / tileOnWorld, location.y / tileOnWorld];
-        }
+        //public static DiscreteDynamicsWorld GetWorld(Location location)
+        //{
+        //   return worlds[location.x / tileOnWorld, location.y / tileOnWorld];
+        //}
         
 
 
@@ -80,14 +81,14 @@ namespace Godless_Lands_Game.Map
         {
             foreach (Tile _map in new TileAround(location))
             {
-               foreach(Character character in _map.Players)
-                       new Packet(character.Socket, packet).Send();
+                foreach (Character character in _map.Players)
+                    character.Socket.Send(packet);
             }
         }
         public static void SendAll(Packet packet)
         {
-                foreach (KeyValuePair<int, Character> character in players)
-                    new Packet(character.Value.Socket, packet).Send();
+            foreach (KeyValuePair<int, Character> character in players)
+                character.Value.Socket.Send(packet);
         }
     }
 }

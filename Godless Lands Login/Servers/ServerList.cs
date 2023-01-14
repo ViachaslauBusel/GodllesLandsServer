@@ -1,15 +1,18 @@
-﻿using Protocol.MSG.Login;
+﻿using Protocol;
+using Protocol.MSG.Login;
 using RUCP;
+using RUCP.Handler;
 
 namespace Godless_Lands_Login.Servers
 {
     class ServerList
     {
-        public static void GetList(Client client, Packet pack)
+        [Handler(Opcode.MSG_SERVER_LIST)]
+        public static void GetList(Profile profile, Packet packet)
         {
-            MSG_SERVER_LIST server_list = new MSG_SERVER_LIST();
+            MSG_SERVER_LIST_SC server_list = new MSG_SERVER_LIST_SC();
             server_list.Servers = ServerReader.Servers;
-            client.Send(server_list);
+            profile.Owner.Send(server_list);
         }
     }
 }

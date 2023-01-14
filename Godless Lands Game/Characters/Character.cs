@@ -1,7 +1,7 @@
 ﻿using Godless_Lands_Game.Characteristics;
 using Godless_Lands_Game.DatabaseQuery;
 using Godless_Lands_Game.Equipment;
-using RUCP.Client;
+using RUCP;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,7 +10,7 @@ namespace Godless_Lands_Game.Characters
 {
    public class Character
     {
-        public ClientSocket Socket { get; private set; }
+        public Client Socket { get; private set; }
         public int ID { get; private set; }
         public CharacterStats Stats { get; private set; }
         public Armor Armor { get; private set; }
@@ -22,7 +22,7 @@ namespace Godless_Lands_Game.Characters
 
         private volatile bool load = false;
 
-        public Character(ClientSocket socket, int characterID)
+        public Character(Client socket, int characterID)
         {
             Socket = socket;
             ID = characterID;

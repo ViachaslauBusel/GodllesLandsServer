@@ -1,18 +1,14 @@
 ﻿using Godless_Lands_Game.Characters;
 using Godless_Lands_Game.Handler;
 using Godless_Lands_Game.Map;
-using Godless_Lands_Game.Physics;
 using Godless_Lands_Game.Profiles;
 using RUCP;
 using RUCP.Handler;
-using RUCP.Packets;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Godless_Lands_Game.Messenger
 {
-   public static class Message
+    public static class Message
     {
         [Handler(Types.ChatMessage)]
         public static void Receiving(Profile profile, Packet pack)
@@ -22,8 +18,8 @@ namespace Godless_Lands_Game.Messenger
 
             // if (message.Length > 120) message = message.Substring(0, 120);
 
-            Packet packet = new Packet(Channel.Reliable);
-            packet.WriteType(Types.ChatMessage);
+            Packet packet = Packet.Create(Channel.Reliable);
+            packet.OpCode = (Types.ChatMessage);
             packet.WriteByte((byte)layer);
             packet.WriteString(profile.Character.Stats.Name);
             packet.WriteString(message);
@@ -37,13 +33,13 @@ namespace Godless_Lands_Game.Messenger
         public static void Send(Character character, String message, MsgLayer layer)
         {
 
-            Packet packet = new Packet(character.Socket, Channel.Reliable);
-            packet.WriteType(Types.ChatMessage);
+            Packet packet = Packet.Create(Channel.Reliable);
+            packet.OpCode = (Types.ChatMessage);
             packet.WriteByte((byte)layer);
             packet.WriteString(character.Stats.Name);
             packet.WriteString(message);
 
-            packet.Send();
+            character.Socket.Send(packet);
         }
       /*  public static void systemMessage(Character character, String message, MsgLayer layer, int ... params)
         {

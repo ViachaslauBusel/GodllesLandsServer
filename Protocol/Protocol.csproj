@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <BaseOutputPath>D:\Unity_Project\Godless Lands\Godless Lands\Assets\Plugins</BaseOutputPath>
+    <BaseOutputPath>D:\Unity_projects\Godless Lands\Godless Lands\Assets\Plugins</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,23 +1,35 @@
-﻿using Godless_Lands_Login.DBQuery;
+﻿using Database;
+using Newtonsoft.Json;
 using Protocol;
 using Protocol.MSG.Login;
 using RUCP;
 using RUCP.Handler;
 using System;
+using System.Net.Http.Json;
+using System.Text.Json.Serialization;
 
 namespace Godless_Lands_Login.Query
 {
     class Login
     {
+        class LoginData
+        {
+            [JsonPropertyName("login_id")]
+            public int login_id;
+            [JsonPropertyName("login_password")]
+            public string login_password;
+        }
+
+
         public const short version = 5;
         private static Random random = new Random();
 
         [Handler(Opcode.MSG_AUTHORIZATION_Request)]
-        public static void LogIn(Profile profile, Packet packet)
+        public static async void LogIn(Profile profile, Packet packet)
         {
-            packet.Read(out MSG_AUTHORIZATION_Request request);
+            packet.Read(out MSG_AUTHORIZATION_CS request);
 
-            MSG_AUTHORIZATION_Response response = new MSG_AUTHORIZATION_Response();
+            MSG_AUTHORIZATION_SC response = new MSG_AUTHORIZATION_SC();
 
             //The client version does not match the server
             if (request.Version != version)
@@ -35,24 +47,32 @@ namespace Godless_Lands_Login.Query
                 return;
             }
 
-
+            LoginData loginData = new LoginData();
+            string json = await LoginDatabaseProvider.SelectJson($"SELECT get_account('{request.Login}')");
+            if (!string.IsNullOrEmpty(json))
+            {
+                JsonConvert.PopulateObject(json, loginData);
+            }
+           
             //Query if the given login exists in the database
-            string db_pass = LoginTable.GetPassword(request.Login);
 
-            if (db_pass != null && db_pass.Equals(request.Password))
+            if (!string.IsNullOrEmpty(request.Password) && request.Password.Equals(loginData.login_password))
             {
                 int sessionkey;
                 lock (random)
                 {
                     sessionkey = random.Next(Int32.MinValue, Int32.MaxValue);
                 }
-                LoginTable.SetSessionKey(request.Login, sessionkey);
-                response.LoginID = LoginTable.GetID(request.Login);
-                response.SessionKey = sessionkey;
-                response.Notification = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
-                profile.Owner.Send(response);
+                if (await LoginDatabaseProvider.Call($"CALL set_session_token('{loginData.login_id}', '{sessionkey}')"))
+                {
+                    response.LoginID = loginData.login_id;
+                    response.SessionKey = sessionkey;
+                    response.Notification = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
+                    profile.Owner.Send(response);
+                    return;
+                }
             }
-            else  //Login or password is incorrect
+            //Login or password is incorrect
             {
                 response.Notification = Protocol.Data.LoginInformationCode.AuthorizationFail;
                 profile.Owner.Send(response);

@@ -5,7 +5,7 @@ using System.Text;
 namespace Protocol.MSG.Login
 {
     [MessagePack(Opcode.MSG_REGISTRATION_Request, RUCP.Channel.Reliable)]
-    public struct MSG_REGISTRATION_Request
+    public struct MSG_REGISTRATION_CS
     {
         public string Login { get; set; }
         public string Password { get; set; }

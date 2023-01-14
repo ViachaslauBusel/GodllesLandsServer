@@ -1,16 +1,11 @@
-﻿
-using BulletXNA.LinearMath;
-using Godless_Lands_Game.Characters;
-using Godless_Lands_Game.Equipment;
+﻿using Godless_Lands_Game.Characters;
 using Godless_Lands_Game.Handler;
 using Godless_Lands_Game.Physics;
 using Godless_Lands_Game.Teleport;
 using RUCP;
-using RUCP.Packets;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
+using System.Numerics;
 
 namespace Godless_Lands_Game.Map
 {
@@ -130,20 +125,20 @@ namespace Godless_Lands_Game.Map
                 if (otherClient == null || character.Equals(otherClient)) continue;
 
                 //Отправка информации о новом игроке подключеным игрокам-->>
-                Packet packet = new Packet(otherClient.Socket, Channel.Reliable);
-                packet.WriteType(Types.CharacterCreate);
+                Packet packet = Packet.Create(Channel.Reliable);
+                packet.OpCode = (Types.CharacterCreate);
                 packet.WriteCharacter(character);
                
 
-                packet.Send();
+               otherClient.Socket.Send(packet); 
                 //<<--
 
                 //Отправка информации о подключеных игроках новому игроку -->>
-                packet = new Packet(character.Socket, Channel.Reliable);
-                packet.WriteType(Types.CharacterCreate);
+                packet = Packet.Create(Channel.Reliable);
+                packet.OpCode = (Types.CharacterCreate);
                 packet.WriteCharacter(otherClient);
 
-                packet.Send();
+                character.Socket.Send(packet);
                 //<<--
 
             }
@@ -154,10 +149,10 @@ namespace Godless_Lands_Game.Map
             foreach (Character otherClient in players)
             {
                 if (otherClient == null || character.Equals(otherClient)) continue;
-                Packet packet = new Packet(otherClient.Socket, Channel.Reliable);
-                packet.WriteType(Types.CharacterDelete);
+                Packet packet = Packet.Create(Channel.Reliable);
+                packet.OpCode = (Types.CharacterDelete);
                 packet.WriteInt(character.ID);
-                packet.Send();
+                otherClient.Socket.Send(packet);
             }
         }
 
@@ -180,10 +175,10 @@ namespace Godless_Lands_Game.Map
             foreach (Character otherClient in players)
             {
                 if (otherClient == null || character.Equals(otherClient)) continue;
-                Packet packet = new Packet(character.Socket, Channel.Reliable);
-                packet.WriteType(Types.CharacterDelete);
+                Packet packet = Packet.Create(Channel.Reliable);
+                packet.OpCode = (Types.CharacterDelete);
                 packet.WriteInt(otherClient.ID);
-                packet.Send();
+                character.Socket.Send(packet);
             }
         }
     }

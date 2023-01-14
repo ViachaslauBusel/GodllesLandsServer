@@ -1,8 +1,4 @@
-﻿
-using BulletXNA.LinearMath;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Numerics;
 
 namespace Godless_Lands_Game.Teleport
 {

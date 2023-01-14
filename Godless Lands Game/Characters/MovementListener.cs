@@ -1,20 +1,16 @@
-﻿using BulletXNA.LinearMath;
-using Godless_Lands_Game.Handler;
+﻿using Godless_Lands_Game.Handler;
 using Godless_Lands_Game.Map;
 using Godless_Lands_Game.Physics;
 using Godless_Lands_Game.Profiles;
-using RUCP.Handler;
 using RUCP;
-using RUCP.Packets;
+using RUCP.Handler;
 using RUCP.Tools;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using RUCP.Client;
+using System.Numerics;
 
 namespace Godless_Lands_Game.Characters
 {
-   public class MovementListener
+    public class MovementListener
     {
         [Handler(-1)]
         public static void Move(Profile profile, Packet packet)
@@ -24,7 +20,7 @@ namespace Godless_Lands_Game.Characters
             {
                 //Отбрасывание устаревших пакетов >>
                 short syncNumber = packet.ReadShort();
-                if (NumberUtils.ShortCompare(syncNumber, transform.syncNumber) <= 0) return;
+                if (NumberUtils.UshortCompare(syncNumber, transform.syncNumber) <= 0) return;
                 transform.syncNumber = syncNumber;
                 //<<<
 
@@ -75,13 +71,13 @@ namespace Godless_Lands_Game.Characters
 
                     if (character.Equals(otherClient)) continue;
 
-                    Packet packet = new Packet(otherClient.Socket, Channel.Discard);
-                    packet.WriteType(Types.CharacterRotation);
+                    Packet packet = Packet.Create(Channel.Discard);
+                    packet.OpCode = (Types.CharacterRotation);
 
                     packet.WriteInt(character.ID);
                     packet.WriteFloat(character.Transform.rotation);
 
-                    packet.Send();
+                    otherClient.Socket.Send(packet);
                 }
             }
         }
@@ -96,15 +92,16 @@ namespace Godless_Lands_Game.Characters
 
                     if (character.Equals(otherClient)) continue;
 
-                    Packet packet = new Packet(otherClient.Socket, endMove? Channel.Reliable : Channel.Unreliable);
-                    packet.WriteType(Types.CharacterMove);
+                    Packet packet = Packet.Create(endMove? Channel.Reliable : Channel.Unreliable);
+                    packet.OpCode = (Types.CharacterMove);
 
                     packet.WriteInt(character.ID);
                     packet.WriteShort(character.Transform.syncNumber);
                     packet.WriteVector3(character.Transform.position);
                     packet.WriteFloat(character.Transform.rotation);
                     packet.WriteBool(endMove);
-                    packet.Send();
+                    otherClient.Socket.Send(packet);
+                    packet.Dispose();
                 }
             }
         }

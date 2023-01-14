@@ -1,10 +1,6 @@
-﻿
-using BulletXNA.LinearMath;
-using Godless_Lands_Game.Map;
+﻿using Godless_Lands_Game.Map;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 
 namespace Godless_Lands_Game.Physics
 {

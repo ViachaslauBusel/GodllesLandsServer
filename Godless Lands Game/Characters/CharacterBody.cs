@@ -1,10 +1,7 @@
 ﻿using Godless_Lands_Game.Characteristics;
 using Godless_Lands_Game.Handler;
 using RUCP;
-using RUCP.Packets;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Godless_Lands_Game.Characters
 {
@@ -28,9 +25,9 @@ namespace Godless_Lands_Game.Characters
 
         protected override void Died()
         {
-            Packet packet = new Packet(character.Socket, Channel.Reliable);//Послать команду себе
-            packet.WriteType(Types.PlayerDead);
-            packet.Send();
+            Packet packet = Packet.Create(Channel.Reliable);//Послать команду себе
+            packet.OpCode = (Types.PlayerDead);
+            character.Socket.Send(packet);
         }
 
         protected override void Synchronize()

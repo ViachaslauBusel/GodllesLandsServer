@@ -1,12 +1,9 @@
-﻿using RUCP.Packets;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading;
 
 namespace Godless_Lands_Game.Characteristics
 {
-   public abstract class Body
+    public abstract class Body
     {
         private volatile int hp;
         private volatile int maxHP = 3400;

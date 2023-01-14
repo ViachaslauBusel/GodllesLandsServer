@@ -1,7 +1,7 @@
 ﻿using Godless_Lands_Game.Handler;
 using RUCP;
-using RUCP.Client;
-using RUCP.Packets;
+using RUCP;
+using RUCP;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,10 +10,10 @@ namespace Godless_Lands_Game.Characteristics
 {
     class StatsSynchronizer
     {
-        public static void Load(ClientSocket socket, Stats stats)
+        public static void Load(Client socket, Stats stats)
         {
-            Packet packet = new Packet(socket, Channel.Reliable);
-            packet.WriteType(Types.LoadStats);
+            Packet packet = Packet.Create(Channel.Reliable);
+            packet.OpCode = (Types.LoadStats);
 
             packet.WriteString(stats.Name);
             packet.WriteInt(stats.MinPattack);
@@ -21,13 +21,13 @@ namespace Godless_Lands_Game.Characteristics
             packet.WriteInt(stats.PhysicalDefense);
             packet.WriteFloat(stats.AttackSpeed);
             packet.WriteFloat(stats.MoveSpeed);
-            packet.Send();
+            socket.Send(packet);
         }
 
-        public static void Update(ClientSocket socket, Stats stats)
+        public static void Update(Client socket, Stats stats)
         {
-            Packet packet = new Packet(socket, Channel.Discard);
-            packet.WriteType(Types.UpdateStats);
+            Packet packet = Packet.Create(Channel.Discard);
+            packet.OpCode = (Types.UpdateStats);
 
             packet.WriteInt(stats.MinPattack);
             packet.WriteInt(stats.MaxPattack);
@@ -35,7 +35,7 @@ namespace Godless_Lands_Game.Characteristics
             packet.WriteFloat(stats.AttackSpeed);
             packet.WriteFloat(stats.MoveSpeed);
 
-            packet.Send();
+            socket.Send(packet);
         }
     }
 }

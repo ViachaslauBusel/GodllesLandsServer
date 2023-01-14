@@ -1,8 +1,7 @@
 ﻿using Cmd.Terminal;
-using Godless_Lands_Login.Database;
+using Database;
 using Godless_Lands_Login.Servers;
 using RUCP;
-using System;
 
 namespace Godless_Lands_Login
 {
@@ -10,13 +9,14 @@ namespace Godless_Lands_Login
     {
         static void Main(string[] args)
         {
-             DatabaseHandler.Initialize();
+             LoginDatabaseConfig.DatabaseName = "GL_Login";
+
              ServerReader.Load();
              Server server = new Server(3737);
              server.SetHandler(() => new Profile()); 
              server.Start();
 
-            Terminal.Listen();
+             Terminal.Listen();
         }
     }
 }
