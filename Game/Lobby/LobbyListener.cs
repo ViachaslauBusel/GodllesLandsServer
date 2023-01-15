@@ -1,4 +1,5 @@
 ﻿using Database;
+using Game.Loop;
 using NetworkGameEngine.Physics;
 using NetworkGameEngine.Units.Characters;
 using Newtonsoft.Json;
@@ -46,10 +47,10 @@ namespace NetworkGameEngine.Lobby
                 response.InformationCode = LoginInformationCode.AuthorizationSuccessful;
 
                 GameObject character = new GameObject();
-                character.AddComponent(new CharacterIdHolder(request.CharacterID));
-                character.AddComponent(new TransformComponent());
+                character.AddComponent<CharacterIdHolder>(request.CharacterID);
+                character.AddComponent<TransformComponent>();
 
-                profile.CharacterObjectID = await World.AddGameObject(character);
+                profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
             }
             else//error
             {

@@ -30,5 +30,9 @@ namespace NetworkGameEngine.Physics
         public override void Update()
         {
         }
+
+        public override void CallReact(ICommand cmd)
+        {
+        }
     }
 }

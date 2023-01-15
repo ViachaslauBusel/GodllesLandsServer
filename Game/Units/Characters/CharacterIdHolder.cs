@@ -24,10 +24,13 @@
 
         public override void Update()
         {
-           throw new NotImplementedException();
         }
 
         public override void OnDestroy()
+        {
+        }
+
+        public override void CallReact(ICommand cmd)
         {
         }
     }

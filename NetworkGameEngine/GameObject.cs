@@ -1,16 +1,22 @@
-﻿namespace NetworkGameEngine
+﻿using System.Collections.Concurrent;
+using System.Security.Cryptography;
+
+namespace NetworkGameEngine
 {
-    public class GameObject
+    public partial class GameObject
     {
         private int m_threadID = 0;
         private LinkedList<Component> m_components = new LinkedList<Component>();
         private List<Component> m_newComponents = new List<Component>();
         private List<Component> m_removeComponents = new List<Component>();
-        private List<Task> m_tasks = new List<Task>();
+        private ConcurrentBag<Task> m_tasks = new ConcurrentBag<Task>();
+        private ConcurrentQueue<ICommand> m_commands = new ConcurrentQueue<ICommand>();
+  
         public int ID { get; private set; }
         public int ThreadID => m_threadID;
         public bool isInitialized => m_tasks.All(t => t.IsCompleted);
 
+      
         public void AddComponent(Component component)
         {
            if(m_threadID != 0 && m_threadID != Thread.CurrentThread.ManagedThreadId)
@@ -61,8 +67,17 @@
         {
             foreach (var c in m_components) { c.Update(); }
         }
+        internal void CallCommand()
+        {
+            while (m_commands.TryDequeue(out ICommand cmd))
+            {
+                foreach (var c in m_components)
+                {
+                   c.CallReact(cmd);
+                }
+            }
+        }
 
-       
         internal void Init(int objectID, int threadID)
         {
             ID = objectID;
@@ -85,5 +100,12 @@
         {
           return m_components.FirstOrDefault(c => c is T) as T;
         }
+
+        public void SendCommand(ICommand command)
+        {
+            m_commands.Enqueue(command);
+        }
+
+       
     }
 }

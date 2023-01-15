@@ -1,12 +1,17 @@
-﻿namespace NetworkGameEngine
+﻿using System.Diagnostics;
+
+namespace NetworkGameEngine
 {
-    public enum MethodType { None = 0, Init, Awake, Start, Update, OnDestroy }
+    public enum MethodType { None = 0, Init, Awake, Start, Update, OnDestroy,
+        Command
+    }
     public class Workflow
     {
         private Thread m_thread;
         private Object m_locker = new object();
         private Dictionary<int, GameObject> m_objects = new Dictionary<int, GameObject>();
         private volatile MethodType m_currentMethod = MethodType.None;
+        private List<MethodType> m_history = new List<MethodType>();
 
         public bool IsFree => m_currentMethod == MethodType.None;
 
@@ -28,6 +33,7 @@
         {
             lock (m_locker)
             {
+                if(m_currentMethod != MethodType.None) throw new Exception("invalid object processing state");
                 m_currentMethod = method;
                 Monitor.PulseAll(m_locker);
             }
@@ -53,7 +59,11 @@
                 while (true)
                 {
                     Monitor.Wait(m_locker);
-                    
+                    if(m_objects.Count>0)
+                    {
+
+                    }
+                    m_history.Add(m_currentMethod);
                     switch (m_currentMethod)
                     {
                         case MethodType.Init:
@@ -68,9 +78,14 @@
                         case MethodType.Update:
                             foreach (GameObject obj in m_objects.Values) { obj.CallUpdate(); }
                             break;
+                        case MethodType.Command:
+                            foreach (GameObject obj in m_objects.Values) { obj.CallCommand(); }
+                            break;
                         case MethodType.OnDestroy:
                             foreach (GameObject obj in m_objects.Values) { obj.CallOnDestroy(); }
                             break;
+                        default:
+                            throw new Exception("invalid object processing state");
                     }
                     m_currentMethod = MethodType.None;
                     Monitor.PulseAll(m_locker);
