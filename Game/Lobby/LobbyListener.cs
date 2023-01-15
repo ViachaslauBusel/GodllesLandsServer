@@ -47,7 +47,7 @@ namespace NetworkGameEngine.Lobby
                 response.InformationCode = LoginInformationCode.AuthorizationSuccessful;
 
                 GameObject character = new GameObject();
-                character.AddComponent<CharacterIdHolder>(request.CharacterID);
+             //   character.AddComponent<CharacterIdHolder>(request.CharacterID);
                 character.AddComponent<TransformComponent>();
 
                 profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);

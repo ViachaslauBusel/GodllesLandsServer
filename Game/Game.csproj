@@ -17,8 +17,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
-    <ProjectReference Include="..\NetworkGameEngine\NetworkGameEngine.csproj" />
     <ProjectReference Include="..\Protocol\Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NetworkGameEngine">
+      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Debug\net6.0\NetworkGameEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

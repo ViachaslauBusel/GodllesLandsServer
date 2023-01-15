@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Game\Game.csproj" />
-    <ProjectReference Include="..\NetworkGameEngine\NetworkGameEngine.csproj" />
   </ItemGroup>
 
 </Project>
