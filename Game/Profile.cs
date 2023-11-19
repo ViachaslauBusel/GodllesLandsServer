@@ -1,4 +1,5 @@
-﻿using NetworkGameEngine.Authorization;
+﻿using Game.Loop;
+using NetworkGameEngine.Authorization;
 using RUCP;
 using RUCP.Handler;
 
@@ -9,6 +10,7 @@ namespace NetworkGameEngine
         public static HandlersStorage<Action<Profile, Packet>> handlersStorage = new HandlersStorage<Action<Profile, Packet>>();
         public AuthorizationHolder AuthorizationHolder { get; } = new AuthorizationHolder();
         public int CharacterObjectID { get; internal set; }
+        public GameObject CharacterObject { get; internal set; }
 
         public Profile()
         {
@@ -30,7 +32,7 @@ namespace NetworkGameEngine
 
         public override void CloseConnection(DisconnectReason reason)
         {
-            if (CharacterObjectID != 0) { World.RemoveGameObject(CharacterObjectID); }
+            if (CharacterObjectID != 0) { GameLoop.MainWorld.RemoveGameObject(CharacterObjectID); }
         }
 
         public override bool HandleException(Exception exception)

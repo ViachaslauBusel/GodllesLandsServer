@@ -1,6 +1,9 @@
 ﻿using Database;
 using Game.Loop;
-using NetworkGameEngine.Physics;
+using Game.Physics;
+using Game.Physics.DynamicObjects;
+using Game.Physics.PlayerInput.Scripts;
+using Game.Skins;
 using NetworkGameEngine.Units.Characters;
 using Newtonsoft.Json;
 using Protocol;
@@ -29,7 +32,7 @@ namespace NetworkGameEngine.Lobby
 
             string charactersJsonData = await GameDatabaseProvider.SelectJson($"SELECT get_characters('{profile.AuthorizationHolder.LoginID}')");
 
-            CharacterJsonData[] characters = JsonConvert.DeserializeObject<List<CharacterJsonData>>(charactersJsonData).ToArray();//string.IsNullOrEmpty(charactersJsonData) ? new CharacterData[0] :
+            CharacterJsonData[] characters = string.IsNullOrEmpty(charactersJsonData) ? new CharacterJsonData[0] : JsonConvert.DeserializeObject<List<CharacterJsonData>>(charactersJsonData).ToArray();//string.IsNullOrEmpty(charactersJsonData) ? new CharacterData[0] :
 
             MSG_CHARACTERS_LIST_SC response = new MSG_CHARACTERS_LIST_SC();
             response.CharacterDatas = characters.Select(c => new CharacterData() { CharacterID = c.CharacterID, CharacterName = c.CharacterName }).ToArray();
@@ -47,10 +50,14 @@ namespace NetworkGameEngine.Lobby
                 response.InformationCode = LoginInformationCode.AuthorizationSuccessful;
 
                 GameObject character = new GameObject();
-             //   character.AddComponent<CharacterIdHolder>(request.CharacterID);
-                character.AddComponent<TransformComponent>();
+                character.AddComponent(new CharacterInfoHolder(request.CharacterID, profile.Owner));
+                character.AddComponent(new TransformComponent());
+                character.AddComponent(new CharacterViewComponent());
+                character.AddComponent(new DynamicObjectComponent());
+                character.AddComponent(new PlayerInputComponent());
 
-                profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
+               response.CharacterObjectID = profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
+               profile.CharacterObject = character;
             }
             else//error
             {

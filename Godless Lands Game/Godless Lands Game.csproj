@@ -25,9 +25,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cmd.Terminal" Version="1.0.0" />
+    <PackageReference Include="Cmd.Terminal" Version="1.1.5" />
     <PackageReference Include="MySql.Data" Version="8.0.22" />
-    <PackageReference Include="RUCP" Version="1.5.0" />
+    <PackageReference Include="RUCP" Version="1.5.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -8,17 +8,11 @@ using System.Threading.Tasks;
 
 namespace Game.Units.Characters
 {
-    public class CharacterStatsComponent : Component, IReactCommand<DamageCommand>
+    public class CharacterStatsComponent : Component
     {
         public int HP { get; protected set; } = 1_000;
         public int PhysicalDefense { get; protected set; }
-        public override void Awake()
-        {
-        }
 
-        public override void CallReact(ICommand cmd)
-        {
-        }
 
         public override async Task Init()
         {

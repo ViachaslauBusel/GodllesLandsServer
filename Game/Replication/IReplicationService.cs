@@ -1,4 +1,5 @@
 ﻿using NetworkGameEngine;
+using RUCP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace Game.Replication
 {
     public interface IReplicationService
     {
-        void Register(GameObject gameObject);
+        void Register(int id, Client socket);
 
-        void Unregister(GameObject gameObject);
+        void Unregister(int id);
+        void Update();
     }
 }

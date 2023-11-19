@@ -24,7 +24,7 @@ namespace Godless_Lands_Game.Characters
                 transform.syncNumber = syncNumber;
                 //<<<
 
-                Vector3 newPosition = packet.ReadVector3();
+                Vector3 newPosition = Vector3.Zero;// = packet.ReadVector3();
                 transform.rotation = packet.ReadFloat();
                 bool endMove = packet.ReadBool();
 
@@ -32,7 +32,7 @@ namespace Godless_Lands_Game.Characters
                 
                 //  double speed = 
 
-                  transform.position = SpeedControl.Check(profile.Character, newPosition);
+                 // transform.position = SpeedControl.Check(profile.Character, newPosition);
 
 
                 //Если игрок перешел в другую локацию

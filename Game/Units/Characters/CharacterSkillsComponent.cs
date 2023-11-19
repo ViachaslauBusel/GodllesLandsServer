@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace Game.Units.Characters
 {
-    internal partial class CharacterSkillsComponent : Component, IReactCommand<UseSkillComand>
+    internal partial class CharacterSkillsComponent : Component
     {
-        public override void Awake()
-        {
-        }
 
         public override async Task Init()
         {
         }
-
+        public override void Start()
+        {
+        }
         public override void OnDestroy()
         {
         }
@@ -30,20 +29,18 @@ namespace Game.Units.Characters
             int targetID = 1234;
             int myID = 1233;
 
-           if(World.TryGetGameObject(targetID, out var gameObject)) 
-           {
-                gameObject.SendCommand(new DamageCommand()
-                {
-                   fromObjID = 1233,
-                   PhysicalDamage= myDamage,
-                });
-           }
+           //if(World.TryGetGameObject(targetID, out var gameObject)) 
+           //{
+           //     gameObject.SendCommand(new DamageCommand()
+           //     {
+           //        fromObjID = 1233,
+           //        PhysicalDamage= myDamage,
+           //     });
+           //}
 
         }
       
-        public override void Start()
-        {
-        }
+       
 
         public override void Update()
         {

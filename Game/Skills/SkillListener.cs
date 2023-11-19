@@ -17,10 +17,10 @@ namespace Game.Skills
         {
             int skillID = 1;
 
-            if(World.TryGetGameObject(profile.CharacterObjectID, out var character))
-            {
-                character.SendCommand(new UseSkillComand() { skillID = skillID });
-            }
+            //if(World.TryGetGameObject(profile.CharacterObjectID, out var character))
+            //{
+            //    character.SendCommand(new UseSkillComand() { skillID = skillID });
+            //}
         }
     }
 }

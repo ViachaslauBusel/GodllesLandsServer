@@ -9,6 +9,11 @@ using Protocol;
 using Game.Commands;
 using Game.Loop;
 using Game.Replication;
+using NetworkGameEngine.Debugger;
+using Game.Replication.Scripts;
+using Protocol.MSG.Game;
+using Protocol.Data.Replicated;
+using Game.GridMap.Scripts;
 
 namespace NetworkGameEngine.Worlds
 {
@@ -19,11 +24,19 @@ namespace NetworkGameEngine.Worlds
         {
             if (!GameLoop.MainWorld.TryGetGameObject(profile.CharacterObjectID, out GameObject character))
             {
+                Debug.Log.Fatal($"unable to find character with specified id");
                 return;
             }
-            while (!character.isInitialized) { await Task.Delay(1); }
+            while (!character.IsInitialized) { await Task.Delay(1); }
 
+            character.AddComponent(new MapObjectTagComponent());
             character.AddComponent(new ReplicationTagComponent());
+          
+
+            MSG_WORLD_ENTRANCE_SC response = new MSG_WORLD_ENTRANCE_SC();
+            character.ReadData(out TransformData transform);
+            response.EntryPoint = transform.Position;
+            profile.Owner.Send(response);
         }
     }
 }
