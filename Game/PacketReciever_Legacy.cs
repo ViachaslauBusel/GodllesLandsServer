@@ -27,6 +27,7 @@ namespace Game
                 Rotation = playerInput.Rotation,
                 Velocity = playerInput.Velocity,
                 InMove = playerInput.InMove,
+                MoveFlag = playerInput.MoveFlag
             });
         }
     }

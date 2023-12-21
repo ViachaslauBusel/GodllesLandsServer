@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Protocol.Data.Replicated.Transform;
+using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
@@ -12,5 +13,6 @@ namespace Protocol.MSG.Game
         public float Rotation { get; set; }
         public float Velocity { get; set; }
         public bool InMove { get; set; }
+        public MoveFlag MoveFlag { get; set; }
     }
 }

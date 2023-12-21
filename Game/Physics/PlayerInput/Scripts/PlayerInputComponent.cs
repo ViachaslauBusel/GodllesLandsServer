@@ -1,11 +1,6 @@
 ﻿using Game.Physics.PlayerInput.Commands;
 using NetworkGameEngine;
-using NetworkGameEngine.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Protocol.Data.Replicated.Transform;
 
 namespace Game.Physics.PlayerInput.Scripts
 {
@@ -17,9 +12,19 @@ namespace Game.Physics.PlayerInput.Scripts
         {
             m_transform = GetComponent<TransformComponent>();
         }
-        public void ReactCommand(PlayerInputCommand command)
+        public void ReactCommand(ref PlayerInputCommand command)
         {
-            m_transform.UpdatePosition(command.Position, command.Rotation, command.Velocity, command.InMove);
+            byte version = m_transform.UpdatePosition(command.Position, command.Rotation, command.Velocity, command.InMove);
+
+            if(command.MoveFlag.HasFlag(MoveFlag.Jump))
+            {
+                m_transform.PushEvent(new TransformEvent()
+                {
+                    MoveFlag = MoveFlag.Jump,
+                    Position = command.Position,
+                    EventHappenedAtVersion = version
+                });
+            }
         }
     }
 }

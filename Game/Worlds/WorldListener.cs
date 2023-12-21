@@ -12,8 +12,8 @@ using Game.Replication;
 using NetworkGameEngine.Debugger;
 using Game.Replication.Scripts;
 using Protocol.MSG.Game;
-using Protocol.Data.Replicated;
 using Game.GridMap.Scripts;
+using Protocol.Data.Replicated.Transform;
 
 namespace NetworkGameEngine.Worlds
 {

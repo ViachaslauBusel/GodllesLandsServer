@@ -1,9 +1,5 @@
-﻿
-using BulletXNA.LinearMath;
-using Godless_Lands_Game.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Godless_Lands_Game.Database;
+using System.Numerics;
 
 namespace Godless_Lands_Game.DatabaseQuery
 {

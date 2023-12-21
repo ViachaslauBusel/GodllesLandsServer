@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Text;
 
-namespace Protocol.Data.Replicated
+namespace Protocol.Data.Replicated.Transform
 {
 
 

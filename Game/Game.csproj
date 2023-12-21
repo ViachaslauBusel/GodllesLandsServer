@@ -11,7 +11,7 @@
     <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="Cmd.Terminal" Version="1.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="NLog" Version="5.1.2" />
+    <PackageReference Include="NLog" Version="5.2.7" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,20 +20,25 @@
   </ItemGroup>
 
   <ItemGroup>
+
     <Reference Include="NetworkGameEngine">
-      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Release\net6.0\NetworkGameEngine.dll</HintPath>
+      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Debug\net6.0\NetworkGameEngine.dll</HintPath>
     </Reference>
+
     <Reference Include="RUCP">
       <HintPath>..\..\RUCP\RUCP\bin\Debug\netstandard2.1\RUCP.dll</HintPath>
     </Reference>
+
     <Reference Include="Zenject">
-      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Release\net6.0\Zenject.dll</HintPath>
+      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Debug\net6.0\Zenject.dll</HintPath>
     </Reference>
+
     <Reference Include="Zenject-Signals">
-      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Release\net6.0\Zenject-Signals.dll</HintPath>
+      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Debug\net6.0\Zenject-Signals.dll</HintPath>
     </Reference>
+
     <Reference Include="Zenject-usage">
-      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Release\net6.0\Zenject-usage.dll</HintPath>
+      <HintPath>..\..\NetworkGameEngine\NetworkGameEngine\bin\Debug\net6.0\Zenject-usage.dll</HintPath>
     </Reference>
   </ItemGroup>
 

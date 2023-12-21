@@ -1,4 +1,5 @@
 ﻿using NetworkGameEngine;
+using Protocol.Data.Replicated.Transform;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Game.Physics.PlayerInput.Commands
         public float Rotation { get; set; }
         public bool InMove { get; set; }
         public float Velocity { get; set; }
+        public MoveFlag MoveFlag { get; set; }
     }
 }

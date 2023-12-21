@@ -1,27 +1,33 @@
 ﻿using Database;
 using NetworkGameEngine;
+using NetworkGameEngine.Debugger;
 using NetworkGameEngine.Units.Characters;
-using Protocol.Data.Replicated;
+using Protocol.Data.Replicated.Transform;
 using System.Numerics;
 
 namespace Game.Physics
 {
-    public class TransformComponent : Component, IReadData<TransformData>
+    public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>
     {
         private byte m_version = 1;
+        private byte m_eventsVersion = 1;
         private Vector3 m_position;
         private float m_rotation;
         private float m_velocity;
         private bool m_inMove;
+        private List<TransformEvent> m_events = new List<TransformEvent>();
+
+
         public Vector3 Position => m_position;
 
-        public void UpdatePosition(Vector3 position, float rotation, float velocity, bool inMove)
+        public byte UpdatePosition(Vector3 position, float rotation, float velocity, bool inMove)
         {
             m_position = position;
             m_rotation = rotation;
             m_velocity = velocity;
             m_inMove = inMove;
             m_version++;
+            return m_version;
         }
 
         public override async Task Init()
@@ -39,6 +45,31 @@ namespace Game.Physics
             data.Rotation = m_rotation;
             data.Velocity = m_velocity;
             data.InMove = m_inMove;
+        }
+
+        public override void Update()
+        {
+            if (m_events.Count > 0)
+            {
+                m_events.Clear();
+            }
+        }
+
+        public void PushEvent(TransformEvent transformEvent)
+        {
+            m_events.Add(transformEvent);
+            m_eventsVersion++;
+            Debug.Log.Debug($"PushEvent Jump:{m_eventsVersion}");
+        }
+
+        public void UpdateData(ref TransformEvents data)
+        {
+            if(data.Version != m_eventsVersion)
+            {
+                data.Version = m_eventsVersion;
+                data.Events = m_events;
+                return;
+            }
         }
     }
 }
