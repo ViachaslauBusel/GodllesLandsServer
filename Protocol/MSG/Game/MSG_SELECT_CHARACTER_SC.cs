@@ -10,6 +10,6 @@ namespace Protocol.MSG.Game
     public struct MSG_SELECT_CHARACTER_SC
     {
         public LoginInformationCode InformationCode { get; set; }
-        public int CharacterObjectID { get; set; }
+        //public int CharacterObjectID { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Game.Loop;
 using NetworkGameEngine.Authorization;
+using NetworkGameEngine.Debugger;
 using RUCP;
 using RUCP.Handler;
 
@@ -7,10 +8,11 @@ namespace NetworkGameEngine
 {
     public class Profile : BaseProfile
     {
-        public static HandlersStorage<Action<Profile, Packet>> handlersStorage = new HandlersStorage<Action<Profile, Packet>>();
+        public HandlersStorage<Action<Profile, Packet>> handlersStorage = new HandlersStorage<Action<Profile, Packet>>();
         public AuthorizationHolder AuthorizationHolder { get; } = new AuthorizationHolder();
         public int CharacterObjectID { get; internal set; }
         public GameObject CharacterObject { get; internal set; }
+        public int SelectedChacterID { get; internal set; }
 
         public Profile()
         {
@@ -32,6 +34,8 @@ namespace NetworkGameEngine
 
         public override void CloseConnection(DisconnectReason reason)
         {
+            Debug.Log.Debug($"connection closed: {reason}");
+            Debug.Log.Debug($"removing character with id {CharacterObjectID}");
             if (CharacterObjectID != 0) { GameLoop.MainWorld.RemoveGameObject(CharacterObjectID); }
         }
 

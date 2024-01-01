@@ -1,5 +1,6 @@
 ﻿using Game.GridMap;
 using Game.Replication;
+using Game.Systems.TargetSystem;
 using NetworkGameEngine;
 using RUCP;
 using System;
@@ -17,6 +18,7 @@ namespace Game.Loop
         private static Server m_server;
         private static IGridMapService m_gridService;
         private static IReplicationService m_replicationService;
+
         public static void Start(Server server)
         {
             m_server = server;
@@ -25,6 +27,7 @@ namespace Game.Loop
 
             MainWorld.RegisterService<IGridMapService>(m_gridService);
             MainWorld.RegisterService<IReplicationService>(m_replicationService);
+           
             MainWorld.Init(8);
          
             Thread thread = new Thread(Loop);

@@ -4,7 +4,7 @@
     {
         private static string m_server_address = $"Server={m_serverIP}; Username={m_username}; Database={m_databaseName}; Port={m_serverPort}; Password={m_password}; SSLMode=Prefer; MaxPoolSize=100;";
         private static string m_databaseName = "null";
-        private static string m_serverIP = "16.171.65.130";//"***REMOVED***";
+        private static string m_serverIP = "51.20.68.160";//"***REMOVED***";
         private static int m_serverPort = 5432;
         private static string m_username = "postgres";
         private static string m_password = "5475269qaZ";//"***REMOVED***";

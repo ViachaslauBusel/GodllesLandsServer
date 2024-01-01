@@ -19,5 +19,10 @@
         public const short MSG_GAMEOBJECT_UPDATE = 15;
         public const short MSG_UNIT_DELET = 16;
         public const short MSG_PLAYER_INPUT_CS = 17;
+        public const short MSG_UNIT_TARGET_REQUEST_CS = 18;
+        public const short MSG_UNIT_TARGET_STATE_SC = 19;
+        public const short MSG_UPDATE_STATS = 20;
+        public const short MSG_SCENE_STATUS = 21;
+        public const short MSG_PREPARE_SCENE = 22;
     }
 }

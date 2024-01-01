@@ -1,5 +1,7 @@
 ﻿using Database;
+using Game.GameObjectFactory;
 using Game.Loop;
+using Game.NetworkTransmission;
 using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.PlayerInput.Scripts;
@@ -40,7 +42,7 @@ namespace NetworkGameEngine.Lobby
         }
 
         [Handler(Opcode.MSG_SELECT_CHARACTER)]
-        public static async void SelectAsync(Profile profile, Packet packet)
+        public static async void SelectCharacter(Profile profile, Packet packet)
         {
             packet.Read(out MSG_SELECT_CHARACTER_CS request);
             MSG_SELECT_CHARACTER_SC response = new MSG_SELECT_CHARACTER_SC();
@@ -49,15 +51,10 @@ namespace NetworkGameEngine.Lobby
             {//Если персонаж принадлежит игроку
                 response.InformationCode = LoginInformationCode.AuthorizationSuccessful;
 
-                GameObject character = new GameObject();
-                character.AddComponent(new CharacterInfoHolder(request.CharacterID, profile.Owner));
-                character.AddComponent(new TransformComponent());
-                character.AddComponent(new CharacterViewComponent());
-                character.AddComponent(new DynamicObjectComponent());
-                character.AddComponent(new PlayerInputComponent());
+               //GameObject character = CharacterFactory.Create(request.CharacterID, profile.Owner, profile.handlersStorage);
 
-               response.CharacterObjectID = profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
-               profile.CharacterObject = character;
+               //response.CharacterObjectID = profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
+               profile.SelectedChacterID = request.CharacterID;
             }
             else//error
             {

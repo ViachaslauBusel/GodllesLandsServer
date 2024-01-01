@@ -1,28 +1,60 @@
-﻿using Game.Physics;
+﻿using Game.NetworkTransmission;
+using Game.PlayerScene;
 using NetworkGameEngine;
-using NetworkGameEngine.Units.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Protocol.Data;
 using Zenject;
 
 namespace Game.Replication.Scripts
 {
     internal class ReplicationTagComponent : Component
     {
+        private NetworkTransmissionComponent m_transmission;
+        private PlayerSceneStatusComponent m_playerSceneStatusComponent;
         private IReplicationService m_replicationService;
+        private bool m_registered = false;
 
         [Inject]
         public void InjectServices(IReplicationService replicationService)
         {
             m_replicationService = replicationService;
-            var info = GetComponent<CharacterInfoHolder>();
-            //Регистрация обьекта в качества слушателя который будет получать данные обьектов вокруг
-            m_replicationService.Register(GameObject.ID, info.Socket);
         }
-      
+
+        override public void Start()
+        {
+            m_transmission = GetComponent<NetworkTransmissionComponent>();
+            m_playerSceneStatusComponent = GetComponent<PlayerSceneStatusComponent>();
+            m_playerSceneStatusComponent.OnChangeStatus += OnChangeStatus;
+            OnChangeStatus(m_playerSceneStatusComponent.Status);
+        }
+
+        private void OnChangeStatus(PlayerSceneStatus status)
+        {
+            if (status == PlayerSceneStatus.ReadyForSync)
+            {
+                Register();
+            }
+            else
+            {
+                Unregister();
+            }
+        }
+
+        private void Register()
+        {
+            if(m_registered) return;
+
+            m_registered = true;
+            //Регистрация обьекта в качества слушателя который будет получать данные обьектов вокруг
+            m_replicationService.Register(GameObject.ID, m_transmission.Socket);
+        }
+
+        private void Unregister()
+        {
+            if (m_registered == false) return;
+            
+            m_registered = false;
+            m_replicationService.Unregister(GameObject.ID);
+        }
 
         public override void OnDestroy()
         {

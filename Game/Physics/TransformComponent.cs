@@ -15,7 +15,8 @@ namespace Game.Physics
         private float m_rotation;
         private float m_velocity;
         private bool m_inMove;
-        private List<TransformEvent> m_events = new List<TransformEvent>();
+        private List<TransformEvent> m_eventsForSynchronization = new List<TransformEvent>();
+        private List<TransformEvent> m_synchronizedEvents = new List<TransformEvent>();
 
 
         public Vector3 Position => m_position;
@@ -37,6 +38,34 @@ namespace Game.Physics
             m_version++;
         }
 
+        public override void Update()
+        {
+            if(m_synchronizedEvents.Count > 0)
+            {
+                m_synchronizedEvents.Clear();
+            }
+        }
+
+        public void PushEvent(TransformEvent transformEvent)
+        {
+            m_eventsForSynchronization.Add(transformEvent);
+            m_eventsVersion++;
+            Debug.Log.Debug($"PushEvent Jump:{m_eventsVersion}");
+        }
+
+        public void UpdateData(ref TransformEvents data)
+        {
+            m_synchronizedEvents.Clear();
+            if (m_eventsForSynchronization.Count > 0)
+            {
+                m_synchronizedEvents.AddRange(m_eventsForSynchronization);
+                m_eventsForSynchronization.Clear();
+            }
+
+            data.Version = m_eventsVersion;
+            data.Events = m_synchronizedEvents;
+        }
+
         public void UpdateData(ref TransformData data)
         {
             if (data.Version == m_version) return;
@@ -45,31 +74,6 @@ namespace Game.Physics
             data.Rotation = m_rotation;
             data.Velocity = m_velocity;
             data.InMove = m_inMove;
-        }
-
-        public override void Update()
-        {
-            if (m_events.Count > 0)
-            {
-                m_events.Clear();
-            }
-        }
-
-        public void PushEvent(TransformEvent transformEvent)
-        {
-            m_events.Add(transformEvent);
-            m_eventsVersion++;
-            Debug.Log.Debug($"PushEvent Jump:{m_eventsVersion}");
-        }
-
-        public void UpdateData(ref TransformEvents data)
-        {
-            if(data.Version != m_eventsVersion)
-            {
-                data.Version = m_eventsVersion;
-                data.Events = m_events;
-                return;
-            }
         }
     }
 }
