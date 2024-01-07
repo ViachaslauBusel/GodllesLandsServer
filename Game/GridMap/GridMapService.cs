@@ -1,6 +1,7 @@
 ﻿using Game.Physics;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using RUCP;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,45 +11,15 @@ using System.Threading.Tasks;
 
 namespace Game.GridMap
 {
-    public class ObjectOnMap
-    {
-        private GameObject m_gameObject;
-        private Location m_location;
-        private Tile m_tile = null;
-
-        public int GameObjectID => m_gameObject.ID;
-        public bool IsNeedUpdate { get; private set; } = false;
-        public Location Location => m_location;
-
-
-        public ObjectOnMap(GameObject gameObject)
-        {
-            m_gameObject = gameObject;
-        }
-
-     
-
-        internal void UpdateLocation(Location location)
-        {
-            m_location = location;
-            IsNeedUpdate = true;
-        }
-
-        internal void UpdateTile(Tile tile)
-        {
-            m_tile?.Remove(m_gameObject);
-            m_tile = tile;
-            m_tile?.Add(m_gameObject);
-        }
-    }
     internal class GridMapService : IGridMapService
     {
-        private Dictionary<int, ObjectOnMap> m_objects = new Dictionary<int, ObjectOnMap>();
+        private Dictionary<int, PlayerEntity> m_players = new Dictionary<int, PlayerEntity>();
         private Tile[,] m_tiles;
-        private ConcurrentQueue<ObjectOnMap> m_incomingObj = new ConcurrentQueue<ObjectOnMap>();
-        private ConcurrentQueue<GameObject> m_outgoingObj = new ConcurrentQueue<GameObject>();
+        private ConcurrentQueue<PlayerEntity> m_incomingPlayers = new ConcurrentQueue<PlayerEntity>();
+        private ConcurrentQueue<int> m_outgoingPlayers = new ConcurrentQueue<int>();
 
         public float TileSize { get; private set; }
+
         public GridMapService(float totalMapSize, float tileSize) 
         {
             TileSize = tileSize;
@@ -64,34 +35,34 @@ namespace Game.GridMap
             }
         }
 
-        public ObjectOnMap Register(GameObject gameObject)
+        public PlayerEntity Register(GameObject gameObject, Client socket)
         {
-            ObjectOnMap objectOnMap = new ObjectOnMap(gameObject);
-            m_incomingObj.Enqueue(objectOnMap);
+            PlayerEntity objectOnMap = new PlayerEntity(gameObject, socket);
+            m_incomingPlayers.Enqueue(objectOnMap);
             return objectOnMap;
         }
 
-        public void Unregister(GameObject gameObject)
+        public void Unregister(int gameObjectID)
         {
-            m_outgoingObj.Enqueue(gameObject);
+            m_outgoingPlayers.Enqueue(gameObjectID);
         }
 
         public void Update()
         {
-            while(m_outgoingObj.TryDequeue(out GameObject outgoingGameObject))
+            while(m_outgoingPlayers.TryDequeue(out int outgoingPlayerGameObjectId))
             {
-                if(m_objects.ContainsKey(outgoingGameObject.ID)) 
+                if(m_players.ContainsKey(outgoingPlayerGameObjectId)) 
                 {
-                    m_objects[outgoingGameObject.ID].UpdateTile(null);
-                    m_objects.Remove(outgoingGameObject.ID);
+                    m_players[outgoingPlayerGameObjectId].UpdateTile(null);
+                    m_players.Remove(outgoingPlayerGameObjectId);
                 }
             }
-            while(m_incomingObj.TryDequeue(out ObjectOnMap incomingObject))
+            while(m_incomingPlayers.TryDequeue(out PlayerEntity incomingObject))
             {
-                if (!m_objects.TryAdd(incomingObject.GameObjectID, incomingObject)) { Debug.Log.Fatal($"Retrying to register an object"); }
+                if (!m_players.TryAdd(incomingObject.GameObjectID, incomingObject)) { Debug.Log.Fatal($"Retrying to register an object"); }
             }
 
-            foreach(ObjectOnMap obj in m_objects.Values)
+            foreach(PlayerEntity obj in m_players.Values)
             {
                 if(obj.IsNeedUpdate)
                 {
@@ -102,9 +73,9 @@ namespace Game.GridMap
         public bool TryGetLocation(int gameObjID, out Location location)
         {
             location = new Location();
-            if (m_objects.ContainsKey(gameObjID))
+            if (m_players.ContainsKey(gameObjID))
             {
-                location = m_objects[gameObjID].Location;
+                location = m_players[gameObjID].Location;
                 return true;
             }
             return false;
@@ -114,6 +85,22 @@ namespace Game.GridMap
             if(location.x < 0 || location.x >= m_tiles.GetLength(0)) return null;
             if(location.y < 0 || location.y >= m_tiles.GetLength(1)) return null;
             return m_tiles[location.x, location.y];
+        }
+
+        public IEnumerable<PlayerEntity> GetPlayersAround(int gameObjectID, int range)
+        {
+           if(TryGetLocation(gameObjectID, out Location location))
+            {
+                foreach (Location l in new LocationAround(location))
+                {
+                    Tile tile = GetTile(l);
+                    if (tile == null) continue;
+                    foreach (var reciever in tile.Players)
+                    {
+                        yield return reciever;
+                    }
+                }
+            }
         }
     }
 }

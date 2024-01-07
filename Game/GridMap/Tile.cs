@@ -9,18 +9,18 @@ namespace Game.GridMap
 {
     internal class Tile
     {
-        private List<GameObject> m_gameObjects = new List<GameObject>();
+        private List<PlayerEntity> m_players = new List<PlayerEntity>();
 
-        public IEnumerable<GameObject> Objects => m_gameObjects;
+        public IEnumerable<PlayerEntity> Players => m_players;
 
-        internal void Add(GameObject gameObject)
+        internal void Add(PlayerEntity player)
         {
-            m_gameObjects.Add(gameObject);
+            m_players.Add(player);
         }
 
-        internal void Remove(GameObject gameObject)
+        internal void Remove(PlayerEntity player)
         {
-           m_gameObjects.Remove(gameObject);
+           m_players.Remove(player);
         }
     }
 }

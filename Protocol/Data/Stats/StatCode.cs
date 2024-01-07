@@ -10,9 +10,13 @@ namespace Protocol.Data.Stats
         HP,
         MaxHP,
         MinPattack,
-        MaxPattack,
+        MaxPAttack,
         PhysicalDefense,
         AttackSpeed,
-        MoveSpeed
+        MoveSpeed,
+        MP,
+        MaxMP,
+        Stamina,
+        MaxStamina
     }
 }

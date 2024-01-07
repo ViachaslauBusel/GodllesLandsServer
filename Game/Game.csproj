@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Physics\PlayerInput\Commands\**" />
+    <EmbeddedResource Remove="Physics\PlayerInput\Commands\**" />
+    <None Remove="Physics\PlayerInput\Commands\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="Cmd.Terminal" Version="1.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -16,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
+    <ProjectReference Include="..\DataFileProtocol\DataFileProtocol.csproj" />
     <ProjectReference Include="..\Protocol\Protocol.csproj" />
   </ItemGroup>
 
@@ -46,10 +53,6 @@
     <None Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Physics\PlayerInput\Commands\" />
   </ItemGroup>
 
 </Project>

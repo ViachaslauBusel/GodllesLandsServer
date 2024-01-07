@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Commands
+namespace Game.Skills.Commands
 {
-    public class DamageCommand : ICommand
+    public struct DamageCommand : ICommand
     {
-        public int fromObjID;
-        public int PhysicalDamage;
+        public int PAttack { get; internal set; }
     }
 }

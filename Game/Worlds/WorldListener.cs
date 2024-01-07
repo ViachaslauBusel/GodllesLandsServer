@@ -34,9 +34,6 @@ namespace NetworkGameEngine.Worlds
             GameObject character = CharacterFactory.Create(profile.SelectedChacterID, profile.Owner, profile.handlersStorage);
 
             profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
-
-
-          
         }
     }
 }

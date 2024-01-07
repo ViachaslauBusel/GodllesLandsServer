@@ -22,8 +22,7 @@ namespace Game.Replication
         internal void StartUpdate()
         {
             m_removedObjects.Clear();
-            foreach (var gameobjectID in m_objects.Keys)
-            { m_removedObjects.Add(gameobjectID); }
+            m_removedObjects.AddRange(m_objects.Keys); 
         }
 
         internal ObjectSnapshot GetObjectSnapshot(int id)

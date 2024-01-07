@@ -29,5 +29,11 @@ namespace Game.Systems.Stats
         {
             _isDirty = false;
         }
+
+        internal void SetValue(int value)
+        {
+            _statField.Value = value;
+            _isDirty = true;
+        }
     }
 }

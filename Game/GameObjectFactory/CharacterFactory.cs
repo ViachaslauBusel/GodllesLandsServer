@@ -1,10 +1,14 @@
-﻿using Game.GridMap.Scripts;
+﻿using Game.Distributor;
+using Game.GridMap.Scripts;
+using Game.Hotbar;
+using Game.Messenger;
 using Game.NetworkTransmission;
 using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.PlayerInput.Scripts;
 using Game.PlayerScene;
 using Game.Replication.Scripts;
+using Game.Skills;
 using Game.Skins;
 using Game.Systems.Stats;
 using Game.Systems.TargetSystem;
@@ -21,8 +25,10 @@ namespace Game.GameObjectFactory
         {
             GameObject character = new GameObject();
             character.AddComponent(new NetworkTransmissionComponent(socket, handlersStorage));
+            character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
             character.AddComponent(new CharacterStatsComponent());
+            character.AddComponent(new DamageReceiverComponent());
             character.AddComponent(new TransformComponent());
             character.AddComponent(new CharacterViewComponent());
             character.AddComponent(new DynamicObjectComponent());
@@ -31,6 +37,10 @@ namespace Game.GameObjectFactory
             character.AddComponent(new ReplicationTagComponent());
             character.AddComponent(new PlayerSceneStatusComponent());
             character.AddComponent(new UnitTargetSelectionComponent());
+            character.AddComponent(new SkillsStoreComponent());
+            character.AddComponent(new HotbarComponent());
+            character.AddComponent(new SkillUsageComponent());
+            character.AddComponent(new MessageReceiverComponent());
             return character;
         }
     }

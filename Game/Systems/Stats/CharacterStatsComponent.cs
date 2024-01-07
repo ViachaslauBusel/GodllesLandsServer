@@ -12,11 +12,26 @@ namespace Game.Systems.Stats
         public override void Start()
         {
             m_networkTransmission = GetComponent<NetworkTransmissionComponent>();
+
+            MSG_LOAD_STATES msg = new MSG_LOAD_STATES
+            {
+                CharacterName = "test",
+                Stats = m_dataForSync
+            };
+
+            foreach (var stat in m_stats.Values)
+            {
+                msg.Stats.Add(stat.Data);
+                stat.MarkDataAsSynced();
+            }
+
+            m_networkTransmission.Socket.Send(msg);
         }
 
         public override void LateUpdate()
         {
-            m_dataForSync.Clear();
+            if (m_dataForSync.Count > 0) m_dataForSync.Clear();
+
             foreach (var stat in m_stats.Values)
             {
                 if (stat.IsDirty)

@@ -24,5 +24,12 @@
         public const short MSG_UPDATE_STATS = 20;
         public const short MSG_SCENE_STATUS = 21;
         public const short MSG_PREPARE_SCENE = 22;
+        public const short MSG_LOAD_STATES = 23;
+        public const short MSG_SKILLS_UPDATE = 24;
+        public const short MSG_HOTBAR_SET_CELL_VALUE = 25;
+        public const short MSG_HOTBAR_UPDATE = 26;
+        public const short MSG_SKILL_USE = 27;
+        public const short MSG_MESSAGE_CS = 28;
+        public const short MSG_MESSAGE_SC = 29;
     }
 }

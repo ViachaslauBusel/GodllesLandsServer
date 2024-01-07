@@ -3,6 +3,8 @@ using Autofac.Core;
 using Cmd.Terminal;
 using Database;
 using Game.Loop;
+using Game.Skills.Data;
+using Game.Skills.Handler;
 using NetworkGameEngine.Debugger;
 using RUCP;
 using System;
@@ -18,6 +20,8 @@ namespace NetworkGameEngine
           //  builder.RegisterType<TodayWriter>().As<IDateWriter>();
             //var Container = builder.Build();
             //Container.Resolve<ICommand>(new NamedParameter("characterID", 124));
+
+            SkillsDataStore.Load();
 
             GameDatabaseConfig.DatabaseName = "GL_Game";
             LoginDatabaseConfig.DatabaseName = "GL_Login";
