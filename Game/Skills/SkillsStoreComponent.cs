@@ -19,7 +19,7 @@ namespace Game.Skills
         private Dictionary<int, Skill> _skills = new Dictionary<int, Skill>();
         private List<int> _syncData = new List<int>();
 
-        public override async Task Init()
+        public override void Init()
         {
             _skills.Add(1, new Skill(this, 1));
             _skills.Add(2, new Skill(this, 2));

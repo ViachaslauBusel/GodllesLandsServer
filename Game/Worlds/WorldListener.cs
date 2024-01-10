@@ -31,9 +31,9 @@ namespace NetworkGameEngine.Worlds
             //while (!character.IsInitialized) { await Task.Delay(1); }
 
 
-            GameObject character = CharacterFactory.Create(profile.SelectedChacterID, profile.Owner, profile.handlersStorage);
+           profile.CharacterObject = CharacterFactory.Create(profile.SelectedChacterID, profile.Client, profile.handlersStorage);
 
-            profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(character);
+            profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(profile.CharacterObject);
         }
     }
 }

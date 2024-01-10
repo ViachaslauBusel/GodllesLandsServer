@@ -1,9 +1,11 @@
 ﻿using DataFileProtocol.Skills;
+using Game.Animation;
 using Game.Physics;
 using Game.Skills.Commands;
 using Game.Systems.Stats;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Replicated.Transform;
 using Protocol.Data.Stats;
 using System.Numerics;
@@ -13,6 +15,7 @@ namespace Game.Skills.Handler
     public class MelleSkillHandler : ISkillHandler
     {
         private TransformComponent _transform;
+        private AnimatorComponent _animator;
         private StatsComponent _stats;
         private MelleSkillData _data;
 
@@ -20,6 +23,7 @@ namespace Game.Skills.Handler
         {
             _transform = component.GetComponent<TransformComponent>();
             _stats = component.GetComponent<StatsComponent>();
+            _animator = component.GetComponent<AnimatorComponent>();
             _data = (MelleSkillData)data;
             if(_data == null)
             {
@@ -54,6 +58,8 @@ namespace Game.Skills.Handler
 
             stamina -= _data.staminaCost;
             _stats.SetStat(StatCode.Stamina, stamina);
+
+            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, 500);
 
             DamageCommand damageCommand = new DamageCommand();
             damageCommand.PAttack = 77 * _stats.GetStat(StatCode.MaxPAttack) + _data.damage;

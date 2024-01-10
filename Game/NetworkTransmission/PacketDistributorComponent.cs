@@ -4,7 +4,7 @@ using NetworkGameEngine.Debugger;
 using RUCP;
 using Zenject;
 
-namespace Game.Distributor
+namespace Game.NetworkTransmission
 {
     internal class PacketDistributorComponent : Component
     {

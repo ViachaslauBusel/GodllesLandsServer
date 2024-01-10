@@ -10,7 +10,8 @@ namespace Game.Hotbar
     public class HotbarCellHolder
     {
         private HotbarCell _cell;
-        private bool _isDirty;
+        private bool _clientSyncRequired;
+        private bool _databaseSyncRequired;
 
 
         public HotbarCellHolder(byte cellIndex)
@@ -21,26 +22,34 @@ namespace Game.Hotbar
                 CellType = HotbarCellType.Unknown,
                 CellValue = 0,
             };
-            _isDirty = true;
+            _clientSyncRequired = true;
         }
 
         public byte CellIndex => _cell.CellIndex;
         public HotbarCellType CellType => _cell.CellType;
         public short CellValue => _cell.CellValue;
-        public bool IsDirty => _isDirty;
+        public bool ClientSyncRequired => _clientSyncRequired;
+        public bool DatabaseSyncRequired => _databaseSyncRequired;
 
 
         internal void SetValue(HotbarCellType cellType, short cellValue)
         {
             _cell.CellType = cellType;
             _cell.CellValue = cellValue;
-            _isDirty = true;
+            _clientSyncRequired = true;
+            _databaseSyncRequired = true;
         }
 
-        public void MarkAsClean()
+        public void ResetClientSyncFlag()
         {
-            _isDirty = false;
+            _clientSyncRequired = false;
         }
+
+        public void ResetDatabaseSyncFlag()
+        {
+            _databaseSyncRequired = false;
+        }
+
 
         internal HotbarCell GetCell() => _cell;
     }

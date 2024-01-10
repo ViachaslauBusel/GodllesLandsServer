@@ -24,20 +24,20 @@ namespace NetworkGameEngine.Authorization
             if (sessionToken_object == null)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
             int sessionToken = (int)sessionToken_object;
             if (sessionToken != request.SessionToken)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongPassword;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
             profile.AuthorizationHolder.Login(request.LoginID, request.SessionToken);
 
             response.InformationCode = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
-            profile.Owner.Send(response);
+            profile.Client.Send(response);
         }
     }
 }

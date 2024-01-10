@@ -30,7 +30,7 @@ namespace NetworkGameEngine.Lobby
             if (request.Name.Length < 3 || request.Name.Length > 30)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace NetworkGameEngine.Lobby
             if (!isCreatedCharacter)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
             string characterData_json = await GameDatabaseProvider.SelectJson($"SELECT get_chatacer_data('{request.Name}')");
@@ -47,7 +47,7 @@ namespace NetworkGameEngine.Lobby
             if (!isCharacterExist)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace NetworkGameEngine.Lobby
             if (characterData.LoginID != profile.AuthorizationHolder.LoginID)
             {
                 response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace NetworkGameEngine.Lobby
             if (!isCreatedPosition) { Debug.Log.Fatal($"Failed to set position when creating character"); }
 
             response.InformationCode = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
-            profile.Owner.Send(response);
+            profile.Client.Send(response);
 
             ////Одеть оружеи на персонажа
             //int characterID = CharactersTable.GetCharacterID(name);

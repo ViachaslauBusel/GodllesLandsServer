@@ -1,5 +1,4 @@
-﻿using Game.Distributor;
-using Game.NetworkTransmission;
+﻿using Game.NetworkTransmission;
 using NetworkGameEngine;
 using Protocol;
 using Protocol.MSG.Game.Messenger;
@@ -12,7 +11,7 @@ namespace Game.Messenger
         private NetworkTransmissionComponent _networkTransmission;
         private PacketDistributorComponent m_packetDistributor;
 
-        public override async Task Init()
+        public override void Init()
         {
             m_packetDistributor = GetComponent<PacketDistributorComponent>();
             _networkTransmission = GetComponent<NetworkTransmissionComponent>();

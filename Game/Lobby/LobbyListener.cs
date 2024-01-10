@@ -38,7 +38,7 @@ namespace NetworkGameEngine.Lobby
 
             MSG_CHARACTERS_LIST_SC response = new MSG_CHARACTERS_LIST_SC();
             response.CharacterDatas = characters.Select(c => new CharacterData() { CharacterID = c.CharacterID, CharacterName = c.CharacterName }).ToArray();
-            profile.Owner.Send(response); 
+            profile.Client.Send(response); 
         }
 
         [Handler(Opcode.MSG_SELECT_CHARACTER)]
@@ -60,7 +60,7 @@ namespace NetworkGameEngine.Lobby
             {
                 response.InformationCode = LoginInformationCode.AuthorizationFail;
             }
-            profile.Owner.Send(response);
+            profile.Client.Send(response);
         }
     }
 }

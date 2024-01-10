@@ -8,7 +8,7 @@ namespace Game.Systems.Stats
     {
         private StatsComponent _stats;
 
-        public override async Task Init()
+        public override void Init()
         {
             _stats = GetComponent<StatsComponent>();
         }

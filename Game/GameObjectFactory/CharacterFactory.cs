@@ -1,4 +1,5 @@
-﻿using Game.Distributor;
+﻿using Game.Animation;
+using Game.DB;
 using Game.GridMap.Scripts;
 using Game.Hotbar;
 using Game.Messenger;
@@ -25,6 +26,7 @@ namespace Game.GameObjectFactory
         {
             GameObject character = new GameObject();
             character.AddComponent(new NetworkTransmissionComponent(socket, handlersStorage));
+            character.AddComponent(new DBControlComponent());
             character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
             character.AddComponent(new CharacterStatsComponent());
@@ -41,6 +43,7 @@ namespace Game.GameObjectFactory
             character.AddComponent(new HotbarComponent());
             character.AddComponent(new SkillUsageComponent());
             character.AddComponent(new MessageReceiverComponent());
+            character.AddComponent(new AnimatorComponent());
             return character;
         }
     }

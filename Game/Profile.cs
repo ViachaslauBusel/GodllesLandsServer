@@ -36,7 +36,12 @@ namespace NetworkGameEngine
         {
             Debug.Log.Debug($"connection closed: {reason}");
             Debug.Log.Debug($"removing character with id {CharacterObjectID}");
-            if (CharacterObjectID != 0) { GameLoop.MainWorld.RemoveGameObject(CharacterObjectID); }
+            //if (CharacterObjectID != 0) 
+            if(CharacterObject != null)
+            { 
+                CharacterObject.SendCommand(new DisconnectCommand());
+                //GameLoop.MainWorld.RemoveGameObject(CharacterObjectID); 
+            }
         }
 
         public override bool HandleException(Exception exception)

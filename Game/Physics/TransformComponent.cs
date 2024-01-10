@@ -1,14 +1,18 @@
 ﻿using Database;
+using Game.DB;
+using Game.Tools;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using NetworkGameEngine.JobsManagment;
 using NetworkGameEngine.Units.Characters;
 using Protocol.Data.Replicated.Transform;
 using System.Numerics;
 
 namespace Game.Physics
 {
-    public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>
+    public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>, IDatabaseReadable, IDatabaseWritable
     {
+        private CharacterInfoHolder m_characterInfoHolder;
         private byte m_version = 1;
         private byte m_eventsVersion = 1;
         private Vector3 m_position;
@@ -21,6 +25,10 @@ namespace Game.Physics
 
         public Vector3 Position => m_position;
 
+        public DatabaseSavePriority DatabaseSavePriority => DatabaseSavePriority.Medium;
+
+        public bool HasDataToSave { get => true; set { } }
+
         public byte UpdatePosition(Vector3 position, float rotation, float velocity, bool inMove)
         {
             m_position = position;
@@ -31,11 +39,20 @@ namespace Game.Physics
             return m_version;
         }
 
-        public override async Task Init()
+        public override void Init()
         {
-            int characterID = GetComponent<CharacterInfoHolder>().CharacterID;
-            m_position = new Vector3(1180.0f, 183.0f, 1884.0f);//TODO await GameDatabaseProvider.Select<Vector3>($"SELECT get_chatacer_position('{characterID}')");
+            m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
+        }
+
+        public async Job ReadFromDatabase()
+        {
+            m_position = await JobsSystem.Execute(GameDatabaseProvider.Select<Vector3>($"SELECT get_chatacer_position('{m_characterInfoHolder.CharacterID}')"));
             m_version++;
+        }
+
+        public async Job<bool> WriteToDatabase()
+        {
+           return await JobsSystem.Execute(GameDatabaseProvider.Call($"CALL set_character_position('{m_characterInfoHolder.CharacterID}', '{FloatHelper.FloatToString(m_position.X)}', '{FloatHelper.FloatToString(m_position.Y)}', '{FloatHelper.FloatToString(m_position.Z)}')"));
         }
 
         public override void Update()
@@ -49,7 +66,7 @@ namespace Game.Physics
         public void PushEvent(TransformEvent transformEvent)
         {
             m_eventsForSynchronization.Add(transformEvent);
-            m_eventsVersion++;
+            //m_eventsVersion++;
             Debug.Log.Debug($"PushEvent Jump:{m_eventsVersion}");
         }
 
@@ -60,10 +77,10 @@ namespace Game.Physics
             {
                 m_synchronizedEvents.AddRange(m_eventsForSynchronization);
                 m_eventsForSynchronization.Clear();
-            }
 
-            data.Version = m_eventsVersion;
-            data.Events = m_synchronizedEvents;
+                data.Version++;
+                data.Events = m_synchronizedEvents;
+            }
         }
 
         public void UpdateData(ref TransformData data)

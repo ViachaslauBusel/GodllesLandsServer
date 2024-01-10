@@ -1,13 +1,7 @@
 ﻿using Game.GridMap;
 using Game.Replication;
-using Game.Systems.TargetSystem;
 using NetworkGameEngine;
 using RUCP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Loop
 {

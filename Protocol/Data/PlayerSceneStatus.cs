@@ -7,7 +7,8 @@ namespace Protocol.Data
     public enum PlayerSceneStatus : byte
     {
         None,
-        Loading,
+        LoadingFromDatabase,
         ReadyForSync,
+        Shutdown,
     }
 }
