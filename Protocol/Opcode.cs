@@ -20,7 +20,7 @@
         public const short MSG_UNIT_DELET = 16;
         public const short MSG_PLAYER_INPUT_CS = 17;
         public const short MSG_UNIT_TARGET_REQUEST_CS = 18;
-        public const short MSG_UNIT_TARGET_STATE_SC = 19;
+        public const short MSG_UNIT_TARGET_FULL_SC = 19;
         public const short MSG_UPDATE_STATS = 20;
         public const short MSG_SCENE_STATUS = 21;
         public const short MSG_PREPARE_SCENE = 22;
@@ -31,5 +31,6 @@
         public const short MSG_SKILL_USE = 27;
         public const short MSG_MESSAGE_CS = 28;
         public const short MSG_MESSAGE_SC = 29;
+        public const short MSG_UNIT_TARGET_HP_SC = 30;
     }
 }

@@ -20,7 +20,7 @@ namespace Godless_Lands_Login.Query
             if (request.Version != Login.version)
             {
                 response.Notification = Protocol.Data.LoginInformationCode.WrongVersion;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -30,7 +30,7 @@ namespace Godless_Lands_Login.Query
             if (request.Login.Length < 3 || request.Login.Length > 30)
             {
                 response.Notification = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace Godless_Lands_Login.Query
                 response.Notification = Protocol.Data.LoginInformationCode.LoginExist;
             }
 
-            profile.Owner.Send(response);
+            profile.Client.Send(response);
         }
     }
 }

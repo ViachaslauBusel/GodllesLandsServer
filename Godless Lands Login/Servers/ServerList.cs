@@ -12,7 +12,7 @@ namespace Godless_Lands_Login.Servers
         {
             MSG_SERVER_LIST_SC server_list = new MSG_SERVER_LIST_SC();
             server_list.Servers = ServerReader.Servers;
-            profile.Owner.Send(server_list);
+            profile.Client.Send(server_list);
         }
     }
 }

@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test", "Test\Test.csproj", "{F39285D8-93E2-48E6-A542-8779DFB17750}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataFileProtocol", "DataFileProtocol\DataFileProtocol.csproj", "{9F917A06-53ED-4CCA-B11B-05C3F55A608D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,14 +71,6 @@ Global
 		{F39285D8-93E2-48E6-A542-8779DFB17750}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F39285D8-93E2-48E6-A542-8779DFB17750}.Release|x64.ActiveCfg = Release|Any CPU
 		{F39285D8-93E2-48E6-A542-8779DFB17750}.Release|x64.Build.0 = Release|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Debug|x64.Build.0 = Debug|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Release|x64.ActiveCfg = Release|Any CPU
-		{9F917A06-53ED-4CCA-B11B-05C3F55A608D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

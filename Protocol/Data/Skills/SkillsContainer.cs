@@ -28,15 +28,23 @@ namespace DataFileProtocol.Skills
 
         public void Add(SkillData skill)
         {
-            switch (skill)
+            if(skill is MelleSkillData)
             {
-                case MelleSkillData:
-                    _melleSkills.Add((MelleSkillData)skill);
-                    break;
-                default:
-                    _skills.Add(skill);
-                    break;
+                _melleSkills.Add((MelleSkillData)skill);
             }
+            else
+            {
+                _skills.Add(skill);
+            }
+            //switch (skill)
+            //{
+            //    case MelleSkillData:
+                  
+            //        break;
+            //    default:
+                   
+            //        break;
+            //}
         }
         public SkillData GetSkill(int id) 
         {

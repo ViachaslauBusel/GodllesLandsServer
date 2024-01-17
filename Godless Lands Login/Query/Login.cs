@@ -35,7 +35,7 @@ namespace Godless_Lands_Login.Query
             if (request.Version != version)
             {
                 response.Notification = Protocol.Data.LoginInformationCode.WrongVersion;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace Godless_Lands_Login.Query
             if (request.Login.Length < 3 || request.Login.Length > 30)
             {
                 response.Notification = Protocol.Data.LoginInformationCode.WrongLogin;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
                 return;
             }
 
@@ -68,14 +68,14 @@ namespace Godless_Lands_Login.Query
                     response.LoginID = loginData.login_id;
                     response.SessionKey = sessionkey;
                     response.Notification = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
-                    profile.Owner.Send(response);
+                    profile.Client.Send(response);
                     return;
                 }
             }
             //Login or password is incorrect
             {
                 response.Notification = Protocol.Data.LoginInformationCode.AuthorizationFail;
-                profile.Owner.Send(response);
+                profile.Client.Send(response);
             }
 
         }

@@ -1,4 +1,5 @@
 ﻿using NetworkGameEngine;
+using Protocol.Data.Replicated;
 using Protocol.Data.Stats;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Game.Systems.Stats
 {
-    public class StatsComponent : Component, IReadData<HealtData>
+    public class StatsComponent : Component, IReadData<HealtData>, IReadData<UnitName>
     {
+        protected string m_name;
         protected Dictionary<StatCode, GameStatField> m_stats = new ();
 
         public StatsComponent()
@@ -56,6 +58,12 @@ namespace Game.Systems.Stats
             {
                 stat.SetValue(value);
             }
+        }
+
+        public void UpdateData(ref UnitName data)
+        {
+            data.Name = m_name;
+            data.Version = 1;
         }
     }
 }

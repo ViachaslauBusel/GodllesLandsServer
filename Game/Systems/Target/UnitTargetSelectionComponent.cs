@@ -4,8 +4,10 @@ using Game.Systems.Stats;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol;
+using Protocol.Data.Replicated;
 using Protocol.Data.Replicated.Transform;
 using Protocol.MSG.Game.ToClient;
+using Protocol.MSG.Game.ToClient.Target;
 using Protocol.MSG.Game.ToServer;
 using RUCP;
 using System.Numerics;
@@ -32,35 +34,55 @@ namespace Game.Systems.TargetSystem
         {
             packet.Read(out MSG_UNIT_TARGET_REQUEST_CS request);
 
+            if(request.GameObjectId == 0)
+            {
+                m_target = null;
+                FullUpdateTarget();
+                return;
+            }
             bool isSucces = GameObject.World.TryGetGameObject(request.GameObjectId, out m_target);
 
             if (isSucces == false)
             {
                 Debug.Log.Warn($"UnitTargetSelectionComponent: Can't find target with id {request.GameObjectId}");
             }
-            UpdateTarget();
+            FullUpdateTarget();
         }
 
-        private void UpdateTarget()
+        private void FullUpdateTarget()
         {
-            MSG_UNIT_TARGET_STATE_SC response = new MSG_UNIT_TARGET_STATE_SC();
+            MSG_UNIT_TARGET_FULL_SC response = new MSG_UNIT_TARGET_FULL_SC();
             if (m_target == null)
             {
-                response.HP = 0;
-                response.MaxHP = 0;
+                response.PercentHP = -1;
                 response.TargetName = "";
             }
             else
 
             {
                 m_target.ReadData(out HealtData healtData);
-                response.TargetName = m_target.ID.ToString();
-                response.HP = healtData.HP;
-                response.MaxHP = healtData.MaxHP;
+                m_target.ReadData(out UnitName unitName);
+                response.TargetName = unitName.Name;
+                response.PercentHP = (int)((healtData.HP / (float)healtData.MaxHP) * 100);
                 m_lastSyncHealtData = healtData;
             }
             //response.TargetName = m_target.Name;
             m_networkTransmission.Socket.Send(response);
+        }
+
+        private void HPUpdateTarget()
+        {
+            if (m_target == null)
+            {
+                Debug.Log.Error("UnitTargetSelectionComponent: Target is null");
+                return;
+            }
+
+            m_target.ReadData(out HealtData healtData);
+            MSG_UNIT_TARGET_HP_SC response = new MSG_UNIT_TARGET_HP_SC();
+            response.PercentHP = (int)((healtData.HP / (float)healtData.MaxHP) * 100);
+            m_networkTransmission.Socket.Send(response);
+            m_lastSyncHealtData = healtData;
         }
 
         public override void LateUpdate()
@@ -69,7 +91,7 @@ namespace Game.Systems.TargetSystem
             if (m_target.IsDestroyed)
             {
                 m_target = null;
-                UpdateTarget();
+                FullUpdateTarget();
                 return;
             }
             
@@ -79,14 +101,14 @@ namespace Game.Systems.TargetSystem
             if(distance > 2_500f)
             {
                 m_target = null;
-                UpdateTarget();
+                FullUpdateTarget();
                 return;
             }
 
             m_target.ReadData(out HealtData healtData);
             if (m_lastSyncHealtData.HP != healtData.HP || m_lastSyncHealtData.MaxHP != healtData.MaxHP)
             {
-                UpdateTarget();
+                HPUpdateTarget();
                 return;
             }
         }
