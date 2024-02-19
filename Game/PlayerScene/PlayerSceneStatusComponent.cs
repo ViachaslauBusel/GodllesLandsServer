@@ -1,7 +1,7 @@
 ﻿using Game.DB;
 using Game.GridMap.Scripts;
 using Game.NetworkTransmission;
-using Game.Physics;
+using Game.Physics.Transform;
 using Game.Replication.Scripts;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;

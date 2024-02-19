@@ -7,20 +7,29 @@ using System.Threading.Tasks;
 
 namespace Game.GridMap
 {
-    internal class Tile
+    public class Tile
     {
-        private List<PlayerEntity> m_players = new List<PlayerEntity>();
+        private readonly HashSet<Entity> _entities = new HashSet<Entity>();
+        public IReadOnlyCollection<Entity> Entities => _entities;
 
-        public IEnumerable<PlayerEntity> Players => m_players;
-
-        internal void Add(PlayerEntity player)
+        internal void Add(Entity entity)
         {
-            m_players.Add(player);
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            _entities.Add(entity);
         }
 
-        internal void Remove(PlayerEntity player)
+        internal void Remove(Entity entity)
         {
-           m_players.Remove(player);
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            _entities.Remove(entity);
         }
     }
 }

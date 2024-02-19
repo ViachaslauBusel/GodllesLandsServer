@@ -8,16 +8,15 @@ using NetworkGameEngine.Units.Characters;
 using Protocol.Data.Replicated.Transform;
 using System.Numerics;
 
-namespace Game.Physics
+namespace Game.Physics.Transform
 {
-    public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>, IDatabaseReadable, IDatabaseWritable
+    public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>
     {
-        private CharacterInfoHolder m_characterInfoHolder;
-        private byte m_version = 1;
+        protected byte m_version = 1;
         private byte m_eventsVersion = 1;
-        private Vector3 m_position;
-        private float m_rotation;
-        private float m_velocity;
+        protected Vector3 m_position;
+        protected float m_rotation;
+        protected float m_velocity;
         private bool m_inMove;
         private List<TransformEvent> m_eventsForSynchronization = new List<TransformEvent>();
         private List<TransformEvent> m_synchronizedEvents = new List<TransformEvent>();
@@ -25,7 +24,6 @@ namespace Game.Physics
 
         public Vector3 Position => m_position;
 
-        public DatabaseSavePriority DatabaseSavePriority => DatabaseSavePriority.Medium;
 
         public bool HasDataToSave { get => true; set { } }
 
@@ -38,26 +36,21 @@ namespace Game.Physics
             m_version++;
             return m_version;
         }
-
-        public override void Init()
+        internal void UpdatePosition(Vector3 position)
         {
-            m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
-        }
-
-        public async Job ReadFromDatabase()
-        {
-            m_position = await JobsSystem.Execute(GameDatabaseProvider.Select<Vector3>($"SELECT get_chatacer_position('{m_characterInfoHolder.CharacterID}')"));
+            m_position = position;
             m_version++;
         }
 
-        public async Job<bool> WriteToDatabase()
+        internal void UpdateRotation(float angle)
         {
-           return await JobsSystem.Execute(GameDatabaseProvider.Call($"CALL set_character_position('{m_characterInfoHolder.CharacterID}', '{FloatHelper.FloatToString(m_position.X)}', '{FloatHelper.FloatToString(m_position.Y)}', '{FloatHelper.FloatToString(m_position.Z)}')"));
+            m_rotation = angle;
+            m_version++;
         }
 
         public override void Update()
         {
-            if(m_synchronizedEvents.Count > 0)
+            if (m_synchronizedEvents.Count > 0)
             {
                 m_synchronizedEvents.Clear();
             }
@@ -92,5 +85,7 @@ namespace Game.Physics
             data.Velocity = m_velocity;
             data.InMove = m_inMove;
         }
+
+     
     }
 }

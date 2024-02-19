@@ -24,13 +24,10 @@ namespace NetworkGameEngine
             handlersStorage.GetHandler(packet.OpCode)?.Invoke(this, packet);
         }
 
-
         public override void CheckingConnection()
         {
 
         }
-
-
 
         public override void CloseConnection(DisconnectReason reason)
         {

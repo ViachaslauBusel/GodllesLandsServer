@@ -1,6 +1,6 @@
 ﻿using DataFileProtocol.Skills;
 using Game.Animation;
-using Game.Physics;
+using Game.Physics.Transform;
 using Game.Skills.Commands;
 using Game.Systems.Stats;
 using NetworkGameEngine;

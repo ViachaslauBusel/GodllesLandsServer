@@ -32,5 +32,6 @@
         public const short MSG_MESSAGE_CS = 28;
         public const short MSG_MESSAGE_SC = 29;
         public const short MSG_UNIT_TARGET_HP_SC = 30;
+        public const short MSG_RAYCAST_TEST = 31;
     }
 }

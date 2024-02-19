@@ -11,7 +11,7 @@ namespace Game.Systems.Stats
 {
     public class StatsComponent : Component, IReadData<HealtData>, IReadData<UnitName>
     {
-        protected string m_name;
+        protected string m_name = "null";
         protected Dictionary<StatCode, GameStatField> m_stats = new ();
 
         public StatsComponent()

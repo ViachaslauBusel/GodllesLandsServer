@@ -1,20 +1,8 @@
-﻿using RUCP.Handler;
-using RUCP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Protocol;
-using Game.Commands;
+﻿using Game.GameObjectFactory;
 using Game.Loop;
-using Game.Replication;
-using NetworkGameEngine.Debugger;
-using Game.Replication.Scripts;
-using Protocol.MSG.Game;
-using Game.GridMap.Scripts;
-using Protocol.Data.Replicated.Transform;
-using Game.GameObjectFactory;
+using Protocol;
+using RUCP;
+using RUCP.Handler;
 
 namespace NetworkGameEngine.Worlds
 {

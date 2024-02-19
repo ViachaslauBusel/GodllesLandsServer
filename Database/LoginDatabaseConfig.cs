@@ -9,11 +9,11 @@ namespace Database
     public static class LoginDatabaseConfig
     {
         private static string m_server_address = $"Server={m_serverIP}; Username={m_username}; Database={m_databaseName}; Port={m_serverPort}; Password={m_password}; SSLMode=Prefer; MaxPoolSize=100;";
-        private static string m_databaseName = "null";
-        private static string m_serverIP = "16.171.232.248";
+        private static string m_databaseName = "GD_LOGIN";
+        private static string m_serverIP = "***REMOVED***";
         private static int m_serverPort = 5432;
-        private static string m_username = "postgres";
-        private static string m_password = "5475269qaZ";//"***REMOVED***";
+        private static string m_username = "***REMOVED***";
+        private static string m_password = "***REMOVED***";//"***REMOVED***";
         public static string DatabaseName
         {
             set { m_databaseName = value; UpdateAddress(); }

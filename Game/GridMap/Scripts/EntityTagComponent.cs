@@ -1,18 +1,21 @@
 ﻿using Game.NetworkTransmission;
 using Game.Physics;
+using Game.Physics.Transform;
 using NetworkGameEngine;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Zenject;
 
 namespace Game.GridMap.Scripts
 {
-    /// <summary>
-    /// Указывает что обьект содержит данные которые необходимо синхронизировать
-    /// </summary>
-    internal class MapObjectTagComponent : Component
+    public class EntityTagComponent : Component
     {
-        private IGridMapService m_mapService;
-        private TransformComponent m_transform;
-        private PlayerEntity m_objectOnMap;
+        protected IGridMapService m_mapService;
+        protected TransformComponent m_transform;
+        protected Entity m_entityOnMap;
 
         [Inject]
         public void InjectService(IGridMapService mapService)
@@ -23,23 +26,28 @@ namespace Game.GridMap.Scripts
         public override void Start()
         {
             m_transform = GetComponent<TransformComponent>();
-          
-            var networkTransmission = GetComponent<NetworkTransmissionComponent>();
+
+            m_entityOnMap = CreateEntity();
             //Регистрация обьекта который необходимо синхронизировать
-            m_objectOnMap = m_mapService.Register(GameObject, networkTransmission.Socket);
+            m_mapService.Register(m_entityOnMap);
 
             Location location = new Location((int)(m_transform.Position.X / m_mapService.TileSize), (int)(m_transform.Position.Z / m_mapService.TileSize));
-            m_objectOnMap.UpdateLocation(location);
+            m_entityOnMap.UpdateLocation(location);
+        }
+
+        protected virtual Entity CreateEntity()
+        {
+            return new Entity(GameObject);
         }
 
         public override void LateUpdate()
         {
-            if(m_objectOnMap.Location.IfChanged(m_transform.Position, m_mapService.TileSize, out Location newLocation))
+            if (m_entityOnMap.Location.IfChanged(m_transform.Position, m_mapService.TileSize, out Location newLocation))
             {
-                m_objectOnMap.UpdateLocation(newLocation);
+                m_entityOnMap.UpdateLocation(newLocation);
             }
         }
-        
+
         public override void OnDestroy()
         {
             m_mapService.Unregister(GameObject.ID);

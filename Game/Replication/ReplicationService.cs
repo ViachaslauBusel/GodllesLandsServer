@@ -46,13 +46,13 @@ namespace Game.Replication
                         //Перебираем все объекты на локации
                         Tile tile = m_mapService.GetTile(l);
                         if (tile == null) continue;
-                        foreach (var player in tile.Players)
+                        foreach (var entity in tile.Entities)
                         {
                             //Получаем последний снимок состояние этого объекта, который видит этот игрок
-                            ObjectSnapshot objectSnapshot = clientSnapshotStore.GetObjectSnapshot(player.GameObjectID);
+                            ObjectSnapshot objectSnapshot = clientSnapshotStore.GetObjectSnapshot(entity.GameObjectID);
                             objectSnapshot.StartUpdate();
                             //Перебираем все данные(компоненты) объекта, для которых необходима синхронизация
-                            foreach (var replicatedData in player.GameObject.ReadAllData<IReplicationData>())
+                            foreach (var replicatedData in entity.GameObject.ReadAllData<IReplicationData>())
                             {
                                 objectSnapshot.UpdateData(replicatedData);
                             }

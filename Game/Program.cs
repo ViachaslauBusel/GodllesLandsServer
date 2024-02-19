@@ -3,6 +3,7 @@ using Autofac.Core;
 using Cmd.Terminal;
 using Database;
 using Game.Loop;
+using Game.Physics.Terrain;
 using Game.Skills.Data;
 using Game.Skills.Handler;
 using NetworkGameEngine.Debugger;
@@ -23,8 +24,8 @@ namespace NetworkGameEngine
 
             SkillsDataStore.Load();
 
-            GameDatabaseConfig.DatabaseName = "GL_Game";
-            LoginDatabaseConfig.DatabaseName = "GL_Login";
+            GameDatabaseConfig.DatabaseName = "GD_GAME";
+            LoginDatabaseConfig.DatabaseName = "GD_LOGIN";
 
             Server server = new Server(4343);
             server.SetHandler(() => new Profile());
@@ -36,7 +37,9 @@ namespace NetworkGameEngine
 
             GameLoop.Start(server);
 
+
             Debug.Log.Info("Server started");
+
             Terminal.Listen();
         }
     }

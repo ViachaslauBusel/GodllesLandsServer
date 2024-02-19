@@ -1,4 +1,5 @@
 ﻿using Game.NetworkTransmission;
+using Game.Physics.Transform;
 using NetworkGameEngine;
 using Protocol;
 using Protocol.Data.Replicated.Transform;

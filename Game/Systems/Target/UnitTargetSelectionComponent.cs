@@ -1,5 +1,5 @@
 ﻿using Game.NetworkTransmission;
-using Game.Physics;
+using Game.Physics.Transform;
 using Game.Systems.Stats;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;

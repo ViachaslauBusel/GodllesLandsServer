@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Game.GridMap
 {
-    internal interface IGridMapService
+    public interface IGridMapService
     {
         float TileSize { get; }
-        PlayerEntity Register(GameObject gameObject, Client socket);
+        void Register(Entity entity);
         void Unregister(int gameObjectID);
         void Update();
         bool TryGetLocation(int gameObjID, out Location location);
