@@ -1,6 +1,7 @@
 ﻿using Game.NetworkTransmission;
 using Game.Physics.Transform;
 using Game.Systems.Stats;
+using Game.Systems.Target;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol;
@@ -14,18 +15,13 @@ using System.Numerics;
 
 namespace Game.Systems.TargetSystem
 {
-    internal class UnitTargetSelectionComponent : Component
+    internal class CharacterTargetManagerComponent : TargetManagerComponent
     {
         private NetworkTransmissionComponent m_networkTransmission;
-        private TransformComponent m_transform;
-        private GameObject m_target = null;
-        private HealtData m_lastSyncHealtData;
-
-        public GameObject Target => m_target;
 
         override public void Start()
         {
-            m_transform = GetComponent<TransformComponent>();
+            base.Start();
             m_networkTransmission = GetComponent<NetworkTransmissionComponent>();
             m_networkTransmission.RegisterHandler(Opcode.MSG_UNIT_TARGET_REQUEST_CS, TargetRequestProcces);
         }
@@ -49,7 +45,7 @@ namespace Game.Systems.TargetSystem
             FullUpdateTarget();
         }
 
-        private void FullUpdateTarget()
+        protected override void FullUpdateTarget()
         {
             MSG_UNIT_TARGET_FULL_SC response = new MSG_UNIT_TARGET_FULL_SC();
             if (m_target == null)
@@ -70,7 +66,7 @@ namespace Game.Systems.TargetSystem
             m_networkTransmission.Socket.Send(response);
         }
 
-        private void HPUpdateTarget()
+        protected override void HPUpdateTarget()
         {
             if (m_target == null)
             {
@@ -83,34 +79,6 @@ namespace Game.Systems.TargetSystem
             response.PercentHP = (int)((healtData.HP / (float)healtData.MaxHP) * 100);
             m_networkTransmission.Socket.Send(response);
             m_lastSyncHealtData = healtData;
-        }
-
-        public override void LateUpdate()
-        {
-            if (m_target == null) return;
-            if (m_target.IsDestroyed)
-            {
-                m_target = null;
-                FullUpdateTarget();
-                return;
-            }
-            
-            m_target.ReadData(out TransformData targetTransform);
-            float distance = Vector3.DistanceSquared(m_transform.Position, targetTransform.Position);
-
-            if(distance > 2_500f)
-            {
-                m_target = null;
-                FullUpdateTarget();
-                return;
-            }
-
-            m_target.ReadData(out HealtData healtData);
-            if (m_lastSyncHealtData.HP != healtData.HP || m_lastSyncHealtData.MaxHP != healtData.MaxHP)
-            {
-                HPUpdateTarget();
-                return;
-            }
         }
     }
 }

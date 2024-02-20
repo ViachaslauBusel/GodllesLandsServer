@@ -5,6 +5,7 @@ using Game.Skills.Commands;
 using Game.Systems.Stats;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using NLog.Targets;
 using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Replicated.Transform;
 using Protocol.Data.Stats;
@@ -18,6 +19,9 @@ namespace Game.Skills.Handler
         private AnimatorComponent _animator;
         private StatsComponent _stats;
         private MelleSkillData _data;
+        private GameObject _target;
+
+        public bool InUse => _target != null;
 
         public void Init(Component component, SkillData data)
         {
@@ -31,12 +35,17 @@ namespace Game.Skills.Handler
             }
         }
 
-        public void Use(GameObject target)
+        public bool PreProcessSkill(GameObject target)
         {
+            if(InUse)
+            {
+                //Already in use
+                return false;
+            }
             if (target == null)
             {
                 //TODO : Send error message to the client
-                return;
+                return false;
             }
 
             target.ReadData(out TransformData targetTransform);
@@ -45,7 +54,7 @@ namespace Game.Skills.Handler
             if (distance > _data.range)
             {
                 //TODO : Send error message to the client
-                return;
+                return false;
             }
 
             int stamina = _stats.GetStat(StatCode.Stamina);
@@ -53,17 +62,43 @@ namespace Game.Skills.Handler
             if (stamina < _data.staminaCost)
             {
                 //TODO : Send error message to the client
-                return;
+                return false;
             }
 
             stamina -= _data.staminaCost;
             _stats.SetStat(StatCode.Stamina, stamina);
 
-            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, 500);
+            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000));
+
+            _target = target;
+            return true;
+           
+        }
+
+        public void PostProcessSkill()
+        {
+            if(_target == null)
+            {
+                //Something gone wrong
+                return;
+            }
+
+            _target.ReadData(out TransformData targetTransform);
+            float distance = Vector3.Distance(_transform.Position, targetTransform.Position);
+
+            if (distance > _data.range)
+            {
+                //TODO : Send error message to the client
+                _target = null;
+                return;
+            }
 
             DamageCommand damageCommand = new DamageCommand();
+            damageCommand.Attacker = _stats.GameObject;
             damageCommand.PAttack = 77 * _stats.GetStat(StatCode.MaxPAttack) + _data.damage;
-            target.SendCommand(damageCommand);
+            _target.SendCommand(damageCommand);
+
+            _target = null;
         }
     }
 }

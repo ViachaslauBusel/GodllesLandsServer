@@ -15,27 +15,13 @@ namespace Game.Skills
 {
     public class SkillsStoreComponent : Component
     {
-        private NetworkTransmissionComponent _networkTransmission;
-        private Dictionary<int, Skill> _skills = new Dictionary<int, Skill>();
-        private List<int> _syncData = new List<int>();
+        protected Dictionary<int, Skill> _skills = new Dictionary<int, Skill>();
+       
 
         public override void Init()
         {
             _skills.Add(1, new Skill(this, 1));
             _skills.Add(2, new Skill(this, 2));
-        }
-
-        public override void Start()
-        {
-            _syncData.Clear();
-            _syncData.AddRange(_skills.Keys);
-
-            _networkTransmission = GetComponent<NetworkTransmissionComponent>();
-
-            MSG_SKILLS_UPDATE msg = new MSG_SKILLS_UPDATE();
-            msg.Skills = _syncData;
-
-            _networkTransmission.Socket.Send(msg);
         }
 
         internal Skill GetSkill(int skillID)

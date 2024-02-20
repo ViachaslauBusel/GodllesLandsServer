@@ -5,7 +5,10 @@ namespace Game.Skills.Handler
 {
     public interface ISkillHandler
     {
+        bool InUse { get; }
+
         void Init(Component component, SkillData skill);
-        void Use(GameObject target);
+        bool PreProcessSkill(GameObject target);
+        void PostProcessSkill();
     }
 }

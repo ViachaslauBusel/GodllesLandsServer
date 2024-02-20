@@ -13,6 +13,7 @@ namespace Game.AI
         Attacking,
         Dead,
         Patrol,
-        Attack
+        Attack,
+        Chase
     }
 }

@@ -2,6 +2,7 @@
 using Game.Skills.Data;
 using Game.Skills.Handler;
 using NetworkGameEngine;
+using NLog.Targets;
 
 namespace Game.Skills
 {
@@ -10,6 +11,10 @@ namespace Game.Skills
         private SkillData _data;
         private ISkillHandler _handler;
 
+
+        public bool InUse => _handler != null && _handler.InUse;
+        public SkillData Data => _data;
+
         public Skill(Component component, int skillID)
         {
             _data = SkillsDataStore.GetData(skillID);
@@ -17,9 +22,13 @@ namespace Game.Skills
             _handler?.Init(component, _data);
         }
 
-        public void Use(GameObject target)
+        public bool PreProcessSkill(GameObject target)
         {
-            _handler?.Use(target);
+           return _handler?.PreProcessSkill(target) ?? false;
+        }
+        public void PostProcessSkill() 
+        {
+            _handler?.PostProcessSkill();
         }
     }
 }

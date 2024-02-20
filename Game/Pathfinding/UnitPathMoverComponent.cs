@@ -113,8 +113,9 @@ namespace Game.Pathfinding
         private void Rotate(Vector3 direction)
         {
             direction = Vector3.Normalize(direction);
-           float angle = (float)Math.Atan2(direction.X, direction.Z);
-            _transform.UpdateRotation(angle);
+           float radians = (float)Math.Atan2(direction.X, direction.Z);
+            float degrees = (float)(radians * (180 / Math.PI));
+            _transform.UpdateRotation(degrees);
         }
 
         internal void StopMove()

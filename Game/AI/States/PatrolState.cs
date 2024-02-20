@@ -26,7 +26,7 @@ namespace Game.AI.States
             m_pathfinder = pathfinder;
         }
 
-        override public void Active()
+        override public void OnActive()
         {
             Vector3 targetPoint = Vector3.Zero;
             do
@@ -47,7 +47,7 @@ namespace Game.AI.States
             return m_unitPathMoverComponent.IsMove == false;
         }
 
-        public override void Deactive()
+        public override void OnDeactive()
         {
             m_unitPathMoverComponent.StopMove();
         }

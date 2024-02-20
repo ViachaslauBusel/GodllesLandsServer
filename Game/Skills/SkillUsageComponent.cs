@@ -1,43 +1,68 @@
-﻿using DataFileProtocol.Skills;
-using Game.NetworkTransmission;
+﻿using Game.NetworkTransmission;
+using Game.Systems.Target;
 using Game.Systems.TargetSystem;
 using NetworkGameEngine;
-using Protocol;
+using NetworkGameEngine.ContinuationTaskExecution;
+using NetworkGameEngine.Debugger;
+using NetworkGameEngine.JobsManagment;
 using Protocol.MSG.Game.Skills;
 using RUCP;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Game.Skills
 {
     public class SkillUsageComponent : Component
     {
-        private SkillsStoreComponent _skillsStore;
-        private NetworkTransmissionComponent _networkTransmission;
-        private UnitTargetSelectionComponent _unitTargetSelection;
+        protected SkillsStoreComponent _skillsStore;
+        protected TargetManagerComponent _targetManager;
+        private Skill _skilInUse, _nextSkill;
+
+        public Skill SkillInUse => _skilInUse;
 
         public override void Start()
         {
-            _unitTargetSelection = GetComponent<UnitTargetSelectionComponent>();
+            _targetManager = GetComponent<TargetManagerComponent>();
             _skillsStore = GetComponent<SkillsStoreComponent>();
-            _networkTransmission = GetComponent<NetworkTransmissionComponent>();
-            _networkTransmission.RegisterHandler(Opcode.MSG_SKILL_USE, SkillUse);
         }
-
-        private void SkillUse(Packet packet)
+        
+        public void UseSkill(int skillId)
         {
-            packet.Read(out MSG_SKILL_USE_CS msg);
+            Skill skill = _skillsStore.GetSkill(skillId);
 
-            Skill skill = _skillsStore.GetSkill(msg.SkillID);
-
-            if (skill == null)
+            if(skill == null) 
+            {
+                Debug.Log.Error($"[{GameObject.Name}:{GameObject.ID}]Skill:{skillId} not found");
                 return;
-   
+            }
 
-            skill.Use(_unitTargetSelection.Target);
+            UseSkill(skill);
         }
 
-        public override void OnDestroy()
+        private async void UseSkill(Skill skill)
         {
-            _networkTransmission.UnregisterHandler(Opcode.MSG_SKILL_USE);
+            if (skill == null) return;
+
+            if (_skilInUse != null && _skilInUse.InUse)
+            {
+                _nextSkill = skill;
+                return;
+            }
+
+            if (skill.PreProcessSkill(_targetManager.Target))
+            {
+                _skilInUse = skill;
+                await new SecondsDelayJob(_skilInUse.Data.applyingTime);
+                _skilInUse.PostProcessSkill();
+            }
+
+            Skill nextSkill = _nextSkill;
+            _skilInUse = null;
+            _nextSkill = null;
+            UseSkill(nextSkill);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Game.Skills.Commands
 {
     public struct DamageCommand : ICommand
     {
+        public GameObject Attacker;
         public int PAttack { get; internal set; }
     }
 }

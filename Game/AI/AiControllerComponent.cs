@@ -1,4 +1,5 @@
 ﻿using Game.AI.States;
+using Game.AI.StateTransitionConditions;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using System;
@@ -13,12 +14,19 @@ namespace Game.AI
     {
         private Dictionary<AiState, BaseState> _states = new Dictionary<AiState, BaseState>();
         private BaseState _currentState;
+        private AiStateFactory _stateFactory;
+
+        public AiControllerComponent()
+        {
+            _stateFactory = new AiStateFactory(this);
+        }
 
         public override void Start()
         {
-            _states.Add(AiState.Idle, InjectDependenciesIntoObject(new IdleState(this)));
-            _states.Add(AiState.Patrol, InjectDependenciesIntoObject(new PatrolState(this)));
-            _states.Add(AiState.Attack, InjectDependenciesIntoObject(new AttackState(this)));
+            _states.Add(AiState.Idle, _stateFactory.CreateState(AiState.Idle, 1));
+            _states.Add(AiState.Patrol, _stateFactory.CreateState(AiState.Patrol, 1));
+            _states.Add(AiState.Attack, _stateFactory.CreateState(AiState.Attacking, 1));
+            _states.Add(AiState.Chase, _stateFactory.CreateState(AiState.Chase, 1));
             SetState(AiState.Idle);
         }
 
@@ -30,14 +38,14 @@ namespace Game.AI
                 return;
             }
 
-            _currentState?.Deactive();
+            _currentState?.Deactivate();
             _currentState = _states[state];
-            _currentState.Active();
+            _currentState.Activate();
         }
 
         public override void Update()
         {
-            if(_currentState.Update(out AiState newState))
+            if(_currentState.IsStateChangeRequired(out AiState newState))
             {
                 SetState(newState);
             }

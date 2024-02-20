@@ -25,7 +25,7 @@ namespace Game.AI.States
             _raycastingService = raycastingService;
         }
 
-        public override void Active()
+        public override void OnActive()
         {
            _endAwaitTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + RandomHelper.Range(3_000, 10_000);
         }

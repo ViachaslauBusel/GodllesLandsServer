@@ -11,6 +11,8 @@ namespace Game.Systems.Stats
         private StatsComponent _stats;
         private AnimatorComponent _animator;
 
+        public event Action<GameObject, int> OnDamageReceiving;
+
         public override void Init()
         {
             _stats = GetComponent<StatsComponent>();
@@ -31,7 +33,8 @@ namespace Game.Systems.Stats
             {
                 damage = 0;
             }
-            
+
+            int realDamage = health;
             health -= damage;
             if (health <= 0)
             {
@@ -39,7 +42,9 @@ namespace Game.Systems.Stats
                 _animator.SetState(AnimationStateID.Dead, true);
                 health = 0;
             }
+            realDamage -= health;
             _stats.SetStat(StatCode.HP, health);
+            OnDamageReceiving?.Invoke(command.Attacker, realDamage);
         }
     }   
 }

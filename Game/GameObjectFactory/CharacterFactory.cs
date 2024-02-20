@@ -40,10 +40,10 @@ namespace Game.GameObjectFactory
             character.AddComponent(new PlayerEntityTagComponent());
             character.AddComponent(new ReplicationTagComponent());
             character.AddComponent(new PlayerSceneStatusComponent());
-            character.AddComponent(new UnitTargetSelectionComponent());
-            character.AddComponent(new SkillsStoreComponent());
+            character.AddComponent(new CharacterTargetManagerComponent());
+            character.AddComponent(new CharacterSkillsStoreComponent());
             character.AddComponent(new HotbarComponent());
-            character.AddComponent(new SkillUsageComponent());
+            character.AddComponent(new CharacterSkillUsageComponent());
             character.AddComponent(new MessageReceiverComponent());
             character.AddComponent(new AnimatorComponent());
             character.AddComponent(new RaycastTest());

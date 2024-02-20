@@ -7,7 +7,9 @@ using Game.Pathfinding;
 using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
+using Game.Skills;
 using Game.Systems.Stats;
+using Game.Systems.Target;
 using NetworkGameEngine;
 using Protocol.Data.Monsters;
 
@@ -29,6 +31,9 @@ namespace Game.GameObjectFactory
             monster.AddComponent(new AnimatorComponent());
             monster.AddComponent(new AiControllerComponent());
             monster.AddComponent(new UnitPathMoverComponent());
+            monster.AddComponent(new TargetManagerComponent());
+            monster.AddComponent(new SkillsStoreComponent());
+            monster.AddComponent(new SkillUsageComponent());
             return monster;
         }
     }

@@ -180,8 +180,7 @@ namespace Game.Pathfinding
             {
                 for (int j = -1; j <= 1; j++)
                 {
-                    if (i == 0 && j == 0
-                    || Math.Abs(i) == 1 && Math.Abs(j) == 1) continue;
+                    if (i == 0 && j == 0) continue;
                     Node cell = new Node(currentWaypoint, new Vector2Int(i, j));
                     yield return cell;
                 }
