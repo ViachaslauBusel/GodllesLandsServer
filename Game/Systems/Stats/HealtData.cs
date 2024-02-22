@@ -10,5 +10,6 @@ namespace Game.Systems.Stats
     {
         public int HP;
         public int MaxHP;
+        public bool IsAlive;
     }
 }

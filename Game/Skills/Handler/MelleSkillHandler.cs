@@ -15,6 +15,7 @@ namespace Game.Skills.Handler
 {
     public class MelleSkillHandler : ISkillHandler
     {
+        private BodyComponent _body;
         private TransformComponent _transform;
         private AnimatorComponent _animator;
         private StatsComponent _stats;
@@ -25,6 +26,7 @@ namespace Game.Skills.Handler
 
         public void Init(Component component, SkillData data)
         {
+            _body = component.GetComponent<BodyComponent>();
             _transform = component.GetComponent<TransformComponent>();
             _stats = component.GetComponent<StatsComponent>();
             _animator = component.GetComponent<AnimatorComponent>();
@@ -42,6 +44,12 @@ namespace Game.Skills.Handler
                 //Already in use
                 return false;
             }
+
+            if (_body.IsAlive == false)
+            {
+                return false;
+            }
+
             if (target == null)
             {
                 //TODO : Send error message to the client
@@ -80,6 +88,11 @@ namespace Game.Skills.Handler
             if(_target == null)
             {
                 //Something gone wrong
+                return;
+            }
+
+            if(_body.IsAlive == false)
+            {
                 return;
             }
 

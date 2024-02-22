@@ -1,10 +1,8 @@
 ﻿using Database;
 using Game.DB;
 using Game.NetworkTransmission;
-using NetworkGameEngine;
-using NetworkGameEngine.JobsManagment;
+using NetworkGameEngine.JobsSystem;
 using NetworkGameEngine.Units.Characters;
-using Protocol.Data.Replicated;
 using Protocol.Data.Stats;
 using Protocol.MSG.Game.Hotbar;
 using Protocol.MSG.Game.ToClient.Stats;
@@ -22,7 +20,7 @@ namespace Game.Systems.Stats
         public async Job ReadFromDatabase()
         {
             m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
-            CharacterStat stat = await JobsSystem.Execute(GameDatabaseProvider.Select<CharacterStat>($"SELECT get_chatacer_stat('{m_characterInfoHolder.CharacterID}')"));
+            CharacterStat stat = await JobsManager.Execute(GameDatabaseProvider.Select<CharacterStat>($"SELECT get_chatacer_stat('{m_characterInfoHolder.CharacterID}')"));
 
             m_name = stat.Name;
 

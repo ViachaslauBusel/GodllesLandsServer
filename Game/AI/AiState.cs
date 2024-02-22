@@ -11,7 +11,7 @@ namespace Game.AI
         Idle,
         Moving,
         Attacking,
-        Dead,
+        Death,
         Patrol,
         Attack,
         Chase

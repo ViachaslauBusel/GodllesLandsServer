@@ -1,10 +1,5 @@
-﻿using Database;
-using Game.DB;
-using Game.Tools;
-using NetworkGameEngine;
+﻿using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
-using NetworkGameEngine.JobsManagment;
-using NetworkGameEngine.Units.Characters;
 using Protocol.Data.Replicated.Transform;
 using System.Numerics;
 

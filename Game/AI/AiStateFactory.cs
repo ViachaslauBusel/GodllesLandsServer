@@ -25,14 +25,20 @@ namespace Game.AI
             {
                 case AiState.Idle when AiType == 1:
                     return Inject(new IdleState(_aiController))
-                        .AttachCondition(Inject(new ToAttackStateCondition(_aiController)));
+                        .AttachCondition(Inject(new ToAttackStateCondition(_aiController)))
+                        .AttachCondition(Inject(new ToDeathStateCondition(_aiController)));
                 case AiState.Patrol when AiType == 1:
                     return Inject(new PatrolState(_aiController))
-                         .AttachCondition(Inject(new ToAttackStateCondition(_aiController)));
+                         .AttachCondition(Inject(new ToAttackStateCondition(_aiController)))
+                         .AttachCondition(Inject(new ToDeathStateCondition(_aiController)));
                 case AiState.Attacking when AiType == 1:
-                    return Inject(new AttackState(_aiController));
+                    return Inject(new AttackState(_aiController))
+                         .AttachCondition(Inject(new ToDeathStateCondition(_aiController)));
                 case AiState.Chase when AiType == 1:
-                    return Inject(new ChaseState(_aiController));
+                    return Inject(new ChaseState(_aiController))
+                        .AttachCondition(Inject(new ToDeathStateCondition(_aiController)));
+                case AiState.Death when AiType == 1:
+                    return Inject(new DeathState(_aiController));
                 default:
                     Debug.Log.Error($"Can't create AI state");
                     return null;

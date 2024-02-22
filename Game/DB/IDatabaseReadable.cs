@@ -1,9 +1,4 @@
-﻿using NetworkGameEngine.JobsManagment;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NetworkGameEngine.JobsSystem;
 
 namespace Game.DB
 {

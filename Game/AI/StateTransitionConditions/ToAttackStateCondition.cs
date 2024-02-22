@@ -12,12 +12,12 @@ namespace Game.AI.StateTransitionConditions
 {
     internal class ToAttackStateCondition : AIStateTransitionConditionBase
     {
-        private DamageReceiverComponent _damageReceiver;
+        private BodyComponent _damageReceiver;
         private TargetManagerComponent _targetManager;
 
         public ToAttackStateCondition(AiControllerComponent aiController)
         {
-            _damageReceiver = aiController.GetComponent<DamageReceiverComponent>();
+            _damageReceiver = aiController.GetComponent<BodyComponent>();
             _targetManager = aiController.GetComponent<TargetManagerComponent>();
         }
 

@@ -22,7 +22,7 @@ namespace Game.GameObjectFactory
             GameObject monster = new GameObject("monster");
             monster.AddComponent(new PacketDistributorComponent());
             monster.AddComponent(new MobStatComponent(data.Name));
-            monster.AddComponent(new DamageReceiverComponent());
+            monster.AddComponent(new BodyComponent());
             monster.AddComponent(new TransformComponent());
             monster.AddComponent(new SpawnComponent(data.SpawnPosition, data.SpawnRadius));
             monster.AddComponent(new MonsterViewComponent(data.SkinID));

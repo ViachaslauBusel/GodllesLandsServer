@@ -2,8 +2,7 @@
 using Game.DB;
 using Game.NetworkTransmission;
 using NetworkGameEngine;
-using NetworkGameEngine.ContinuationTaskExecution;
-using NetworkGameEngine.JobsManagment;
+using NetworkGameEngine.JobsSystem;
 using NetworkGameEngine.Units.Characters;
 using Protocol;
 using Protocol.MSG.Game.Hotbar;
@@ -31,7 +30,7 @@ namespace Game.Hotbar
 
         public async Job ReadFromDatabase()
         {
-            HotbarCell[] cells = await JobsSystem.Execute(GameDatabaseProvider.Select<HotbarCell[]>($"SELECT get_hotbar('{_characterInfoHolder.CharacterID}')"));
+            HotbarCell[] cells = await JobsManager.Execute(GameDatabaseProvider.Select<HotbarCell[]>($"SELECT get_hotbar('{_characterInfoHolder.CharacterID}')"));
             if (cells != null)
             {
                 foreach (HotbarCell cell in cells)

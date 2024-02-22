@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Game.Systems.Stats
 {
-    public class StatsComponent : Component, IReadData<HealtData>, IReadData<UnitName>
+    public class StatsComponent : Component, IReadData<UnitName>
     {
         protected string m_name = "null";
         protected Dictionary<StatCode, GameStatField> m_stats = new ();
@@ -31,17 +31,7 @@ namespace Game.Systems.Stats
 
         }
 
-        public void UpdateData(ref HealtData data)
-        {
-            if(m_stats.TryGetValue(StatCode.HP, out var hp))
-            {
-                data.HP = hp.Data.Value;
-            }
-            if (m_stats.TryGetValue(StatCode.MaxHP, out var maxHp))
-            {
-                data.MaxHP = maxHp.Data.Value;
-            }
-        }
+       
 
         internal int GetStat(StatCode code)
         {

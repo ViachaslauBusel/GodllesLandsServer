@@ -32,7 +32,8 @@ namespace Game.GameObjectFactory
             character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
             character.AddComponent(new CharacterStatsComponent());
-            character.AddComponent(new DamageReceiverComponent());
+            character.AddComponent(new BodyComponent());
+            character.AddComponent(new PlayerDeathStateComponent());
             character.AddComponent(new PlayerTransformComponent());
             character.AddComponent(new CharacterViewComponent());
             character.AddComponent(new DynamicObjectComponent());

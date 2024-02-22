@@ -9,7 +9,7 @@ namespace Game.AI
 {
     public abstract class BaseState
     {
-        private AiControllerComponent _owner;
+        protected AiControllerComponent _owner;
         private List<AIStateTransitionConditionBase> _conditions;
 
         public BaseState(AiControllerComponent component)

@@ -27,6 +27,7 @@ namespace Game.AI
             _states.Add(AiState.Patrol, _stateFactory.CreateState(AiState.Patrol, 1));
             _states.Add(AiState.Attack, _stateFactory.CreateState(AiState.Attacking, 1));
             _states.Add(AiState.Chase, _stateFactory.CreateState(AiState.Chase, 1));
+            _states.Add(AiState.Death, _stateFactory.CreateState(AiState.Death, 1));
             SetState(AiState.Idle);
         }
 
