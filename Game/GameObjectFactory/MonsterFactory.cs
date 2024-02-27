@@ -1,15 +1,16 @@
 ﻿using Game.AI;
 using Game.Animation;
+using Game.Drop;
 using Game.GridMap.Scripts;
 using Game.Monsters.Components;
 using Game.NetworkTransmission;
 using Game.Pathfinding;
-using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
 using Game.Skills;
 using Game.Systems.Stats;
 using Game.Systems.Target;
+using Game.UnitVisualization;
 using NetworkGameEngine;
 using Protocol.Data.Monsters;
 
@@ -34,6 +35,7 @@ namespace Game.GameObjectFactory
             monster.AddComponent(new TargetManagerComponent());
             monster.AddComponent(new SkillsStoreComponent());
             monster.AddComponent(new SkillUsageComponent());
+            monster.AddComponent(new LootDropOnDeathComponent());
             return monster;
         }
     }

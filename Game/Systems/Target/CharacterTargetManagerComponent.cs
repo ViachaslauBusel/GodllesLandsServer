@@ -58,7 +58,7 @@ namespace Game.Systems.TargetSystem
             {
                 m_target.ReadData(out HealtData healtData);
                 m_target.ReadData(out UnitName unitName);
-                response.TargetName = unitName.Name;
+                response.TargetName = string.IsNullOrEmpty(unitName.Name) ? "null" : unitName.Name;
                 response.PercentHP = (int)((healtData.HP / (float)healtData.MaxHP) * 100);
                 m_lastSyncHealtData = healtData;
             }

@@ -8,5 +8,7 @@ namespace Protocol.Data.Replicated.Skins
     {
         public int SkinID { get; set;}
         public byte Version { get; set;}
+        public bool InNeedChaceVisual { get; set; }
+        public int VisualChaneObjectId { get; set; }
     }
 }

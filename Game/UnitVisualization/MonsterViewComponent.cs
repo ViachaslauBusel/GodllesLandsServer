@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Monsters.Components
+namespace Game.UnitVisualization
 {
-    public class MonsterViewComponent : Component, IReadData<MonsterSkinData>
+    public class MonsterViewComponent : BaseViewComponent, IReadData<MonsterSkinData>
     {
         private int _skinID;
 
@@ -17,10 +17,17 @@ namespace Game.Monsters.Components
             _skinID = skinID;
         }
 
+        public override IViewComponent Clone()
+        {
+            return new MonsterViewComponent(_skinID);
+        }
+
         public void UpdateData(ref MonsterSkinData data)
         {
             data.SkinID = _skinID;
-            data.Version = 1;
+            data.InNeedChaceVisual = _isNeedChaceVisual;
+            data.VisualChaneObjectId = _visualChaneObjectId;
+            data.Version = _version;
         }
     }
 }

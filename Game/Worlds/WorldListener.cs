@@ -1,5 +1,5 @@
 ﻿using Game.GameObjectFactory;
-using Game.Loop;
+using Game.Main;
 using Protocol;
 using RUCP;
 using RUCP.Handler;

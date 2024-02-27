@@ -11,7 +11,7 @@ using Game.Physics.Transform;
 using Game.PlayerScene;
 using Game.Replication.Scripts;
 using Game.Skills;
-using Game.Skins;
+using Game.UnitVisualization;
 using Game.Systems.Stats;
 using Game.Systems.TargetSystem;
 using Game.Tests;

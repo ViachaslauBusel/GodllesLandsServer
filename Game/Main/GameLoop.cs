@@ -1,4 +1,5 @@
 ﻿using Game.GridMap;
+using Game.Items;
 using Game.Monsters;
 using Game.Pathfinding;
 using Game.Physics;
@@ -6,7 +7,7 @@ using Game.Replication;
 using NetworkGameEngine;
 using RUCP;
 
-namespace Game.Loop
+namespace Game.Main
 {
     public static class GameLoop
     {
@@ -32,6 +33,7 @@ namespace Game.Loop
             MainWorld.RegisterService<IReplicationService>(m_replicationService);
             MainWorld.RegisterService<RaycastingService>(m_raycastingService);
             MainWorld.RegisterService<Pathfinder>(new Pathfinder());
+            MainWorld.RegisterService<ItemsFactory>(new ItemsFactory());
            
             MainWorld.Init(8);
          

@@ -1,11 +1,11 @@
 ﻿using Database;
 using Game.GameObjectFactory;
-using Game.Loop;
+using Game.Main;
 using Game.NetworkTransmission;
 using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.PlayerInput.Scripts;
-using Game.Skins;
+using Game.UnitVisualization;
 using NetworkGameEngine.Units.Characters;
 using Newtonsoft.Json;
 using Protocol;

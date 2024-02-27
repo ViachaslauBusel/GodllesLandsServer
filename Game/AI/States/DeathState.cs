@@ -30,8 +30,7 @@ namespace Game.AI.States
         {
             Debug.Log.Debug($"Entity {_owner.GameObject.ID} is dead");
             _targetManager.SetTarget(null);
-            _needDoRemoveFromMap = true;
-            _removeFromMapTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 3_000;
+
 
             // Нужно сделать воскрешение через 10 секунд
             _needDoResurrect = true;
@@ -49,13 +48,6 @@ namespace Game.AI.States
         public override bool Update(out AiState newState)
         {
             newState = AiState.Idle;
-
-            if(_needDoRemoveFromMap && _removeFromMapTime < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
-            {
-                Debug.Log.Debug($"Entity {_owner.GameObject.ID} is remove from the game");
-                _owner.GameObject.DestroyComponent<EntityTagComponent>();
-                _needDoRemoveFromMap = false;
-            }
 
             if(_needDoResurrect && _needDoResurrectTime < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
             {

@@ -3,6 +3,7 @@ using Game.Animation;
 using Game.Physics.Transform;
 using Game.Skills.Commands;
 using Game.Systems.Stats;
+using Game.Tools;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using NLog.Targets;
@@ -57,7 +58,9 @@ namespace Game.Skills.Handler
             }
 
             target.ReadData(out TransformData targetTransform);
-            float distance = Vector3.Distance(_transform.Position, targetTransform.Position);
+            Vector3 direction = targetTransform.Position - _transform.Position;
+            float distance = direction.Length();
+            direction = direction.Normalize(distance);
 
             if (distance > _data.range)
             {
@@ -76,7 +79,7 @@ namespace Game.Skills.Handler
             stamina -= _data.staminaCost;
             _stats.SetStat(StatCode.Stamina, stamina);
 
-            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000));
+            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000), direction);
 
             _target = target;
             return true;

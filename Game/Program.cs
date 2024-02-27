@@ -2,7 +2,8 @@
 using Autofac.Core;
 using Cmd.Terminal;
 using Database;
-using Game.Loop;
+using Game.Items;
+using Game.Main;
 using Game.Physics.Terrain;
 using Game.Skills.Data;
 using Game.Skills.Handler;
@@ -23,6 +24,7 @@ namespace NetworkGameEngine
             //Container.Resolve<ICommand>(new NamedParameter("characterID", 124));
 
             SkillsDataStore.Load();
+            ItemsDataManager.Load();
 
             GameDatabaseConfig.DatabaseName = "GD_GAME";
             LoginDatabaseConfig.DatabaseName = "GD_LOGIN";
