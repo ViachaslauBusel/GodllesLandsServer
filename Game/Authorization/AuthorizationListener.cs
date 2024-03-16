@@ -14,7 +14,7 @@ namespace NetworkGameEngine.Authorization
     public static class AuthorizationListener
     {
         [Handler(Opcode.MSG_GAME_AUTHORIZATION)]
-        public static async void Entrance(Profile profile, Packet packet)
+        public static async void Entrance(PlayerProfile profile, Packet packet)
         {
             packet.Read(out MSG_GAME_AUTHORIZATION_CS request);
             MSG_GAME_AUTHORIZATION_SC response = new MSG_GAME_AUTHORIZATION_SC();

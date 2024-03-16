@@ -28,7 +28,7 @@ namespace Game.Hotbar
             _networkTransmission.RegisterHandler(Opcode.MSG_HOTBAR_SET_CELL_VALUE, HotbarSetCellValue);
         }
 
-        public async Job ReadFromDatabase()
+        public async Job ReadFromDatabaseAsync()
         {
             HotbarCell[] cells = await JobsManager.Execute(GameDatabaseProvider.Select<HotbarCell[]>($"SELECT get_hotbar('{_characterInfoHolder.CharacterID}')"));
             if (cells != null)

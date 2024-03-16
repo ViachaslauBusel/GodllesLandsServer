@@ -5,6 +5,7 @@ using Game.Pathfinding;
 using Game.Physics;
 using Game.Replication;
 using NetworkGameEngine;
+using NetworkGameEngine.Debugger;
 using RUCP;
 
 namespace Game.Main
@@ -22,18 +23,22 @@ namespace Game.Main
         public static void Start(Server server)
         {
             PhysicWorld.Load();
+            Debug.Log.Info("Physic world loaded");
 
             m_server = server;
             m_gridService = new GridMapService(3000, 100);
             m_replicationService = new ReplicationService(m_gridService);
             m_raycastingService = new RaycastingService(PhysicWorld);
+            var itemUniqueIdGenerator = new ItemUniqueIdGenerator();
             
 
             MainWorld.RegisterService<IGridMapService>(m_gridService);
             MainWorld.RegisterService<IReplicationService>(m_replicationService);
             MainWorld.RegisterService<RaycastingService>(m_raycastingService);
             MainWorld.RegisterService<Pathfinder>(new Pathfinder());
-            MainWorld.RegisterService<ItemsFactory>(new ItemsFactory());
+            MainWorld.RegisterService(itemUniqueIdGenerator);
+            MainWorld.RegisterService(new ItemsFactory(itemUniqueIdGenerator));
+           
            
             MainWorld.Init(8);
          
@@ -45,6 +50,7 @@ namespace Game.Main
 
         private static void Loop()
         {
+            Debug.Log.Info("Game loop started");
             while (true)
             {
                 //m_server.ProcessPacket();

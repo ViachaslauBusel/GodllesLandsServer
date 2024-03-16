@@ -6,22 +6,28 @@ using RUCP.Handler;
 
 namespace NetworkGameEngine
 {
-    public class Profile : BaseProfile
+    public interface IPlayerNetworkProfile
     {
-        public HandlersStorage<Action<Profile, Packet>> handlersStorage = new HandlersStorage<Action<Profile, Packet>>();
+        Client Client { get; }
+        HandlersStorage<Action<PlayerProfile, Packet>> HandlersStorage { get; }
+        int CharacterObjectID { get; }
+    }
+    public class PlayerProfile : BaseProfile, IPlayerNetworkProfile
+    {
+        public HandlersStorage<Action<PlayerProfile, Packet>> HandlersStorage { get; } = new HandlersStorage<Action<PlayerProfile, Packet>>();
         public AuthorizationHolder AuthorizationHolder { get; } = new AuthorizationHolder();
         public int CharacterObjectID { get; internal set; }
         public GameObject CharacterObject { get; internal set; }
         public int SelectedChacterID { get; internal set; }
 
-        public Profile()
+        public PlayerProfile()
         {
-            handlersStorage.RegisterAllStaticHandlers();
+            HandlersStorage.RegisterAllStaticHandlers();
         }
 
         public override void ChannelRead(Packet packet)
         {
-            handlersStorage.GetHandler(packet.OpCode)?.Invoke(this, packet);
+            HandlersStorage.GetHandler(packet.OpCode)?.Invoke(this, packet);
         }
 
         public override void CheckingConnection()

@@ -13,54 +13,25 @@ namespace Game.NetworkTransmission
 {
     public class NetworkTransmissionComponent : Component
     {
-        private Client m_socket;
-        private HandlersStorage<Action<Profile, Packet>> m_handlersStorage;
-        private Dictionary<short, Action<Packet>> m_handlers = new Dictionary<short, Action<Packet>>();
-        private ConcurrentQueue<Packet> m_packets = new ConcurrentQueue<Packet>();
+        private IPlayerNetworkProfile _playerProfile;
+        private PacketProcessing<Action<Packet>> _packetProcessing;
 
-        public Client Socket => m_socket;
+        public IPlayerNetworkProfile PlayerProfile => _playerProfile;
+        public Client Socket => _playerProfile.Client;
 
-        public NetworkTransmissionComponent(Client client, HandlersStorage<Action<Profile, Packet>> handlersStorage)
+        public NetworkTransmissionComponent(IPlayerNetworkProfile playerProfile)
         {
-            m_socket = client;
-            m_handlersStorage = handlersStorage;
+            _playerProfile = playerProfile;
+            _packetProcessing = new PacketProcessing<Action<Packet>>(playerProfile);
         }
 
         public override void Update()
         {
-            while (m_packets.TryDequeue(out var packet))
-            {
-                if (m_handlers.TryGetValue(packet.OpCode, out var handler))
-                {
-                    handler(packet);
-                }
-                else
-                {
-                    Debug.Log.Fatal($"handler for opcode {packet.OpCode} not found");
-                }
-            }
+           _packetProcessing.ProcessPackets();
         }
 
-        private void HandlePacket(Profile profile, Packet packet)
-        {
-           m_packets.Enqueue(packet);
-        }
+        public void RegisterHandler(short opcode, Action<Packet> handler) => _packetProcessing.RegisterHandler(opcode, handler);
 
-        internal void RegisterHandler(short opcode, Action<Packet> handler)
-        {
-            if (m_handlers.ContainsKey(opcode))
-            {
-                Debug.Log.Fatal($"handler for opcode {opcode} already registered");
-                return;
-            }
-
-            m_handlers.Add(opcode, handler);
-            m_handlersStorage.RegisterHandler(opcode, HandlePacket);
-        }
-
-        public void UnregisterHandler(short opcode)
-        {
-            m_handlersStorage.UnregisterHandler(opcode);
-        }
+        public void UnregisterHandler(short opcode) => _packetProcessing.UnregisterHandler(opcode);
     }
 }

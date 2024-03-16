@@ -17,7 +17,7 @@ namespace Game.Systems.Stats
 
 
 
-        public async Job ReadFromDatabase()
+        public async Job ReadFromDatabaseAsync()
         {
             m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
             CharacterStat stat = await JobsManager.Execute(GameDatabaseProvider.Select<CharacterStat>($"SELECT get_chatacer_stat('{m_characterInfoHolder.CharacterID}')"));

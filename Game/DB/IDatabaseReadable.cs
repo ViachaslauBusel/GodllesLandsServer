@@ -4,6 +4,6 @@ namespace Game.DB
 {
     public interface IDatabaseReadable
     {
-          Job ReadFromDatabase();
+          Job ReadFromDatabaseAsync();
     }
 }

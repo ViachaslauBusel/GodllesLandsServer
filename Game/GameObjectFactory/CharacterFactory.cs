@@ -19,15 +19,18 @@ using NetworkGameEngine;
 using NetworkGameEngine.Units.Characters;
 using RUCP;
 using RUCP.Handler;
+using Game.ObjectInteraction;
+using Game.Inventory.Components;
+using Game.Items.Components;
 
 namespace Game.GameObjectFactory
 {
     internal static class CharacterFactory
     {
-        public static GameObject Create(int characterID, Client socket, HandlersStorage<Action<Profile, Packet>> handlersStorage)
+        public static GameObject Create(int characterID, IPlayerNetworkProfile playerProfile)
         {
             GameObject character = new GameObject("chacter");
-            character.AddComponent(new NetworkTransmissionComponent(socket, handlersStorage));
+            character.AddComponent(new NetworkTransmissionComponent(playerProfile));
             character.AddComponent(new DBControlComponent());
             character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
@@ -47,7 +50,14 @@ namespace Game.GameObjectFactory
             character.AddComponent(new CharacterSkillUsageComponent());
             character.AddComponent(new MessageReceiverComponent());
             character.AddComponent(new AnimatorComponent());
+            character.AddComponent(new ObjectInteractionProcessorComponent());
             character.AddComponent(new RaycastTest());
+            //Inventory
+            character.AddComponent(new InventoryComponent());
+            character.AddComponent(new InventoryClientSyncComponent());
+            character.AddComponent(new InventoryCommandHandlerComponent());
+            character.AddComponent(new InventoryDbSyncComponent());
+            character.AddComponent(new ItemStorageComponent());
             return character;
         }
     }

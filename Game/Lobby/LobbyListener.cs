@@ -28,7 +28,7 @@ namespace NetworkGameEngine.Lobby
     {
 
         [Handler(Opcode.MSG_LOBBY_ENTRANCE)]
-        public static async void Entrance(Profile profile, Packet packet)
+        public static async void Entrance(PlayerProfile profile, Packet packet)
         {
            // packet.Read(out MSG_LOBBY_ENTRANCE_CS request);
 
@@ -42,7 +42,7 @@ namespace NetworkGameEngine.Lobby
         }
 
         [Handler(Opcode.MSG_SELECT_CHARACTER)]
-        public static async void SelectCharacter(Profile profile, Packet packet)
+        public static async void SelectCharacter(PlayerProfile profile, Packet packet)
         {
             packet.Read(out MSG_SELECT_CHARACTER_CS request);
             MSG_SELECT_CHARACTER_SC response = new MSG_SELECT_CHARACTER_SC();

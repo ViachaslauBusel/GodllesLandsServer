@@ -29,20 +29,18 @@ namespace Game.GameObjectFactory
         public static GameObject CreateCorpse(Vector3 position, IViewComponent viewComponent, DropHolderComponent dropHolder)
         {
             GameObject corpse = new GameObject("corpse");
-            AddPacketDistributorComponent(corpse);
-            AddTransformComponent(corpse, position);
-            AddViewComponent(corpse, viewComponent);
-            AddDynamicObjectComponent(corpse);
-            AddEntityTagComponent(corpse);
-            AddAnimatorComponent(corpse);
-            AddDropHolderComponent(corpse, dropHolder);
-            corpse.AddComponent(new CorpseControllerComponent());
-            return corpse;
-        }
-
-        private static void AddPacketDistributorComponent(GameObject corpse)
-        {
             corpse.AddComponent(new PacketDistributorComponent());
+            AddTransformComponent(corpse, position);
+            corpse.AddComponent(viewComponent as Component);
+            corpse.AddComponent(new DynamicObjectComponent());
+            corpse.AddComponent(new EntityTagComponent());
+            corpse.AddComponent(new AnimatorComponent());
+            corpse.AddComponent(dropHolder);
+            corpse.AddComponent(new CorpseControllerComponent());
+            corpse.AddComponent(new DropInteractionComponent());
+            corpse.AddComponent(new DropListenerComponent());
+            corpse.AddComponent(new PlayersNetworkTransmissionComponent());
+            return corpse;
         }
 
         private static void AddTransformComponent(GameObject corpse, Vector3 position)
@@ -50,31 +48,6 @@ namespace Game.GameObjectFactory
             var transform = new TransformComponent();
             transform.UpdatePosition(position);
             corpse.AddComponent(transform);
-        }
-
-        private static void AddViewComponent(GameObject corpse, IViewComponent viewComponent)
-        {
-            corpse.AddComponent(viewComponent as Component);
-        }
-
-        private static void AddDynamicObjectComponent(GameObject corpse)
-        {
-            corpse.AddComponent(new DynamicObjectComponent());
-        }
-
-        private static void AddEntityTagComponent(GameObject corpse)
-        {
-            corpse.AddComponent(new EntityTagComponent());
-        }
-
-        private static void AddAnimatorComponent(GameObject corpse)
-        {
-            corpse.AddComponent(new AnimatorComponent());
-        }
-
-        private static void AddDropHolderComponent(GameObject corpse, DropHolderComponent dropHolder)
-        {
-            corpse.AddComponent(dropHolder);
         }
     }
 }

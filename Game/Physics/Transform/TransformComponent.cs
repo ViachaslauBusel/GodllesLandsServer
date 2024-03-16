@@ -19,9 +19,6 @@ namespace Game.Physics.Transform
 
         public Vector3 Position => m_position;
 
-
-        public bool HasDataToSave { get => true; set { } }
-
         public byte UpdatePosition(Vector3 position, float rotation, float velocity, bool inMove)
         {
             m_position = position;

@@ -4,17 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zenject;
 
 namespace Game.Items
 {
-    internal class ItemsFactory
+    public class ItemsFactory
     {
-        public Item CreateItem(int id, int count)
+        private readonly ItemUniqueIdGenerator _uniqueIdGenerator;
+
+
+        public ItemsFactory(ItemUniqueIdGenerator uniqueIdGenerator)
+        {
+            _uniqueIdGenerator = uniqueIdGenerator;
+        }
+
+        public Item CreateItem(int id, long uniqueId = 0, int count = 1)
         {
             ItemData data = ItemsDataManager.GetData(id);
             if (data == null) return null;
-                
-            return new Item(0, data, count);
+
+            return new Item(uniqueId, data, count);
         }
     }
 }

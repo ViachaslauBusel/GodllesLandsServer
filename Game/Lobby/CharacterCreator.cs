@@ -20,7 +20,7 @@ namespace NetworkGameEngine.Lobby
         }
 
         [Handler(Opcode.MSG_CREATE_CHARACTER)]
-        public static async void CreateAsync(Profile profile, Packet packet)
+        public static async void CreateAsync(PlayerProfile profile, Packet packet)
         {
             if (!profile.AuthorizationHolder.IsLoggedIn) return;
 

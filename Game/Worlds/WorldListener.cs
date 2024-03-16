@@ -9,7 +9,7 @@ namespace NetworkGameEngine.Worlds
     static class WorldListener
     {
         [Handler(Opcode.MSG_WORLD_ENTRANCE)]
-        public static async void Entrance(Profile profile, Packet packet)
+        public static async void Entrance(PlayerProfile profile, Packet packet)
         {
             //if (!GameLoop.MainWorld.TryGetGameObject(profile.CharacterObjectID, out GameObject character))
             //{
@@ -19,7 +19,7 @@ namespace NetworkGameEngine.Worlds
             //while (!character.IsInitialized) { await Task.Delay(1); }
 
 
-           profile.CharacterObject = CharacterFactory.Create(profile.SelectedChacterID, profile.Client, profile.handlersStorage);
+           profile.CharacterObject = CharacterFactory.Create(profile.SelectedChacterID, profile);
 
             profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(profile.CharacterObject);
         }

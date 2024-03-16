@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Npgsql;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Database
 {
@@ -51,11 +45,13 @@ namespace Database
             }catch { }
             return null;
         }
+
         public static async Task<T> Select<T>(string cmd, string serverAddress)
         {
             string objectJson = await SelectJson(cmd, serverAddress);
             return JsonConvert.DeserializeObject<T>(objectJson);
         }
+
         public async static Task<object> SelectObject(string cmd, string serverAddress)
         {
             try

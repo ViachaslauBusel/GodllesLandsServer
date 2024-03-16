@@ -12,6 +12,11 @@ namespace Database
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<bool> Call(string cmd) => DatabaseProvider.Call(cmd, GameDatabaseConfig.SERVER_ADDRESS);
 
+        public static async Task<bool> Call(object value)
+        {
+            throw new NotImplementedException();
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<T> Select<T>(string cmd) => DatabaseProvider.Select<T>(cmd, GameDatabaseConfig.SERVER_ADDRESS);
 

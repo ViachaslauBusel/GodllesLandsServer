@@ -53,7 +53,7 @@ namespace Game.DB
 
             foreach (var readable in _databaseReadables)
             {
-                readJobs.Add(readable.ReadFromDatabase());
+                readJobs.Add(readable.ReadFromDatabaseAsync());
             }
 
             await Job.WhenAll(readJobs);
@@ -89,7 +89,7 @@ namespace Game.DB
                             Writable = writable,
                             Job = writable.WriteToDatabase()
                         });
-                        writable.HasDataToSave = false;
+                        //writable.HasDataToSave = false;
                     }
                 }
             }
@@ -106,9 +106,11 @@ namespace Game.DB
                 if (job.Job.IsFaulted || job.Job.GetResult() == false)
                 {
                     Debug.Log.Error($"[{job.Writable}] Failed to write data to database.");
-                    job.Writable.HasDataToSave = true;
+                    //job.Writable.HasDataToSave = true;
                 }
             }
+
+            _writeJobs.Clear();
 
             enabled = true;
         }

@@ -30,7 +30,7 @@ namespace NetworkGameEngine
             LoginDatabaseConfig.DatabaseName = "GD_LOGIN";
 
             Server server = new Server(4343);
-            server.SetHandler(() => new Profile());
+            server.SetHandler(() => new PlayerProfile());
             server.Start(new ServerOptions()
             {
                 MaxParallelism = 4,

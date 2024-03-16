@@ -34,5 +34,10 @@
         public const short MSG_UNIT_TARGET_HP_SC = 30;
         public const short MSG_RAYCAST_TEST = 31;
         public const short MSG_PLAYER_DEATH_STATE = 32;
+        public const short MSG_OBJECT_INTERACTION_REQUEST = 33;
+        public const short MSG_DROP_LIST_SYNC = 34;
+        public const short MSG_TAKE_DROP = 35;
+        public const short MSG_OBJECT_INTERACTION_RESPONSE = 36;
+        public const short MSG_INVENTORY_SYNC = 37;
     }
 }
