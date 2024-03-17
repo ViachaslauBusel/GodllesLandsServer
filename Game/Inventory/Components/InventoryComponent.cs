@@ -30,8 +30,8 @@ namespace Game.Inventory.Components
         {
             _itemStorage = GetComponent<ItemStorageComponent>();
 
-            _primaryInventory = new Bag(_itemStorage, InventoryBagType.Primary, 20, 100);
-            _secondaryInventory = new Bag(_itemStorage, InventoryBagType.Secondary, 40, 400);
+            _primaryInventory = new Bag(_itemStorage, InventoryBagType.Primary, 20, 5_000);
+            _secondaryInventory = new Bag(_itemStorage, InventoryBagType.Secondary, 40, 10_000);
         }
 
         public bool AddItem(Item item)

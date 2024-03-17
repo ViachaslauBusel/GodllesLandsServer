@@ -69,6 +69,12 @@ namespace Game.Items.Components
 
         internal void DestroyItem(Item item)
         {
+            if(item.UniqueID == 0)
+            {
+                Debug.Log.Warn($"Cannot destroy item:{item.UniqueID} because it has no unique id");
+                return;
+            }
+
             AddQuery(new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID));
         }
     }

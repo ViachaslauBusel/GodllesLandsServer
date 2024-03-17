@@ -47,7 +47,8 @@ namespace Game.Inventory.Components
                 Bag = bag.BagType,
                 CurrentWeight = bag.CurrentWeight,
                 MaxWeight = bag.MaxWeight,
-                MaxCells = bag.MaxItems,
+                CurrentItemsCount = bag.CurrentItemsCount,
+                MaxItemsCount = bag.MaxItems,
                 Items = _syncData
             };
             _networkTransmission.Socket.Send(msg);

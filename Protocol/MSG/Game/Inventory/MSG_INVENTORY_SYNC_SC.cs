@@ -17,7 +17,8 @@ namespace Protocol.MSG.Game.Inventory
         public InventoryBagType Bag { get; set; }
         public int CurrentWeight { get; set; }
         public int MaxWeight { get; set; }
-        public int MaxCells { get; set; }
+        public int CurrentItemsCount { get; set; }
+        public int MaxItemsCount { get; set; }
         public List<ItemSyncData> Items { get; set; }
     }
 }

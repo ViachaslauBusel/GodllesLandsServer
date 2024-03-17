@@ -14,10 +14,10 @@ namespace Game.Inventory
         private Cell[] _cells;
         private ItemStorageComponent _itemStorage;
         private InventoryBagType _bagId;
-        private int _maxItems;
+        private int _maxItemsCount;
         private int _maxWeight;
         private int _currentWeight;
-        private int _currentItems;
+        private int _currentItemsCount;
         private bool _isDataSyncWithClientPending;
         private bool _isDataSyncWithDbPending;
 
@@ -28,13 +28,14 @@ namespace Game.Inventory
         public InventoryBagType BagType => _bagId;
         public int CurrentWeight => _currentWeight;
         public int MaxWeight => _maxWeight;
-        public int MaxItems => _maxItems;
+        public int MaxItems => _maxItemsCount;
+        public int CurrentItemsCount => _currentItemsCount;
 
         public Bag(ItemStorageComponent itemStorage, InventoryBagType bagId, int maxItems, int maxWeight)
         {
             _itemStorage = itemStorage;
             _bagId = bagId;
-            _maxItems = maxItems;
+            _maxItemsCount = maxItems;
             _maxWeight = maxWeight;
             _cells = InitializeCells(maxItems);
             _isDataSyncWithClientPending = true;
@@ -75,7 +76,13 @@ namespace Game.Inventory
 
             if (insertIndex >= 0)
             {
-                return _cells[insertIndex].PutItem(item); 
+                bool result = _cells[insertIndex].PutItem(item);
+                if (result)
+                {
+                    _currentItemsCount++;
+                    _currentWeight += item.Data.Weight * item.Count;
+                }
+                return result;
             }
 
             return false;
