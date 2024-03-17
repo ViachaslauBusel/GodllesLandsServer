@@ -57,7 +57,9 @@ namespace Game.GameObjectFactory
             character.AddComponent(new InventoryClientSyncComponent());
             character.AddComponent(new InventoryCommandHandlerComponent());
             character.AddComponent(new InventoryDbSyncComponent());
+            character.AddComponent(new InventoryListenerComponent());
             character.AddComponent(new ItemStorageComponent());
+            character.AddComponent(new ItemUsageComponent());
             return character;
         }
     }

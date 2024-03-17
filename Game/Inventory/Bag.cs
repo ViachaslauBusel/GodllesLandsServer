@@ -1,5 +1,6 @@
 ﻿using Game.Items;
 using Game.Items.Components;
+using NetworkGameEngine.Debugger;
 using Protocol.MSG.Game.Inventory;
 using System;
 using System.Collections.Generic;
@@ -114,6 +115,35 @@ namespace Game.Inventory
         internal void MarkDataAsSyncedWithDb()
         {
             _isDataSyncWithDbPending = false;
+        }
+
+        internal bool HasItem(long itemUID)
+        {
+            return _cells.Any(cell => cell.Item != null && cell.Item.UniqueID == itemUID);
+        }
+
+        internal Item GetItem(long itemUID)
+        {
+            return _cells.FirstOrDefault(cell => cell.Item != null && cell.Item.UniqueID == itemUID)?.Item;
+        }
+
+        internal bool RemoveItem(Item item, int count)
+        {
+           int itemIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == item.UniqueID);
+            if (itemIndex != -1)
+            {
+                if (_cells[itemIndex].Item.Data.IsStackable && _cells[itemIndex].Item.Count < count)
+                {
+                   Debug.Log.Error($"Not enough items to remove from cell {itemIndex}");
+                    return false;
+                }
+                _currentItemsCount--;
+                _currentWeight -= item.Data.Weight * count;
+                _cells[itemIndex].RemoveItem(count);
+                SetDataSyncPending();
+                return true;
+            }
+            return false;
         }
     }
 }

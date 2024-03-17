@@ -34,6 +34,17 @@ namespace Game.Items
             SetDataSyncPending();
         }
 
+        internal void RemoveCount(int count)
+        {
+            if (_count < count)
+            {
+                Debug.Log.Fatal($"Cannot remove {count} items from item:{_uniqueID} because it has only {_count} items");
+                return;
+            }
+            _count -= count;
+            SetDataSyncPending();
+        }
+
         internal void SetOwner(int ownerId)
         {
             _ownerID = ownerId;
@@ -49,11 +60,6 @@ namespace Game.Items
             }
             _uniqueID = uniqueID;
             SetDataSyncPending();
-        }
-
-        internal void Destroy()
-        {
-            throw new NotImplementedException();
         }
     }
 }

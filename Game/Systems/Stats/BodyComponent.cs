@@ -75,6 +75,18 @@ namespace Game.Systems.Stats
             OnDamageReceiving?.Invoke(attacker, realDamage);
         }
 
+        public void Heal(int amount)
+        {
+            if (_isAlive)
+            {
+                int health = _stats.GetStat(StatCode.HP);
+                health += amount;
+                int maxHP = _stats.GetStat(StatCode.MaxHP);
+                health = health > maxHP ? maxHP : health;
+                _stats.SetStat(StatCode.HP, health);
+            }
+        }
+
         private void HandleDeath()
         {
             if (_isAlive == false)

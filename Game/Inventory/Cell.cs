@@ -51,5 +51,24 @@ namespace Game.Inventory
             Debug.Log.Fatal($"Cannot put item:{item.Data.ID} into cell:{_slotIndex} because it is not empty");
             return false;
         }
+
+        internal void RemoveItem(int count)
+        {
+           if (IsEmpty)
+            {
+                Debug.Log.Fatal($"Cannot remove item from empty cell:{_slotIndex}");
+                return;
+            }
+
+            if (Item.Data.IsStackable && Item.Count > count)
+            {
+                Item.RemoveCount(count);
+                return;
+            }
+
+            _itemStorage.DestroyItem(Item);
+            _uid = 0;
+            SetDataSyncPending();
+        }
     }
 }
