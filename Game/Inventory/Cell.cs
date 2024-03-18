@@ -63,6 +63,7 @@ namespace Game.Inventory
             if (Item.Data.IsStackable && Item.Count > count)
             {
                 Item.RemoveCount(count);
+                SetDataSyncPendingOnlyWithClient();
                 return;
             }
 

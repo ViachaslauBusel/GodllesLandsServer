@@ -14,6 +14,12 @@ namespace Game.DataSync
         public bool IsDataSyncWithClientPending => _isDataSyncWithClientPending;
         public bool IsDataSyncWithDbPending => _isDataSyncWithDbPending;
 
+
+        protected void SetDataSyncPendingOnlyWithClient()
+        {
+            _isDataSyncWithClientPending = true;
+        }
+
         protected void SetDataSyncPending()
         {
             _isDataSyncWithClientPending = true;
