@@ -40,5 +40,6 @@
         public const short MSG_OBJECT_INTERACTION_RESPONSE = 36;
         public const short MSG_INVENTORY_SYNC = 37;
         public const short MSG_USE_ITEM = 38;
+        public const short MSG_SWAMP_ITEMS = 39;
     }
 }

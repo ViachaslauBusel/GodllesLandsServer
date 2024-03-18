@@ -71,8 +71,6 @@ namespace Game.Inventory
 
         public bool AddItem(Item item, int inIndex = -1)
         {
-            SetDataSyncPending();
-
             int insertIndex = GetInsertIndex(item, inIndex);
 
             if (insertIndex >= 0)
@@ -80,6 +78,7 @@ namespace Game.Inventory
                 bool result = _cells[insertIndex].PutItem(item);
                 if (result)
                 {
+                    SetDataSyncPending();
                     _currentItemsCount++;
                     _currentWeight += item.Data.Weight * item.Count;
                 }
@@ -137,6 +136,7 @@ namespace Game.Inventory
                    Debug.Log.Error($"Not enough items to remove from cell {itemIndex}");
                     return false;
                 }
+                SetDataSyncPending();
                 _currentItemsCount--;
                 _currentWeight -= item.Data.Weight * count;
                 _cells[itemIndex].RemoveItem(count);
@@ -144,6 +144,20 @@ namespace Game.Inventory
                 return true;
             }
             return false;
+        }
+
+        internal void SwampItems(long itemUID, int toCellIndex)
+        {
+            int fromCellIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == itemUID);
+            if (fromCellIndex == -1 || toCellIndex < 0 || toCellIndex >= _cells.Length)
+            {
+                Debug.Log.Error($"Cannot swamp items from cell {fromCellIndex} to cell {toCellIndex}");
+                return;
+            }
+            Item temp = _cells[fromCellIndex].TakeItem();
+            _cells[fromCellIndex].PutItem(_cells[toCellIndex].TakeItem());
+            _cells[toCellIndex].PutItem(temp);
+            SetDataSyncPending();
         }
     }
 }

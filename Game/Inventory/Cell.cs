@@ -33,6 +33,11 @@ namespace Game.Inventory
 
         public bool PutItem(Item item)
         {
+            if(item == null)
+            {
+                Debug.Log.Fatal($"Cannot put null item into cell:{_slotIndex}");
+                return false;
+            }
             SetDataSyncPending();
             if (IsEmpty)
             {
@@ -50,6 +55,14 @@ namespace Game.Inventory
 
             Debug.Log.Fatal($"Cannot put item:{item.Data.ID} into cell:{_slotIndex} because it is not empty");
             return false;
+        }
+
+        internal Item TakeItem()
+        {
+            long uid = _uid;
+            _uid = 0;
+            SetDataSyncPending();
+            return _itemStorage.GetItem(uid);
         }
 
         internal void RemoveItem(int count)

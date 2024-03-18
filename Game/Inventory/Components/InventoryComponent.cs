@@ -1,6 +1,7 @@
 ﻿using Game.Items;
 using Game.Items.Components;
 using NetworkGameEngine;
+using NetworkGameEngine.Debugger;
 using Protocol.MSG.Game.Inventory;
 using System;
 using System.Collections.Generic;
@@ -66,6 +67,18 @@ namespace Game.Inventory.Components
             }
 
             return false;
+        }
+
+        internal void SwampItems(long itemUID, int toCellIndex)
+        {
+            if (_primaryInventory.HasItem(itemUID))
+            {
+                _primaryInventory.SwampItems(itemUID, toCellIndex);
+            }
+            else if (_secondaryInventory.HasItem(itemUID))
+            {
+                _secondaryInventory.SwampItems(itemUID, toCellIndex);
+            }
         }
     }
 }

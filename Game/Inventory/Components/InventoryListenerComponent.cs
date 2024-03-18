@@ -30,6 +30,14 @@ namespace Game.Inventory.Components
             _itemUsage = GetComponent<ItemUsageComponent>();
 
             _networkTransmission.RegisterHandler(Opcode.MSG_USE_ITEM, UseItem);
+            _networkTransmission.RegisterHandler(Opcode.MSG_SWAMP_ITEMS, SwampItems);
+        }
+
+        private void SwampItems(Packet packet)
+        {
+            packet.Read(out MSG_SWAMP_ITEMS swamp_items);
+
+            _inventory.SwampItems(swamp_items.ItemUID, swamp_items.ToCellIndex);
         }
 
         private void UseItem(Packet packet)
@@ -62,6 +70,12 @@ namespace Game.Inventory.Components
                 Debug.Log.Error($"Item with UID {use_item.ItemUID} can't be used");
                 return;
             }
+        }
+
+        public override void OnDestroy()
+        {
+            _networkTransmission.UnregisterHandler(Opcode.MSG_USE_ITEM);
+            _networkTransmission.UnregisterHandler(Opcode.MSG_SWAMP_ITEMS);
         }
     }
 }
