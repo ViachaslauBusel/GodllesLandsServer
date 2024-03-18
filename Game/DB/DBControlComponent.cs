@@ -115,8 +115,15 @@ namespace Game.DB
             enabled = true;
         }
 
+        /// <summary>
+        /// This method is called when player is logging out and character object is being destroyed.
+        /// </summary>
+        /// <returns></returns>
         internal async Job<bool> Shootdown()
         {
+            // Wait until all write tasks are completed.
+            await new WaitUntil(() => _writeJobs.Count == 0);
+
             Debug.Log.Debug($"DBControlComponent Shootdown");
             ProcessDatabaseWritables(DatabaseSavePriority.SuperHigh, 1);
             ProcessDatabaseWritables(DatabaseSavePriority.Hight, 1);
