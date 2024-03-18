@@ -31,6 +31,19 @@ namespace Game.Inventory.Components
 
             _networkTransmission.RegisterHandler(Opcode.MSG_USE_ITEM, UseItem);
             _networkTransmission.RegisterHandler(Opcode.MSG_SWAMP_ITEMS, SwampItems);
+            _networkTransmission.RegisterHandler(Opcode.MSG_TRANSFER_ITEM_TO_ANOTHER_BAG, TransferItemToAnotherBag);
+        }
+
+        private void TransferItemToAnotherBag(Packet packet)
+        {
+            packet.Read(out MSG_TRANSFER_ITEM_TO_ANOTHER_BAG transfer_item_to_another_bag);
+
+            Bag targetBag = _inventory.PrimaryInventory.HasItem(transfer_item_to_another_bag.ItemUID)
+                          ? _inventory.SecondaryInventory : _inventory.PrimaryInventory;
+
+            Item item = _inventory.TakeItem(transfer_item_to_another_bag.ItemUID);
+
+            targetBag.AddItem(item);
         }
 
         private void SwampItems(Packet packet)

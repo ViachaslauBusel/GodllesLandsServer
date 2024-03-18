@@ -126,6 +126,19 @@ namespace Game.Inventory
             return _cells.FirstOrDefault(cell => cell.Item != null && cell.Item.UniqueID == itemUID)?.Item;
         }
 
+        internal Item TakeItem(long itemUID)
+        {
+          int cellIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == itemUID);
+            if (cellIndex != -1)
+            {
+                SetDataSyncPending();
+                _currentItemsCount--;
+                _currentWeight -= _cells[cellIndex].Item.Data.Weight * _cells[cellIndex].Item.Count;
+                return _cells[cellIndex].TakeItem();
+            }
+            return null;
+        }
+
         internal bool RemoveItem(Item item, int count)
         {
            int itemIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == item.UniqueID);
