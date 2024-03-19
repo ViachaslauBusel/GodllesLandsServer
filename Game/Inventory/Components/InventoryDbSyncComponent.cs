@@ -22,19 +22,12 @@ namespace Game.Inventory.Components
         private CharacterInfoHolder _characterInfoHolder;
         private ItemStorageComponent _itemStorage;
         private InventoryComponent _inventory;
-        private ItemsFactory _itemsFactory;
         private DBControlComponent _dbControl;
         private List<CellDbData> _items;
 
         public DatabaseSavePriority DatabaseSavePriority => DatabaseSavePriority.Hight;
 
         public bool HasDataToSave  => _inventory.PrimaryInventory.IsDataSyncWithDbPending || _inventory.SecondaryInventory.IsDataSyncWithDbPending;
-
-        [Inject]
-        private void InjectServices(ItemsFactory itemsFactory)
-        {
-            _itemsFactory = itemsFactory;
-        }
 
         public override void Init()
         {
@@ -69,6 +62,7 @@ namespace Game.Inventory.Components
                 _inventory.PrimaryInventory.MarkDataAsSyncedWithDb();
                 _inventory.SecondaryInventory.MarkDataAsSyncedWithDb();
             }
+            _items = null;
         }
 
         public async Job ReadFromDatabaseAsync()
@@ -119,8 +113,8 @@ namespace Game.Inventory.Components
         private Job<bool> CreateDatabaseJob(Cell cell)
         {
             return cell.IsEmpty
-                ? JobsManager.Execute(GameDatabaseProvider.Select<bool>($"SELECT remove_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}')"))
-                : JobsManager.Execute(GameDatabaseProvider.Select<bool>($"SELECT upsert_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}', " +
+                ? JobsManager.Execute(GameDatabaseProvider.SelectObject<bool>($"SELECT remove_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}')"))
+                : JobsManager.Execute(GameDatabaseProvider.SelectObject<bool>($"SELECT upsert_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}', " +
                                                                 $"'{cell.Item.UniqueID}')"));
         }
     }

@@ -68,13 +68,7 @@ namespace Game.Inventory.Components
             // Сheck if the item can be used
             if (_itemUsage.IsUsableItem(item) == false)
             {
-                Debug.Log.Error($"Item with UID {use_item.ItemUID} can't be used");
-                return;
-            }
-
-            if (_inventory.RemoveItem(item, 1) == false)
-            {
-                Debug.Log.Error($"Item with UID {use_item.ItemUID} can't be removed from inventory");
+                Debug.Log.Warn($"Item with UID {use_item.ItemUID} can't be used");
                 return;
             }
 

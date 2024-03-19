@@ -105,7 +105,11 @@ namespace Game.DB
             {
                 if (job.Job.IsFaulted || job.Job.GetResult() == false)
                 {
-                    Debug.Log.Error($"[{job.Writable}] Failed to write data to database.");
+                    Debug.Log.Error($"[{job.Writable}] Failed to write data to database.:");
+                    if(job.Job.IsFaulted)
+                    {
+                        Debug.Log.Error(job.Job.Exception);
+                    }
                     //job.Writable.HasDataToSave = true;
                 }
             }

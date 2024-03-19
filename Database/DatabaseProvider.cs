@@ -26,8 +26,6 @@ namespace Database
 
         public async static Task<string> SelectJson(string cmd, string serverAddress)
         {
-            try
-            {
                 using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
                 {
                     await connection.OpenAsync();
@@ -42,7 +40,6 @@ namespace Database
                         }
                     }
                 }
-            }catch { }
             return null;
         }
 
@@ -54,25 +51,40 @@ namespace Database
 
         public async static Task<object> SelectObject(string cmd, string serverAddress)
         {
-            try
+            using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+                await connection.OpenAsync();
+                using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))
                 {
-                    await connection.OpenAsync();
-                    using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))
+                    using (var reader = command.ExecuteReader())
                     {
-                        using (var reader = command.ExecuteReader())
+                        if (reader.Read())
                         {
-                            if (reader.Read())
-                            {
-                                return reader[0];
-                            }
+                            return reader[0];
                         }
                     }
                 }
             }
-            catch { }
             return null;
+        }
+
+        public async static Task<T> SelectObject<T>(string cmd, string serverAddress)
+        {
+            using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+            {
+                await connection.OpenAsync();
+                using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return (T)reader[0];
+                        }
+                    }
+                }
+            }
+            return default;
         }
     }
 }

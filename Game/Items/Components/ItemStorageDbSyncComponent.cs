@@ -20,7 +20,7 @@ namespace Game.Items.Components
     {
         private CharacterInfoHolder _characterInfoHolder;
         private ItemsFactory _itemsFactory;
-        private Queue<IQuery> _queries = new Queue<IQuery>();
+        protected Queue<IQuery> _queries = new Queue<IQuery>();
 
         protected abstract IEnumerable<Item> Items { get; }
 
@@ -76,15 +76,16 @@ namespace Game.Items.Components
                 if (item.IsDataSyncWithDbPending)
                 {
                     jobs.Add(
-                        JobsManager.Execute(GameDatabaseProvider.Select<bool>($"SELECT upsert_item('{_characterInfoHolder.CharacterID}', {item.UniqueID}, {item.Data.ID}, {item.Count})")));
+                        JobsManager.Execute(GameDatabaseProvider.SelectObject<bool>($"SELECT upsert_item('{_characterInfoHolder.CharacterID}', {item.UniqueID}, {item.Data.ID}, {item.Count})")));
                 }
             }
             while (_queries.Count > 0)
             {
-                jobs.Add(JobsManager.Execute(GameDatabaseProvider.Select<bool>(_queries.Dequeue().Command)));
+                jobs.Add(JobsManager.Execute(GameDatabaseProvider.SelectObject<bool>(_queries.Dequeue().Command)));
             }
             await Job.WhenAll(jobs);
-            return jobs.All(job => job.GetResult());
+            
+            return jobs.All(j => j.GetResult());
         }
     }
 }

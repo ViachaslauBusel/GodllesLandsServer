@@ -19,7 +19,7 @@ namespace Game.Items.Components
         private CharacterInfoHolder _characterInfoHolder;
 
         protected override IEnumerable<Item> Items => _items.Values;
-        public override bool HasDataToSave => _items.Values.Any(i => i.IsDataSyncWithDbPending);
+        public override bool HasDataToSave => _items.Values.Any(i => i.IsDataSyncWithDbPending) || _queries.Count > 0;
 
         public ItemStorageComponent()
         {
@@ -76,6 +76,7 @@ namespace Game.Items.Components
             }
 
             AddQuery(new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID));
+            _items.Remove(item.UniqueID);
         }
     }
 }

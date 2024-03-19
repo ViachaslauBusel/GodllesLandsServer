@@ -22,6 +22,7 @@ using RUCP.Handler;
 using Game.ObjectInteraction;
 using Game.Inventory.Components;
 using Game.Items.Components;
+using Game.Equipment.Components;
 
 namespace Game.GameObjectFactory
 {
@@ -45,21 +46,27 @@ namespace Game.GameObjectFactory
             character.AddComponent(new ReplicationTagComponent());
             character.AddComponent(new PlayerSceneStatusComponent());
             character.AddComponent(new CharacterTargetManagerComponent());
-            character.AddComponent(new CharacterSkillsStoreComponent());
             character.AddComponent(new HotbarComponent());
-            character.AddComponent(new CharacterSkillUsageComponent());
             character.AddComponent(new MessageReceiverComponent());
             character.AddComponent(new AnimatorComponent());
             character.AddComponent(new ObjectInteractionProcessorComponent());
             character.AddComponent(new RaycastTest());
+            //Skills
+            character.AddComponent(new CharacterSkillsStoreComponent());
+            character.AddComponent(new CharacterSkillUsageComponent());
             //Inventory
             character.AddComponent(new InventoryComponent());
             character.AddComponent(new InventoryClientSyncComponent());
-            character.AddComponent(new InventoryCommandHandlerComponent());
             character.AddComponent(new InventoryDbSyncComponent());
+            character.AddComponent(new InventoryCommandHandlerComponent());
             character.AddComponent(new InventoryListenerComponent());
+            //Items
             character.AddComponent(new ItemStorageComponent());
             character.AddComponent(new ItemUsageComponent());
+            //Equipment
+            character.AddComponent(new EquipmentComponent());
+            character.AddComponent(new EquipmentClientSyncComponent());
+            character.AddComponent(new EquipmentDbSyncComponent());
             return character;
         }
     }

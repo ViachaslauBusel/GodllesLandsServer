@@ -26,5 +26,7 @@ namespace Database
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Task<object> SelectObject(string cmd) => DatabaseProvider.SelectObject(cmd, GameDatabaseConfig.SERVER_ADDRESS);
+
+        public static Task<T> SelectObject<T>(string cmd) => DatabaseProvider.SelectObject<T>(cmd, GameDatabaseConfig.SERVER_ADDRESS);
     }
 }

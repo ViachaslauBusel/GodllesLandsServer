@@ -17,6 +17,7 @@ namespace Game.Items.Components
         {
             _itemUsageLogics = new Dictionary<Type, IItemUsageLogic>();
             _itemUsageLogics.Add(typeof(RestorePointsItemData), new RestorePointUsageLogic());
+            _itemUsageLogics.Add(typeof(WeaponItemData), new WeaponUsageLogic());
 
             foreach (var item in _itemUsageLogics.Values)
             {

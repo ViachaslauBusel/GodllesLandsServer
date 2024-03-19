@@ -1,4 +1,5 @@
-﻿using Game.Systems.Stats;
+﻿using Game.Inventory.Components;
+using Game.Systems.Stats;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Items;
@@ -13,10 +14,12 @@ namespace Game.Items.ItemUsageLogic
     internal class RestorePointUsageLogic : IItemUsageLogic
     {
         private BodyComponent _bodyComponent;
+        private InventoryComponent _inventoryComponent;
 
         public void Init(Component component)
         {
             _bodyComponent = component.GetComponent<BodyComponent>();
+            _inventoryComponent = component.GetComponent<InventoryComponent>();
         }
 
         public bool Use(Item item)
@@ -26,6 +29,12 @@ namespace Game.Items.ItemUsageLogic
             if (data == null)
             {
                 Debug.Log.Error($"Item {item.UniqueID} has wrong data type");
+                return false;
+            }
+
+            if(_inventoryComponent.RemoveItem(item, 1) == false)
+            {
+                Debug.Log.Error($"Item {item.UniqueID} not found in inventory");
                 return false;
             }
 

@@ -11,7 +11,7 @@ namespace Game.Items.Queries
         private readonly int _ownerId;
         private readonly long _uniqueId;
 
-        public string Command => $"CALL destroy_item('{_ownerId}', '{_uniqueId}');";
+        public string Command => $"SELECT destroy_item('{_ownerId}', '{_uniqueId}');";
 
         public DestroyItemQuery(int ownerId, long uniqueId)
         {

@@ -71,6 +71,12 @@ namespace Game.Inventory
 
         public bool AddItem(Item item, int inIndex = -1)
         {
+            if(item == null)
+            {
+                Debug.Log.Error("Cannot add null item to the bag");
+                return false;
+            }
+
             int insertIndex = GetInsertIndex(item, inIndex);
 
             if (insertIndex >= 0)
