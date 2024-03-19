@@ -1,5 +1,6 @@
 ﻿using Game.DataSync;
 using Game.Items;
+using Game.UnitVisualization;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.MSG.Game.Equipment;
@@ -15,6 +16,7 @@ namespace Game.Equipment.Components
     {
         private Dictionary<EquipmentType, EquipmentCell> _equipment = new Dictionary<EquipmentType, EquipmentCell>();
         private ClientAndDbSyncElementObject _syncElement = new ClientAndDbSyncElementObject();
+        private CharacterViewComponent _characterView;
 
         public bool IsDataSyncWithClientPending => _syncElement.IsDataSyncWithClientPending;
         public bool IsDataSyncWithDbPending => _syncElement.IsDataSyncWithDbPending;
@@ -26,6 +28,11 @@ namespace Game.Equipment.Components
             {
                 _equipment.Add(equipType, new EquipmentCell(equipType));
             }
+        }
+
+        public override void Init()
+        {
+            _characterView = GetComponent<CharacterViewComponent>();
         }
 
         internal void Equip(EquipmentType equipType, Item item)
@@ -44,6 +51,8 @@ namespace Game.Equipment.Components
 
             _syncElement.SetDataSyncPending();
             _equipment[equipType].EquipItem(item);
+            // Update character view
+            _characterView.UpdatePart(equipType, item.Data.ID);
         }
 
         internal Item Take(EquipmentType equipType)
@@ -55,6 +64,8 @@ namespace Game.Equipment.Components
             }
 
             _syncElement.SetDataSyncPending();
+            // Update character view
+            _characterView.UpdatePart(equipType, 0);
             return _equipment[equipType].TakeItem();
         }
 
