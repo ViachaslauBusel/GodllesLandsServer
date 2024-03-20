@@ -40,6 +40,7 @@ namespace Game.GameObjectFactory
             corpse.AddComponent(new DropInteractionComponent());
             corpse.AddComponent(new DropListenerComponent());
             corpse.AddComponent(new PlayersNetworkTransmissionComponent());
+            corpse.AddComponent(new DeadObjectCleanerComponent());
             return corpse;
         }
 

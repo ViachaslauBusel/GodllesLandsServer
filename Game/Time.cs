@@ -9,5 +9,7 @@ namespace Game
     internal class Time
     {
         internal static float deltaTime = 0.1f;
+
+        public static long Milliseconds => DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
     }
 }
