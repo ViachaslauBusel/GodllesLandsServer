@@ -1,5 +1,5 @@
 ﻿using Game.GridMap.Scripts;
-using Game.Systems.Stats;
+using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;

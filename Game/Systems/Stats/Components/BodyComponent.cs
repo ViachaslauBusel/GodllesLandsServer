@@ -4,7 +4,7 @@ using NetworkGameEngine;
 using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Stats;
 
-namespace Game.Systems.Stats
+namespace Game.Systems.Stats.Components
 {
     public class BodyComponent : Component, IReactCommand<DamageCommand>, IReadData<HealtData>
     {

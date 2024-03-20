@@ -5,7 +5,7 @@ using Protocol.MSG.Game.PlayerDeadState;
 using Protocol.MSG.Game.ToClient;
 using RUCP;
 
-namespace Game.Systems.Stats
+namespace Game.Systems.Stats.Components
 {
     public class PlayerDeathStateComponent : Component
     {
@@ -34,7 +34,7 @@ namespace Game.Systems.Stats
 
         private void OnDeath()
         {
-           _networkTransmission.Socket.Send(new MSG_PLAYER_DEATH_STATE_SC { IsAlive = false });
+            _networkTransmission.Socket.Send(new MSG_PLAYER_DEATH_STATE_SC { IsAlive = false });
         }
 
         public override void OnDestroy()

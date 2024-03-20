@@ -2,7 +2,7 @@
 using Game.Animation;
 using Game.Physics.Transform;
 using Game.Skills.Commands;
-using Game.Systems.Stats;
+using Game.Systems.Stats.Components;
 using Game.Tools;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;

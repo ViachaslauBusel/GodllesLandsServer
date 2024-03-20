@@ -1,4 +1,4 @@
-﻿using Game.Systems.Stats;
+﻿using Game.Systems.Stats.Components;
 
 namespace Game.AI.StateTransitionConditions
 {

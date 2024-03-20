@@ -22,6 +22,8 @@ namespace Game.Equipment.Components
         public bool IsDataSyncWithDbPending => _syncElement.IsDataSyncWithDbPending;
         public IEnumerable<EquipmentCell> Items => _equipment.Values;
 
+        public event Action OnEquipmentChanged;
+
         public EquipmentComponent()
         {
             foreach (EquipmentType equipType in Enum.GetValues(typeof(EquipmentType)))
@@ -53,6 +55,7 @@ namespace Game.Equipment.Components
             _equipment[equipType].EquipItem(item);
             // Update character view
             _characterView.UpdatePart(equipType, item.Data.ID);
+            OnEquipmentChanged?.Invoke();
         }
 
         internal Item Take(EquipmentType equipType)
@@ -66,11 +69,20 @@ namespace Game.Equipment.Components
             _syncElement.SetDataSyncPending();
             // Update character view
             _characterView.UpdatePart(equipType, 0);
+            OnEquipmentChanged?.Invoke();
             return _equipment[equipType].TakeItem();
         }
 
         public void MarkDataAsSyncedWithClient() => _syncElement.MarkDataAsSyncedWithClient();
         public void MarkDataAsSyncedWithDb() => _syncElement.MarkDataAsSyncedWithDb();
-        
+
+        internal Item GetItem(EquipmentType weaponRightHand)
+        {
+           if(_equipment.ContainsKey(weaponRightHand) == false)
+            {
+                return null;
+            }
+            return _equipment[weaponRightHand].Item;
+        }
     }
 }

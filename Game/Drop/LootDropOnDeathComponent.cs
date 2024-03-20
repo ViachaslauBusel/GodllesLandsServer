@@ -2,7 +2,7 @@
 using Game.GameObjectFactory;
 using Game.GridMap.Scripts;
 using Game.Physics.Transform;
-using Game.Systems.Stats;
+using Game.Systems.Stats.Components;
 using Game.UnitVisualization;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;

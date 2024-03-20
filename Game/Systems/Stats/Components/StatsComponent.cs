@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Systems.Stats
+namespace Game.Systems.Stats.Components
 {
     public class StatsComponent : Component, IReadData<UnitName>
     {
         protected string m_name = "null";
-        protected Dictionary<StatCode, GameStatField> m_stats = new ();
+        protected Dictionary<StatCode, GameStatField> m_stats = new();
 
         public StatsComponent()
         {
@@ -31,11 +31,11 @@ namespace Game.Systems.Stats
 
         }
 
-       
+
 
         internal int GetStat(StatCode code)
         {
-           if(m_stats.TryGetValue(code, out var stat))
+            if (m_stats.TryGetValue(code, out var stat))
             {
                 return stat.Data.Value;
             }
@@ -44,7 +44,7 @@ namespace Game.Systems.Stats
 
         internal void SetStat(StatCode code, int value)
         {
-           if(m_stats.TryGetValue(code, out var stat))
+            if (m_stats.TryGetValue(code, out var stat))
             {
                 stat.SetValue(value);
             }

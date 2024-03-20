@@ -1,5 +1,5 @@
 ﻿using Game.Inventory.Components;
-using Game.Systems.Stats;
+using Game.Systems.Stats.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Items;

@@ -8,7 +8,7 @@ using Game.Pathfinding;
 using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
 using Game.Skills;
-using Game.Systems.Stats;
+using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using Game.UnitVisualization;
 using NetworkGameEngine;

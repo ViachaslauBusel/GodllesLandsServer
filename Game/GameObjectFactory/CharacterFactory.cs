@@ -23,6 +23,7 @@ using Game.ObjectInteraction;
 using Game.Inventory.Components;
 using Game.Items.Components;
 using Game.Equipment.Components;
+using Game.Systems.Stats.Components;
 
 namespace Game.GameObjectFactory
 {
@@ -35,9 +36,6 @@ namespace Game.GameObjectFactory
             character.AddComponent(new DBControlComponent());
             character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
-            character.AddComponent(new CharacterStatsComponent());
-            character.AddComponent(new BodyComponent());
-            character.AddComponent(new PlayerDeathStateComponent());
             character.AddComponent(new PlayerTransformComponent());
             character.AddComponent(new CharacterViewComponent());
             character.AddComponent(new DynamicObjectComponent());
@@ -51,6 +49,11 @@ namespace Game.GameObjectFactory
             character.AddComponent(new AnimatorComponent());
             character.AddComponent(new ObjectInteractionProcessorComponent());
             character.AddComponent(new RaycastTest());
+            //Stats
+            character.AddComponent(new CharacterStatsComponent());
+            character.AddComponent(new BodyComponent());
+            character.AddComponent(new PlayerDeathStateComponent());
+            character.AddComponent(new CharacterStatsCalculatorComponent());
             //Skills
             character.AddComponent(new CharacterSkillsStoreComponent());
             character.AddComponent(new CharacterSkillUsageComponent());

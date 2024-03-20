@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />
-    <ProjectReference Include="..\Protocol\Protocol.csproj"/>
+    <ProjectReference Include="..\Protocol\Protocol.csproj" />
   </ItemGroup>
 
   <ItemGroup>

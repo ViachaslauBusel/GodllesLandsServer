@@ -7,7 +7,7 @@ using Protocol.Data.Stats;
 using Protocol.MSG.Game.Hotbar;
 using Protocol.MSG.Game.ToClient.Stats;
 
-namespace Game.Systems.Stats
+namespace Game.Systems.Stats.Components
 {
     internal class CharacterStatsComponent : StatsComponent, IDatabaseReadable
     {
@@ -40,7 +40,7 @@ namespace Game.Systems.Stats
 
             m_networkTransmission.Socket.Send(msg);
         }
-      
+
 
         public override void LateUpdate()
         {
@@ -66,6 +66,6 @@ namespace Game.Systems.Stats
             }
         }
 
-       
+
     }
 }

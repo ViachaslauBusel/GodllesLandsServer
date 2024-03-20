@@ -1,4 +1,4 @@
-﻿using Game.Systems.Stats;
+﻿using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using NetworkGameEngine;
 using NLog.Targets;
