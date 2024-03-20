@@ -70,6 +70,7 @@ namespace Game.GameObjectFactory
             character.AddComponent(new EquipmentComponent());
             character.AddComponent(new EquipmentClientSyncComponent());
             character.AddComponent(new EquipmentDbSyncComponent());
+            character.AddComponent(new EquipmentListenerComponent());
             return character;
         }
     }

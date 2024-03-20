@@ -43,5 +43,6 @@
         public const short MSG_SWAMP_ITEMS = 39;
         public const short MSG_TRANSFER_ITEM_TO_ANOTHER_BAG = 40;
         public const short MSG_EQUIPMENT_SYNC = 42;
+        public const short MSG_UNEQUIP_ITEM_TO_INVENTORY = 43;
     }
 }

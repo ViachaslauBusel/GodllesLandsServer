@@ -2,6 +2,7 @@
 using Game.Items.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using Protocol.Data.Items;
 using Protocol.MSG.Game.Inventory;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,18 @@ namespace Game.Inventory.Components
         public bool AddItem(Item item)
         {
             return _secondaryInventory.AddItem(item) || _primaryInventory.AddItem(item);
+        }
+
+        internal bool AddItem(ItemStorageType toStorageType, int toCellIndex, Item item)
+        {
+            Bag bag = toStorageType == ItemStorageType.PrimaryBag ? _primaryInventory : _secondaryInventory;
+
+            if(bag.AddItem(item, toCellIndex))
+            {
+                return true;
+            }
+
+            return AddItem(item);
         }
 
         /// <summary>
@@ -108,6 +121,6 @@ namespace Game.Inventory.Components
             }
         }
 
-   
+
     }
 }

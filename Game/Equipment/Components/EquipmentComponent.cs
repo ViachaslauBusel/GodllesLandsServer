@@ -84,5 +84,12 @@ namespace Game.Equipment.Components
             }
             return _equipment[weaponRightHand].Item;
         }
+
+        internal Item TakeItem(long itemUID)
+        {
+            EquipmentType equipType = _equipment.Values.FirstOrDefault(x => x.Item != null && x.Item.UniqueID == itemUID)?.EquipmentType ?? EquipmentType.None;
+
+            return Take(equipType);
+        }
     }
 }
