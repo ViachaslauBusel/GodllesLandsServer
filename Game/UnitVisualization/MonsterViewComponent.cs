@@ -17,6 +17,11 @@ namespace Game.UnitVisualization
             _skinID = skinID;
         }
 
+        public override void Init()
+        {
+            _isNeedChaceVisual = true;
+        }
+
         public override IViewComponent Clone()
         {
             return new MonsterViewComponent(_skinID);

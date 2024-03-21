@@ -50,7 +50,7 @@ namespace Game.Systems.TargetSystem
             MSG_UNIT_TARGET_FULL_SC response = new MSG_UNIT_TARGET_FULL_SC();
             if (m_target == null)
             {
-                response.PercentHP = -1;
+                response.PercentHP = 0f;
                 response.TargetName = "";
             }
             else
@@ -58,8 +58,9 @@ namespace Game.Systems.TargetSystem
             {
                 m_target.ReadData(out HealtData healtData);
                 m_target.ReadData(out UnitName unitName);
+                response.TargetObjectID = m_target.ID;
                 response.TargetName = string.IsNullOrEmpty(unitName.Name) ? "null" : unitName.Name;
-                response.PercentHP = (int)((healtData.HP / (float)healtData.MaxHP) * 100);
+                response.PercentHP = (healtData.HP / (float)healtData.MaxHP) * 100f;
                 m_lastSyncHealtData = healtData;
             }
             //response.TargetName = m_target.Name;

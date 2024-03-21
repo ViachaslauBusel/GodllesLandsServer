@@ -31,7 +31,7 @@ namespace Game.GameObjectFactory
             GameObject corpse = new GameObject("corpse");
             corpse.AddComponent(new PacketDistributorComponent());
             AddTransformComponent(corpse, position);
-            corpse.AddComponent(viewComponent as Component);
+            AddViewComponent(viewComponent, corpse);
             corpse.AddComponent(new DynamicObjectComponent());
             corpse.AddComponent(new EntityTagComponent());
             corpse.AddComponent(new AnimatorComponent());
@@ -42,6 +42,12 @@ namespace Game.GameObjectFactory
             corpse.AddComponent(new PlayersNetworkTransmissionComponent());
             corpse.AddComponent(new DeadObjectCleanerComponent());
             return corpse;
+        }
+
+        private static void AddViewComponent(IViewComponent viewComponent, GameObject corpse)
+        {
+            viewComponent.SetNeedChaceVisual(false);
+            corpse.AddComponent(viewComponent as Component);
         }
 
         private static void AddTransformComponent(GameObject corpse, Vector3 position)

@@ -18,6 +18,11 @@ namespace Game.UnitVisualization
            return new CharacterViewComponent();
         }
 
+        public override void Init()
+        {
+            _isNeedChaceVisual = false;
+        }
+
         public void UpdatePart(EquipmentType equipType, int partId)
         {
             switch (equipType)
