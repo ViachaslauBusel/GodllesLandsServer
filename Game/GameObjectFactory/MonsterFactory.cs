@@ -32,10 +32,13 @@ namespace Game.GameObjectFactory
             monster.AddComponent(new AnimatorComponent());
             monster.AddComponent(new AiControllerComponent());
             monster.AddComponent(new UnitPathMoverComponent());
-            monster.AddComponent(new TargetManagerComponent());
             monster.AddComponent(new SkillsStoreComponent());
             monster.AddComponent(new SkillUsageComponent());
             monster.AddComponent(new LootDropOnDeathComponent());
+
+            //Stats
+            monster.AddComponent(new TargetManagerComponent());
+            monster.AddComponent(new TargetedUnitTrackerComponent());
             return monster;
         }
     }

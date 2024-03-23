@@ -1,5 +1,6 @@
 ﻿using Game.Physics.Transform;
 using Game.Systems.Stats;
+using Game.Systems.Target.Commands;
 using NetworkGameEngine;
 using Protocol.Data.Replicated.Transform;
 using System;
@@ -14,10 +15,11 @@ namespace Game.Systems.Target
     public class TargetManagerComponent : Component
     {
         private TransformComponent m_transform;
-        protected GameObject m_target = null;
-        protected HealtData m_lastSyncHealtData;
+        private GameObject m_target = null;
 
         public GameObject Target => m_target;
+
+        public event Action<GameObject> OnTargetChanged;
 
         override public void Start()
         {
@@ -26,16 +28,21 @@ namespace Game.Systems.Target
 
         internal void SetTarget(GameObject target)
         {
+            m_target?.SendCommand(new UnmarkUnitAsTargetedByCommand { GameObjectUnitID = GameObject.ID });
+
             m_target = target;
+
+            m_target?.SendCommand(new MarkUnitAsTargetedByCommand { GameObjectUnitID = GameObject.ID });
+
+            OnTargetChanged?.Invoke(target);
         }
 
-        public override void LateUpdate()
+        public override void Update()
         {
             if (m_target == null) return;
             if (m_target.IsDestroyed)
             {
-                m_target = null;
-                FullUpdateTarget();
+                SetTarget(null);
                 return;
             }
 
@@ -44,27 +51,9 @@ namespace Game.Systems.Target
 
             if (distance > 2_500f)
             {
-                m_target = null;
-                FullUpdateTarget();
-                return;
-            }
-
-            m_target.ReadData(out HealtData healtData);
-            if (m_lastSyncHealtData.HP != healtData.HP || m_lastSyncHealtData.MaxHP != healtData.MaxHP)
-            {
-                HPUpdateTarget();
+                SetTarget(null);
                 return;
             }
         }
-
-        protected virtual void HPUpdateTarget()
-        {
-        }
-
-        protected virtual void FullUpdateTarget()
-        {
-        }
-
-        
     }
 }

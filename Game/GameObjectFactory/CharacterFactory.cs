@@ -24,6 +24,7 @@ using Game.Inventory.Components;
 using Game.Items.Components;
 using Game.Equipment.Components;
 using Game.Systems.Stats.Components;
+using Game.Systems.Target;
 
 namespace Game.GameObjectFactory
 {
@@ -43,12 +44,17 @@ namespace Game.GameObjectFactory
             character.AddComponent(new PlayerEntityTagComponent());
             character.AddComponent(new ReplicationTagComponent());
             character.AddComponent(new PlayerSceneStatusComponent());
-            character.AddComponent(new CharacterTargetManagerComponent());
+     
             character.AddComponent(new HotbarComponent());
             character.AddComponent(new MessageReceiverComponent());
             character.AddComponent(new AnimatorComponent());
             character.AddComponent(new ObjectInteractionProcessorComponent());
             character.AddComponent(new RaycastTest());
+            //Target
+            character.AddComponent(new TargetListenerComponent());
+            character.AddComponent(new TargetManagerComponent());
+            character.AddComponent(new TargetedUnitTrackerComponent());
+            character.AddComponent(new ClientSyncTargetComponent());
             //Stats
             character.AddComponent(new CharacterStatsComponent());
             character.AddComponent(new BodyComponent());
