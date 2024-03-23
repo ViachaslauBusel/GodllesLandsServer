@@ -55,6 +55,7 @@ namespace Game.GameObjectFactory
             character.AddComponent(new TargetManagerComponent());
             character.AddComponent(new TargetedUnitTrackerComponent());
             character.AddComponent(new ClientSyncTargetComponent());
+            character.AddComponent(new TargetCommandHandlerComponent());
             //Stats
             character.AddComponent(new CharacterStatsComponent());
             character.AddComponent(new BodyComponent());

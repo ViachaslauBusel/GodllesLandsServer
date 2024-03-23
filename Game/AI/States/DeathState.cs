@@ -1,6 +1,7 @@
 ﻿using Game.GridMap.Scripts;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
+using Game.Systems.Target.Commands;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;
 using System;
@@ -15,8 +16,6 @@ namespace Game.AI.States
     {
         private TargetManagerComponent _targetManager;
         private BodyComponent _bodyComponent;
-        private bool _needDoRemoveFromMap;
-        private long _removeFromMapTime;
         private bool _needDoResurrect;
         private long _needDoResurrectTime;
 
@@ -28,7 +27,7 @@ namespace Game.AI.States
 
         public override void OnActive()
         {
-            Debug.Log.Debug($"Entity {_owner.GameObject.ID} is dead");
+           // Debug.Log.Debug($"Entity {_owner.GameObject.ID} is dead");
             _targetManager.SetTarget(null);
 
 

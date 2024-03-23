@@ -21,7 +21,7 @@ namespace Game.Systems.Target
 
         public event Action<GameObject> OnTargetChanged;
 
-        override public void Start()
+        override public void Init()
         {
             m_transform = GetComponent<TransformComponent>();
         }
@@ -54,6 +54,11 @@ namespace Game.Systems.Target
                 SetTarget(null);
                 return;
             }
+        }
+
+        public override void OnDestroy()
+        {
+            SetTarget(null);
         }
     }
 }

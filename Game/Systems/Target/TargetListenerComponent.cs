@@ -34,12 +34,8 @@ namespace Game.Systems.TargetSystem
                 m_targetManager.SetTarget(null);
                 return;
             }
-            bool isSucces = GameObject.World.TryGetGameObject(request.GameObjectId, out GameObject target);
+            GameObject.World.TryGetGameObject(request.GameObjectId, out GameObject target);
 
-            if (isSucces == false)
-            {
-                Debug.Log.Warn($"UnitTargetSelectionComponent: Can't find target with id {request.GameObjectId}");
-            }
             m_targetManager.SetTarget(target);
         }
     }
