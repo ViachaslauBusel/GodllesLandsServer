@@ -14,6 +14,6 @@ namespace Protocol.MSG.Game.Equipment
         ArmorHands,
         ArmorLegs,
         ArmorFeet,
-
+        PickaxeTool,
     }
 }

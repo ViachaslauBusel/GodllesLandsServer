@@ -25,6 +25,7 @@ using Game.Items.Components;
 using Game.Equipment.Components;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
+using Game.CombatModeControl.Components;
 
 namespace Game.GameObjectFactory
 {
@@ -78,6 +79,10 @@ namespace Game.GameObjectFactory
             character.AddComponent(new EquipmentClientSyncComponent());
             character.AddComponent(new EquipmentDbSyncComponent());
             character.AddComponent(new EquipmentListenerComponent());
+
+            //Combat mode
+            character.AddComponent(new CombatModeComponent());
+            character.AddComponent(new CombatModeListenerComponent());
             return character;
         }
     }

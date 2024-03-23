@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="RUCP.MessagePack.Generator" Version="1.2.6"  OutputItemType="Analyzer" ReferenceOutputAssembly="false"/>
+    <PackageReference Include="RUCP.MessagePack.Generator" Version="1.2.6" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
