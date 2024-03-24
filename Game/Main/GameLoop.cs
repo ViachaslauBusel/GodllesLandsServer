@@ -1,10 +1,11 @@
 ﻿using Game.GridMap;
 using Game.Items;
-using Game.Monsters;
 using Game.Pathfinding;
 using Game.Physics;
 using Game.Replication;
 using Game.RespawnPoints;
+using Game.Units.MiningStones;
+using Game.Units.Monsters;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using RUCP;
@@ -48,6 +49,7 @@ namespace Game.Main
             thread.Start();
 
             MonsterSpawner.SpawnMonster(MainWorld);
+            MiningStoneSpawner.SpawnStones(MainWorld);
         }
 
         private static void Loop()

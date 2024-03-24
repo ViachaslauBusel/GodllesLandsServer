@@ -2,7 +2,6 @@
 using Game.Animation;
 using Game.Drop;
 using Game.GridMap.Scripts;
-using Game.Monsters.Components;
 using Game.NetworkTransmission;
 using Game.Pathfinding;
 using Game.Physics.DynamicObjects;
@@ -10,6 +9,7 @@ using Game.Physics.Transform;
 using Game.Skills;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
+using Game.Units.Monsters.Components;
 using Game.UnitVisualization;
 using NetworkGameEngine;
 using Protocol.Data.Monsters;

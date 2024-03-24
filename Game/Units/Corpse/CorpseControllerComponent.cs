@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Corpse
+namespace Game.Units.Corpse
 {
     public class CorpseControllerComponent : Component
     {

@@ -10,7 +10,6 @@ namespace Protocol.Data.Replicated.Animation
         AttackType_1 = 1,
         AttackType_2 = 2,
         AttackType_3 = 3,
-        AttackType_4 = 4,
         CastSpellType_0 = 5,
         DeadState = 6,
     }

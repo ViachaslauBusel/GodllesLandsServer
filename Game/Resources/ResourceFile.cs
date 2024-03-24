@@ -24,5 +24,6 @@ namespace Game.Resources
         public static string Bestiary { get; } = "bestiary.dat";
         public static string TerrainCollision { get; } = "terrainMeshColliders.dat";
         public static string RespawnPoints { get; } = "spawnPoints.dat";
+        public static string MiningStones { get; } = "miningStones.dat";
     }
 }

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Corpse
+namespace Game.Units.Corpse
 {
     public class TimedDestructionComponent : Component
     {
@@ -30,7 +30,7 @@ namespace Game.Corpse
 
         private void OnUpdateDropList()
         {
-            if(_isDropListEmpty == false && _dropHolder.DropList.Count == 0)
+            if (_isDropListEmpty == false && _dropHolder.DropList.Count == 0)
             {
                 _isDropListEmpty = true;
                 _destroyTime = Time.Milliseconds + LIFETIME_AFTER_TAKE_DROP;

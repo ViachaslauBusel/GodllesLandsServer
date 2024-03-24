@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Game.Monsters
+namespace Game.Units.Monsters
 {
     public static class MonsterSpawner
     {
@@ -18,7 +18,7 @@ namespace Game.Monsters
         {
             List<MonsterData> monsters = JsonReader.Read<List<MonsterData>>(Path.Combine(ResourceFile.Folder, ResourceFile.Monsters));
 
-            if(monsters == null)
+            if (monsters == null)
             {
                 Console.WriteLine("No monsters found");
                 return;
@@ -26,7 +26,7 @@ namespace Game.Monsters
 
             foreach (MonsterData monster in monsters)
             {
-               GameObject monsterObject = MonsterFactory.CreateMonster(monster);
+                GameObject monsterObject = MonsterFactory.CreateMonster(monster);
                 if (monsterObject != null)
                 {
                     world.AddGameObject(monsterObject);

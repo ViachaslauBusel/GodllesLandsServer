@@ -2,14 +2,9 @@
 using Game.Tools;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Game.Monsters.Components
+namespace Game.Units.Monsters.Components
 {
     public class SpawnComponent : Component
     {
@@ -33,7 +28,7 @@ namespace Game.Monsters.Components
 
         public override void Start()
         {
-           
+
         }
 
         private Vector3 GetRandomPosition()
