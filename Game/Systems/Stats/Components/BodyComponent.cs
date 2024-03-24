@@ -55,13 +55,15 @@ namespace Game.Systems.Stats.Components
             _isAlive = true;
             _animator.SetState(AnimationStateID.Dead, false);
             _stats.SetStat(StatCode.HP, _stats.GetStat(StatCode.MaxHP));
+            _stats.SetStat(StatCode.MP, _stats.GetStat(StatCode.MaxMP));
+            _stats.SetStat(StatCode.Stamina, _stats.GetStat(StatCode.MaxStamina));
             OnRevive?.Invoke();
         }
 
         private int CalculateDamage(DamageCommand command)
         {
             var damage = command.PAttack / _stats.GetStat(StatCode.PhysicalDefense);
-            return damage < 0 ? 0 : damage;
+            return damage < 0 ? 1 : damage;
         }
 
         private void ApplyDamage(ref int health, int damage, GameObject attacker)

@@ -63,6 +63,13 @@ namespace Game.Skills.Handler
                 return false;
             }
 
+            // You can't attack yourself
+            if (target == _body.GameObject)
+            {
+                _messageBroadcast?.SendMessage(MsgLayer.System, "Invalid target");
+                return false;
+            }
+
             target.ReadData(out TransformData targetTransform);
             Vector3 direction = targetTransform.Position - _transform.Position;
             float distance = direction.Length();
