@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Game.Corpse
 {
-    public class DeadObjectCleanerComponent : Component
+    public class TimedDestructionComponent : Component
     {
         private const long DROP_LIFETIME = 40_000;
         private const long NO_DROP_LIFETIME = 15_000;

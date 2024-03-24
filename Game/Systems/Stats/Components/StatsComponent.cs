@@ -25,7 +25,7 @@ namespace Game.Systems.Stats.Components
             m_stats.Add(StatCode.MaxStamina, new GameStatField(StatCode.MaxStamina, 100));
             m_stats.Add(StatCode.MinPattack, new GameStatField(StatCode.MinPattack, 10));
             m_stats.Add(StatCode.MaxPAttack, new GameStatField(StatCode.MaxPAttack, 20));
-            m_stats.Add(StatCode.PhysicalDefense, new GameStatField(StatCode.PhysicalDefense, 30));
+            m_stats.Add(StatCode.PhysicalDefense, new GameStatField(StatCode.PhysicalDefense, 350));
             m_stats.Add(StatCode.AttackSpeed, new GameStatField(StatCode.AttackSpeed, 1));
             m_stats.Add(StatCode.MoveSpeed, new GameStatField(StatCode.MoveSpeed, 600));
 

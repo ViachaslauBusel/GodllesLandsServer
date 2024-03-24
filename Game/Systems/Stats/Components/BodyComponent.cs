@@ -6,7 +6,7 @@ using Protocol.Data.Stats;
 
 namespace Game.Systems.Stats.Components
 {
-    public class BodyComponent : Component, IReactCommand<DamageCommand>, IReadData<HealtData>
+    public class BodyComponent : Component, IReactCommandWithResult<DamageCommand, DamageResponse>, IReadData<HealtData>
     {
         private bool _isAlive = true;
         private StatsComponent _stats;
@@ -31,17 +31,18 @@ namespace Game.Systems.Stats.Components
             HandleDeath();
         }
 
-        public void ReactCommand(ref DamageCommand command)
+        public DamageResponse ReactCommand(ref DamageCommand command)
         {
             if (!_isAlive)
             {
                 // Character is dead
-                return;
+                return new DamageResponse { Damage = 0 };
             }
 
             int health = _stats.GetStat(StatCode.HP);
             var damage = CalculateDamage(command);
             ApplyDamage(ref health, damage, command.Attacker);
+            return new DamageResponse { Damage = damage };
         }
 
         public void Revive()

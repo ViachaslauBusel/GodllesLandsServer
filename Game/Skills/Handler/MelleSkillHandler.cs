@@ -1,5 +1,6 @@
 ﻿using DataFileProtocol.Skills;
 using Game.Animation;
+using Game.Messenger;
 using Game.Physics.Transform;
 using Game.Skills.Commands;
 using Game.Systems.Stats.Components;
@@ -10,12 +11,14 @@ using NLog.Targets;
 using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Replicated.Transform;
 using Protocol.Data.Stats;
+using Protocol.MSG.Game.Messenger;
 using System.Numerics;
 
 namespace Game.Skills.Handler
 {
     public class MelleSkillHandler : ISkillHandler
     {
+        private MessageBroadcastComponent _messageBroadcast;
         private BodyComponent _body;
         private TransformComponent _transform;
         private AnimatorComponent _animator;
@@ -27,6 +30,7 @@ namespace Game.Skills.Handler
 
         public void Init(Component component, SkillData data)
         {
+            _messageBroadcast = component.GetComponent<MessageBroadcastComponent>();
             _body = component.GetComponent<BodyComponent>();
             _transform = component.GetComponent<TransformComponent>();
             _stats = component.GetComponent<StatsComponent>();
@@ -43,17 +47,19 @@ namespace Game.Skills.Handler
             if(InUse)
             {
                 //Already in use
+                _messageBroadcast?.SendMessage(MsgLayer.System, "Skill is already in use");
                 return false;
             }
 
             if (_body.IsAlive == false)
             {
+                _messageBroadcast?.SendMessage(MsgLayer.System, "You are dead");
                 return false;
             }
 
             if (target == null)
             {
-                //TODO : Send error message to the client
+                _messageBroadcast?.SendMessage(MsgLayer.System, "Target is null");
                 return false;
             }
 
@@ -64,7 +70,7 @@ namespace Game.Skills.Handler
 
             if (distance > _data.range)
             {
-                //TODO : Send error message to the client
+                _messageBroadcast?.SendMessage(MsgLayer.System, $"Target is too far. {distance.ToString(".00")} > {_data.range.ToString(".00")}");
                 return false;
             }
 
@@ -72,12 +78,12 @@ namespace Game.Skills.Handler
 
             if (stamina < _data.staminaCost)
             {
-                //TODO : Send error message to the client
+                _messageBroadcast?.SendMessage(MsgLayer.System, "Not enough stamina");
                 return false;
             }
 
             stamina -= _data.staminaCost;
-            _stats.SetStat(StatCode.Stamina, stamina);
+            _stats?.SetStat(StatCode.Stamina, stamina);
 
             _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000), direction);
 
@@ -86,35 +92,40 @@ namespace Game.Skills.Handler
            
         }
 
-        public void PostProcessSkill()
+        public async void PostProcessSkill()
         {
             if(_target == null)
             {
-                //Something gone wrong
+                _messageBroadcast?.SendMessage(MsgLayer.System, "Target is null");
                 return;
             }
 
             if(_body.IsAlive == false)
             {
+                _messageBroadcast?.SendMessage(MsgLayer.System, "You are dead");
                 return;
             }
 
             _target.ReadData(out TransformData targetTransform);
             float distance = Vector3.Distance(_transform.Position, targetTransform.Position);
 
-            if (distance > _data.range)
+            if (distance > _data.range + 1f)
             {
-                //TODO : Send error message to the client
+                _messageBroadcast?.SendMessage(MsgLayer.System, $"[2] Target is too far. {distance.ToString(".00")} > {_data.range.ToString(".00")}");
                 _target = null;
                 return;
             }
 
             DamageCommand damageCommand = new DamageCommand();
             damageCommand.Attacker = _stats.GameObject;
-            damageCommand.PAttack = 77 * _stats.GetStat(StatCode.MaxPAttack) + _data.damage;
-            _target.SendCommand(damageCommand);
+            damageCommand.PAttack = 77 * RandomHelper.Range(_stats.GetStat(StatCode.MinPattack), _stats.GetStat(StatCode.MaxPAttack)) + _data.damage;
 
+            GameObject target = _target;
             _target = null;
+
+            var result = await target.SendCommandAndReturnResult<DamageCommand, DamageResponse>(damageCommand);
+
+            _messageBroadcast?.SendMessage(MsgLayer.System, $"You hit the target for {result.Damage} damage");
         }
     }
 }
