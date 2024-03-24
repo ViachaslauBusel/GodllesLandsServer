@@ -1,6 +1,7 @@
 ﻿using Game.NetworkTransmission;
 using Game.PlayerScene;
 using NetworkGameEngine;
+using NetworkGameEngine.Debugger;
 using Protocol.Data;
 using Zenject;
 
@@ -9,7 +10,7 @@ namespace Game.Replication.Scripts
     internal class ReplicationTagComponent : Component
     {
         private NetworkTransmissionComponent m_transmission;
-        private PlayerSceneStatusComponent m_playerSceneStatusComponent;
+        private PlayerSceneControllerComponent m_playerSceneStatusComponent;
         private IReplicationService m_replicationService;
         private bool m_registered = false;
 
@@ -22,7 +23,7 @@ namespace Game.Replication.Scripts
         override public void Start()
         {
             m_transmission = GetComponent<NetworkTransmissionComponent>();
-            m_playerSceneStatusComponent = GetComponent<PlayerSceneStatusComponent>();
+            m_playerSceneStatusComponent = GetComponent<PlayerSceneControllerComponent>();
             m_playerSceneStatusComponent.OnChangeStatus += OnChangeStatus;
             OnChangeStatus(m_playerSceneStatusComponent.Status);
         }
@@ -43,6 +44,7 @@ namespace Game.Replication.Scripts
         {
             if(m_registered) return;
 
+            Debug.Log.Info("ReplicationTagComponent: Register object for replication");
             m_registered = true;
             //Регистрация обьекта в качества слушателя который будет получать данные обьектов вокруг
             m_replicationService.Register(GameObject.ID, m_transmission.Socket);
@@ -52,6 +54,7 @@ namespace Game.Replication.Scripts
         {
             if (m_registered == false) return;
             
+            Debug.Log.Info("ReplicationTagComponent: Unregister object for replication");
             m_registered = false;
             m_replicationService.Unregister(GameObject.ID);
         }

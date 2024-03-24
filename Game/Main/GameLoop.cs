@@ -4,6 +4,7 @@ using Game.Monsters;
 using Game.Pathfinding;
 using Game.Physics;
 using Game.Replication;
+using Game.RespawnPoints;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using RUCP;
@@ -38,6 +39,7 @@ namespace Game.Main
             MainWorld.RegisterService<Pathfinder>(new Pathfinder());
             MainWorld.RegisterService(itemUniqueIdGenerator);
             MainWorld.RegisterService(new ItemsFactory(itemUniqueIdGenerator));
+            MainWorld.RegisterService(new RespawnPointsService());
            
            
             MainWorld.Init(8);

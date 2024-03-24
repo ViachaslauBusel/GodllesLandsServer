@@ -7,13 +7,14 @@ using System.Numerics;
 
 namespace Game.Physics.Transform
 {
-    public class PlayerTransformComponent : TransformComponent, IDatabaseReadable, IDatabaseWritable
+    public class TransformDbSyncComponent : TransformComponent, IDatabaseReadable, IDatabaseWritable
     {
         private CharacterInfoHolder m_characterInfoHolder;
         private byte _lastSaveVersion;
 
         public override void Init()
         {
+            base.Init();
             m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
         }
 

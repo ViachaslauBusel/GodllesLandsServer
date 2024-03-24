@@ -1,4 +1,5 @@
-﻿using NetworkGameEngine;
+﻿using Game.PlayerScene;
+using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Replicated.Transform;
 using System.Numerics;
@@ -7,6 +8,7 @@ namespace Game.Physics.Transform
 {
     public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>
     {
+        private PlayerSceneControllerComponent m_playerSceneController;
         protected byte m_version = 1;
         private byte m_eventsVersion = 1;
         protected Vector3 m_position;
@@ -18,6 +20,11 @@ namespace Game.Physics.Transform
 
 
         public Vector3 Position => m_position;
+
+        public override void Init()
+        {
+            m_playerSceneController = GetComponent<PlayerSceneControllerComponent>();
+        }
 
         public byte UpdatePosition(Vector3 position, float rotation, float velocity, bool inMove)
         {
@@ -78,6 +85,11 @@ namespace Game.Physics.Transform
             data.InMove = m_inMove;
         }
 
-     
+        internal void TeleportTo(Vector3 newPostion)
+        {
+            m_position = newPostion;
+            m_version++;
+            m_playerSceneController?.PrepareScene(newPostion);
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Game.Skills
         {
             _data = SkillsDataStore.GetData(skillID);
             _handler = SkillsHandlerStore.CreateHandler(_data.skillType);
+            component.InjectDependenciesIntoObject(_handler);
             _handler?.Init(component, _data);
         }
 

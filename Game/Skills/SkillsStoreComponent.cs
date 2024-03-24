@@ -22,6 +22,7 @@ namespace Game.Skills
         {
             _skills.Add(1, new Skill(this, 1));
             _skills.Add(2, new Skill(this, 2));
+            _skills.Add(5, new Skill(this, 5));
         }
 
         internal Skill GetSkill(int skillID)

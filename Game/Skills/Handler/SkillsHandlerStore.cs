@@ -16,6 +16,8 @@ namespace Game.Skills.Handler
             {
                 case SkillType.Melee:
                     return new MelleSkillHandler();
+                case SkillType.Teleport:
+                    return new TeleportSkillHandler();
                 default:
                     return null;
             }

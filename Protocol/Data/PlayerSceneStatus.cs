@@ -8,6 +8,7 @@ namespace Protocol.Data
     {
         None,
         LoadingFromDatabase,
+        WaitPrepareClient,
         ReadyForSync,
         Shutdown,
     }

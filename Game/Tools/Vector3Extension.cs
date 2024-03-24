@@ -13,5 +13,10 @@ namespace Game.Tools
         {
             return value / length;
         }
+
+        public static Vector3 ClearY(this Vector3 value)
+        {
+            return new Vector3(value.X, 0, value.Z);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DataFileProtocol.Skills;
 using Game.Animation;
+using Game.CombatModeControl.Components;
 using Game.Messenger;
 using Game.Physics.Transform;
 using Game.Skills.Commands;
@@ -11,6 +12,7 @@ using NLog.Targets;
 using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Replicated.Transform;
 using Protocol.Data.Stats;
+using Protocol.MSG.Game.CombatMode;
 using Protocol.MSG.Game.Messenger;
 using System.Numerics;
 
@@ -23,6 +25,7 @@ namespace Game.Skills.Handler
         private TransformComponent _transform;
         private AnimatorComponent _animator;
         private StatsComponent _stats;
+        private CombatModeComponent _combatMode;
         private MelleSkillData _data;
         private GameObject _target;
 
@@ -35,6 +38,8 @@ namespace Game.Skills.Handler
             _transform = component.GetComponent<TransformComponent>();
             _stats = component.GetComponent<StatsComponent>();
             _animator = component.GetComponent<AnimatorComponent>();
+            _combatMode = component.GetComponent<CombatModeComponent>(); 
+
             _data = (MelleSkillData)data;
             if(_data == null)
             {
@@ -57,6 +62,12 @@ namespace Game.Skills.Handler
                 return false;
             }
 
+            if (_combatMode != null && _combatMode.CombatMode == false)
+            {
+                _messageBroadcast?.SendMessage(MsgLayer.System, "You are not in combat mode");
+                return false;
+            }
+
             if (target == null)
             {
                 _messageBroadcast?.SendMessage(MsgLayer.System, "Target is null");
@@ -71,7 +82,7 @@ namespace Game.Skills.Handler
             }
 
             target.ReadData(out TransformData targetTransform);
-            Vector3 direction = targetTransform.Position - _transform.Position;
+            Vector3 direction = targetTransform.Position.ClearY() - _transform.Position.ClearY();
             float distance = direction.Length();
             direction = direction.Normalize(distance);
 
@@ -92,7 +103,7 @@ namespace Game.Skills.Handler
             stamina -= _data.staminaCost;
             _stats?.SetStat(StatCode.Stamina, stamina);
 
-            _animator.Play(AnimationID.AttackType_1, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000), direction);
+            _animator.Play((AnimationID)_data.animationId, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000), direction);
 
             _target = target;
             return true;
@@ -101,7 +112,9 @@ namespace Game.Skills.Handler
 
         public async void PostProcessSkill()
         {
-            if(_target == null)
+            GameObject target = _target;
+            _target = null;
+            if (target == null)
             {
                 _messageBroadcast?.SendMessage(MsgLayer.System, "Target is null");
                 return;
@@ -113,22 +126,18 @@ namespace Game.Skills.Handler
                 return;
             }
 
-            _target.ReadData(out TransformData targetTransform);
-            float distance = Vector3.Distance(_transform.Position, targetTransform.Position);
+            target.ReadData(out TransformData targetTransform);
+            float distance = Vector3.Distance(_transform.Position.ClearY(), targetTransform.Position.ClearY());
 
             if (distance > _data.range + 1f)
             {
                 _messageBroadcast?.SendMessage(MsgLayer.System, $"[2] Target is too far. {distance.ToString(".00")} > {_data.range.ToString(".00")}");
-                _target = null;
                 return;
             }
 
             DamageCommand damageCommand = new DamageCommand();
             damageCommand.Attacker = _stats.GameObject;
             damageCommand.PAttack = 77 * RandomHelper.Range(_stats.GetStat(StatCode.MinPattack), _stats.GetStat(StatCode.MaxPAttack)) + _data.damage;
-
-            GameObject target = _target;
-            _target = null;
 
             var result = await target.SendCommandAndReturnResult<DamageCommand, DamageResponse>(damageCommand);
 

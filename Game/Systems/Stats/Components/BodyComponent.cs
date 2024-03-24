@@ -1,8 +1,11 @@
 ﻿using Game.Animation;
+using Game.Physics.Transform;
+using Game.RespawnPoints;
 using Game.Skills.Commands;
 using NetworkGameEngine;
 using Protocol.Data.Replicated.Animation;
 using Protocol.Data.Stats;
+using Zenject;
 
 namespace Game.Systems.Stats.Components
 {
@@ -11,6 +14,8 @@ namespace Game.Systems.Stats.Components
         private bool _isAlive = true;
         private StatsComponent _stats;
         private AnimatorComponent _animator;
+        private TransformComponent _transform;
+        private RespawnPointsService _respawnPointsService;
 
         public bool IsAlive => _isAlive;
 
@@ -18,10 +23,17 @@ namespace Game.Systems.Stats.Components
         public event Action OnRevive;
         public event Action<GameObject, int> OnDamageReceiving;
 
+        [Inject]
+        private void InjectServices(RespawnPointsService respawnPointsService)
+        {
+            _respawnPointsService = respawnPointsService;
+        }
+
         public override void Init()
         {
             _stats = GetComponent<StatsComponent>();
             _animator = GetComponent<AnimatorComponent>();
+            _transform = GetComponent<TransformComponent>();
         }
 
         public override void Start()
@@ -52,6 +64,7 @@ namespace Game.Systems.Stats.Components
                 return;
             }
 
+            _transform.UpdatePosition(_respawnPointsService.GetNeareatPoint(_transform.Position));
             _isAlive = true;
             _animator.SetState(AnimationStateID.Dead, false);
             _stats.SetStat(StatCode.HP, _stats.GetStat(StatCode.MaxHP));

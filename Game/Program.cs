@@ -5,6 +5,7 @@ using Database;
 using Game.Items;
 using Game.Main;
 using Game.Physics.Terrain;
+using Game.RespawnPoints;
 using Game.Skills.Data;
 using Game.Skills.Handler;
 using NetworkGameEngine.Debugger;
@@ -25,6 +26,7 @@ namespace NetworkGameEngine
 
             SkillsDataStore.Load();
             ItemsDataManager.Load();
+            RespawnPointsStore.Load();
 
             GameDatabaseConfig.DatabaseName = "GD_GAME";
             LoginDatabaseConfig.DatabaseName = "GD_LOGIN";

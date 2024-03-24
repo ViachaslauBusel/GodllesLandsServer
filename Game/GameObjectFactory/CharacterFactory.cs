@@ -1,31 +1,28 @@
 ﻿using Game.Animation;
+using Game.CombatModeControl.Components;
 using Game.DB;
+using Game.Equipment.Components;
 using Game.GridMap.Scripts;
 using Game.Hotbar;
+using Game.Inventory.Components;
+using Game.Items.Components;
 using Game.Messenger;
 using Game.NetworkTransmission;
-using Game.Physics;
+using Game.ObjectInteraction;
 using Game.Physics.DynamicObjects;
+using Game.Physics.PlayerInput.Components;
 using Game.Physics.PlayerInput.Scripts;
 using Game.Physics.Transform;
 using Game.PlayerScene;
 using Game.Replication.Scripts;
 using Game.Skills;
-using Game.UnitVisualization;
-using Game.Systems.Stats;
-using Game.Systems.TargetSystem;
-using Game.Tests;
-using NetworkGameEngine;
-using NetworkGameEngine.Units.Characters;
-using RUCP;
-using RUCP.Handler;
-using Game.ObjectInteraction;
-using Game.Inventory.Components;
-using Game.Items.Components;
-using Game.Equipment.Components;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
-using Game.CombatModeControl.Components;
+using Game.Systems.TargetSystem;
+using Game.Tests;
+using Game.UnitVisualization;
+using NetworkGameEngine;
+using NetworkGameEngine.Units.Characters;
 
 namespace Game.GameObjectFactory
 {
@@ -38,19 +35,20 @@ namespace Game.GameObjectFactory
             character.AddComponent(new DBControlComponent());
             character.AddComponent(new PacketDistributorComponent());
             character.AddComponent(new CharacterInfoHolder(characterID));
-            character.AddComponent(new PlayerTransformComponent());
+            character.AddComponent(new TransformDbSyncComponent());
             character.AddComponent(new CharacterViewComponent());
             character.AddComponent(new DynamicObjectComponent());
-            character.AddComponent(new PlayerInputComponent());
             character.AddComponent(new PlayerEntityTagComponent());
             character.AddComponent(new ReplicationTagComponent());
-            character.AddComponent(new PlayerSceneStatusComponent());
+            character.AddComponent(new PlayerSceneControllerComponent());
      
             character.AddComponent(new HotbarComponent());
             character.AddComponent(new AnimatorComponent());
             character.AddComponent(new ObjectInteractionProcessorComponent());
             character.AddComponent(new RaycastTest());
-
+            //Movement
+            character.AddComponent(new PlayerInputComponent());
+            character.AddComponent(new MovementSpeedValidatorComponent());
             //Messenger
             character.AddComponent(new MessageReceiverComponent());
             character.AddComponent(new MessageBroadcastComponent());
