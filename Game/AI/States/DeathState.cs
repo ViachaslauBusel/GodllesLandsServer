@@ -2,6 +2,7 @@
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using Game.Systems.Target.Commands;
+using Game.Units.Monsters.Components;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;
 using System;
@@ -16,6 +17,7 @@ namespace Game.AI.States
     {
         private TargetManagerComponent _targetManager;
         private BodyComponent _bodyComponent;
+        private SpawnComponent _spawnComponent;
         private bool _needDoResurrect;
         private long _needDoResurrectTime;
 
@@ -23,6 +25,7 @@ namespace Game.AI.States
         {
             _targetManager = component.GetComponent<TargetManagerComponent>();
             _bodyComponent = component.GetComponent<BodyComponent>();
+            _spawnComponent = component.GetComponent<SpawnComponent>();
         }
 
         public override void OnActive()
@@ -51,7 +54,7 @@ namespace Game.AI.States
             if(_needDoResurrect && _needDoResurrectTime < DateTimeOffset.UtcNow.ToUnixTimeMilliseconds())
             {
                 Debug.Log.Debug($"Entity {_owner.GameObject.ID} is revive");
-                _bodyComponent.Revive();
+                _spawnComponent.Respawn();
                 _needDoResurrect = false;
             }
 

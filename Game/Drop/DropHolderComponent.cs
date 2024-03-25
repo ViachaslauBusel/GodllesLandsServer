@@ -24,8 +24,12 @@ namespace Game.Drop
 
         public override void Init()
         {
-            _dropList.Add(_itemsFactory.CreateItem(1, count: RandomHelper.Range(1, 5)));
-            _dropList.Add(_itemsFactory.CreateItem(3, count: 1));
+            Item item = _itemsFactory.CreateItem(1, count: RandomHelper.Range(1, 5));
+            item.SetOwner(1);
+            _dropList.Add(item);
+            item = _itemsFactory.CreateItem(3, count: 1);
+            item.SetOwner(2);
+            _dropList.Add(item);
         }
 
         internal List<Item> TakeAll()
@@ -40,6 +44,17 @@ namespace Game.Drop
         {
             _dropList.AddRange(items);
             OnUpdateDropList?.Invoke();
+        }
+
+        internal Item TakeItem(int dropIndex)
+        {
+            Item item = _dropList.FirstOrDefault(i => i.OwnerID == dropIndex);
+            if (item != null)
+            {
+                _dropList.Remove(item);
+                OnUpdateDropList?.Invoke();
+            }
+            return item;
         }
     }
 }

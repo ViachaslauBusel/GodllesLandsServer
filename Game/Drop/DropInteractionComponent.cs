@@ -45,7 +45,7 @@ namespace Game.Drop
                 {
                     ItemID = _dropHolder.DropList[i].Data.ID,
                     Count = _dropHolder.DropList[i].Count,
-                    SlotIndex = i
+                    SlotIndex = _dropHolder.DropList[i].OwnerID
                 });
             }
         }

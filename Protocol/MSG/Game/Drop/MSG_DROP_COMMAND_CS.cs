@@ -19,6 +19,6 @@ namespace Protocol.MSG.Game.Drop
         /// <summary>
         /// If DropID = 0, that means take all items
         /// </summary>
-        public int DropID { get; set; }
+        public int DropIndex { get; set; }
     }
 }

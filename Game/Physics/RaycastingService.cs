@@ -46,7 +46,7 @@ namespace Game.Physics
 
         public unsafe bool GetTerrainPoint(Vector3 position, out Vector3 terrainPoint)
         {
-            terrainPoint = Vector3.Zero;
+            terrainPoint = position;
             Vector3 startPoint = position;
             startPoint.Y = 1000.0f;
             Vector3 direction = new Vector3(0.0f, -1.0f, 0.0f);

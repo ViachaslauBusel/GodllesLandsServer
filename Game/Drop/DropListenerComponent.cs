@@ -56,7 +56,7 @@ namespace Game.Drop
             switch (request.CommandType)
             {
                 case DropCommandType.TakeItem:
-                    //   TakeItem(playerProfile, request.DropID);
+                    TakeItemAsync(playerProfile, request.DropIndex);
                     break;
                 case DropCommandType.TakeAllItems:
                     TakeAllDrop(playerProfile);
@@ -67,21 +67,39 @@ namespace Game.Drop
             }
         }
 
-        private async void TakeAllDrop(IPlayerNetworkProfile playerProfile)
+        private void TakeItemAsync(IPlayerNetworkProfile playerProfile, int dropIndex)
         {
-            _dropInteraction.DisconnectClient(playerProfile);
-
-            if(GameObject.World.TryGetGameObject(playerProfile.CharacterObjectID, out var character) == false)
+            Item item = _dropHolder.TakeItem(dropIndex);
+            if (item == null)
             {
-                Debug.Log.Error($"[TakeAllDrop] Character with id {playerProfile.CharacterObjectID} not found");
+                Debug.Log.Warn($"[TakeItem] Item with index {dropIndex} not found");
                 return;
             }
 
+            List<Item> items = new List<Item> { item };
+            TransferItemsToInventory(items, playerProfile.CharacterObjectID);
+        }
+
+        private void TakeAllDrop(IPlayerNetworkProfile playerProfile)
+        {
+            _dropInteraction.DisconnectClient(playerProfile);
+
             var allDrop = _dropHolder.TakeAll();
+
+            TransferItemsToInventory(allDrop, playerProfile.CharacterObjectID);
+        }
+
+        private async void TransferItemsToInventory(List<Item> items, int characterObjectId)
+        {
+            if (GameObject.World.TryGetGameObject(characterObjectId, out var character) == false)
+            {
+                Debug.Log.Error($"[TakeAllDrop] Character with id {characterObjectId} not found");
+                return;
+            }
 
             AddItemToInventoryCommand command = new AddItemToInventoryCommand
             {
-                Items = allDrop
+                Items = items
             };
 
             //Return list item that can't be added to inventory
@@ -89,23 +107,23 @@ namespace Game.Drop
 
             await job;
 
-            if(job.IsCompleted == false)
+            if (job.IsCompleted == false)
             {
                 Debug.Log.Fatal($"[TakeAllDrop] Error while adding items to inventory");
                 return;
             }
 
-            if(job.IsFaulted)
+            if (job.IsFaulted)
             {
                 Debug.Log.Warn($"[TakeAllDrop] Can't add items to inventory");
                 //Return items to drop
-                _dropHolder.AddItems(allDrop);
+                _dropHolder.AddItems(items);
                 return;
             }
 
-            List<Item> items = job.GetResult();
+            items = job.GetResult();
 
-            if(items.Count > 0)
+            if (items.Count > 0)
             {
                 Debug.Log.Warn($"[TakeAllDrop][RETURN] Can't add items to inventory");
                 //Return items to drop

@@ -2,6 +2,7 @@
 using Game.Drop;
 using Game.GridMap.Scripts;
 using Game.NetworkTransmission;
+using Game.ObjectInteraction.MiningStone;
 using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
 using Game.Systems.Stats.Components;
@@ -32,6 +33,9 @@ namespace Game.GameObjectFactory
             //Stats
             stone.AddComponent(new TargetManagerComponent());
             stone.AddComponent(new TargetedUnitTrackerComponent());
+
+            //Interaction
+            stone.AddComponent(new MiningStoneInteractionComponent());
             return stone;
         }
     }
