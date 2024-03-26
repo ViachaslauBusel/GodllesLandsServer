@@ -137,7 +137,7 @@ namespace Game.Skills.Handler
 
             DamageCommand damageCommand = new DamageCommand();
             damageCommand.Attacker = _stats.GameObject;
-            damageCommand.PAttack = 77 * RandomHelper.Range(_stats.GetStat(StatCode.MinPattack), _stats.GetStat(StatCode.MaxPAttack)) + _data.damage;
+            damageCommand.PAttack = 77 * RandomHelper.Range(_stats.GetStat(StatCode.MinPattack), _stats.GetStat(StatCode.MaxPattack)) + _data.damage;
 
             var result = await target.SendCommandAndReturnResult<DamageCommand, DamageResponse>(damageCommand);
 

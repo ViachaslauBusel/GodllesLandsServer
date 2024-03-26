@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game.Systems.Stats.Components
 {
-    internal class MobStatComponent : StatsComponent
+    public enum StatType
     {
-        public MobStatComponent(string name)
-        {
-            m_name = name;
-        }
+        PAttack,
+        MoveSpeed
     }
 }

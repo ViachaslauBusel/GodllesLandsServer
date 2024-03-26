@@ -32,12 +32,24 @@ namespace Game.Drop
             _dropList.Add(item);
         }
 
+        public void Clear()
+        {
+            _dropList.Clear();
+            OnUpdateDropList?.Invoke();
+        }
+
         internal List<Item> TakeAll()
         {
             List<Item> items = new List<Item>(_dropList);
             _dropList.Clear();
             OnUpdateDropList?.Invoke();
             return items;
+        }
+
+        public void AddItem(Item item)
+        {
+            _dropList.Add(item);
+            OnUpdateDropList?.Invoke();
         }
 
         internal void AddItems(List<Item> items)

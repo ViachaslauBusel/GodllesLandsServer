@@ -14,21 +14,22 @@ namespace Game.Systems.Stats.Components
         private CharacterInfoHolder m_characterInfoHolder;
         private NetworkTransmissionComponent m_networkTransmission;
         private List<StatField> m_dataForSync = new List<StatField>();
+        private DBControlComponent m_dbControl;
 
-
-
-        public async Job ReadFromDatabaseAsync()
+        public override void Init()
         {
-            m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
-            CharacterStat stat = await JobsManager.Execute(GameDatabaseProvider.Select<CharacterStat>($"SELECT get_chatacer_stat('{m_characterInfoHolder.CharacterID}')"));
-
-            m_name = stat.Name;
-
+            base.Init();
             m_networkTransmission = GetComponent<NetworkTransmissionComponent>();
+            m_dbControl = GetComponent<DBControlComponent>();
+            m_dbControl.OnDatabaseLoadComplete += OnDatabaseLoadComplete;
+        }
+
+        private void OnDatabaseLoadComplete()
+        {
 
             MSG_LOAD_STATES msg = new MSG_LOAD_STATES
             {
-                CharacterName = m_name,
+                CharacterName = m_characterInfoHolder.CharacterName,
                 Stats = m_dataForSync
             };
 
@@ -39,6 +40,12 @@ namespace Game.Systems.Stats.Components
             }
 
             m_networkTransmission.Socket.Send(msg);
+        }
+
+        public async Job ReadFromDatabaseAsync()
+        {
+            m_characterInfoHolder = GetComponent<CharacterInfoHolder>();
+            CharacterStat stat = await JobsManager.Execute(GameDatabaseProvider.Select<CharacterStat>($"SELECT get_chatacer_stat('{m_characterInfoHolder.CharacterID}')"));
         }
 
 
@@ -65,7 +72,5 @@ namespace Game.Systems.Stats.Components
                 m_networkTransmission.Socket.Send(msg);
             }
         }
-
-
     }
 }

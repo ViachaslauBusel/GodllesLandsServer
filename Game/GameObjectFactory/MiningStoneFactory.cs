@@ -3,11 +3,11 @@ using Game.Drop;
 using Game.GridMap.Scripts;
 using Game.NetworkTransmission;
 using Game.ObjectInteraction.MiningStone;
-using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
-using Game.Units.Monsters.Components;
+using Game.Units;
+using Game.Units.MiningStones;
 using Game.UnitVisualization;
 using NetworkGameEngine;
 using Protocol.Data.MiningStone;
@@ -20,15 +20,19 @@ namespace Game.GameObjectFactory
         {
             GameObject stone = new GameObject("miningStone");
             stone.AddComponent(new PacketDistributorComponent());
-            stone.AddComponent(new MobStatComponent("stone"));
+            stone.AddComponent(new UnitNicknameComponent("stone"));
+            stone.AddComponent(new StatsComponent());
             stone.AddComponent(new BodyComponent());
             stone.AddComponent(new TransformComponent());
-            stone.AddComponent(new SpawnComponent(miningStone.SpawnPoint, miningStone.SpawnRadius));
+            stone.AddComponent(new RespawnComponent(miningStone.SpawnPoint, miningStone.SpawnRadius, miningStone.StartSpawnTime, miningStone.TimeSpawn));
             stone.AddComponent(new MiningStoneViewComponent(miningStone.ID));
-            stone.AddComponent(new DynamicObjectComponent());
-            stone.AddComponent(new EntityTagComponent());
             stone.AddComponent(new AnimatorComponent());
-            stone.AddComponent(new LootDropOnDeathComponent());
+            stone.AddComponent(new MiningStoneVisibilityToggleComponent());
+
+
+            //Drop
+            stone.AddComponent(new LootDropOnReviveComponent(miningStone.Drops));
+            stone.AddComponent(new DropHolderComponent());
 
             //Stats
             stone.AddComponent(new TargetManagerComponent());
@@ -36,6 +40,7 @@ namespace Game.GameObjectFactory
 
             //Interaction
             stone.AddComponent(new MiningStoneInteractionComponent());
+            stone.AddComponent(new MiningStoneCommandHandlerComponent());
             return stone;
         }
     }

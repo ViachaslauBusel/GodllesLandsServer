@@ -9,14 +9,12 @@ using System.Threading.Tasks;
 
 namespace Game.Systems.Stats.Components
 {
-    public class StatsComponent : Component, IReadData<UnitName>
+    public class StatsComponent : Component
     {
-        protected string m_name = "null";
         protected Dictionary<StatCode, GameStatField> m_stats = new();
 
         public StatsComponent()
         {
-            //m_stats.Add(StatCode.Name, "test");
             m_stats.Add(StatCode.HP, new GameStatField(StatCode.HP, 100));
             m_stats.Add(StatCode.MaxHP, new GameStatField(StatCode.MaxHP, 100));
             m_stats.Add(StatCode.MP, new GameStatField(StatCode.MP, 100));
@@ -24,14 +22,12 @@ namespace Game.Systems.Stats.Components
             m_stats.Add(StatCode.Stamina, new GameStatField(StatCode.Stamina, 100));
             m_stats.Add(StatCode.MaxStamina, new GameStatField(StatCode.MaxStamina, 100));
             m_stats.Add(StatCode.MinPattack, new GameStatField(StatCode.MinPattack, 10));
-            m_stats.Add(StatCode.MaxPAttack, new GameStatField(StatCode.MaxPAttack, 20));
+            m_stats.Add(StatCode.MaxPattack, new GameStatField(StatCode.MaxPattack, 20));
             m_stats.Add(StatCode.PhysicalDefense, new GameStatField(StatCode.PhysicalDefense, 350));
             m_stats.Add(StatCode.AttackSpeed, new GameStatField(StatCode.AttackSpeed, 1));
             m_stats.Add(StatCode.MoveSpeed, new GameStatField(StatCode.MoveSpeed, 600));
-
+            m_stats.Add(StatCode.BlockMove, new GameStatField(StatCode.BlockMove, 1, false));
         }
-
-
 
         internal int GetStat(StatCode code)
         {
@@ -48,12 +44,6 @@ namespace Game.Systems.Stats.Components
             {
                 stat.SetValue(value);
             }
-        }
-
-        public void UpdateData(ref UnitName data)
-        {
-            data.Name = m_name;
-            data.Version = 1;
         }
     }
 }

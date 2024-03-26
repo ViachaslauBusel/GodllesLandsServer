@@ -1,4 +1,4 @@
-﻿using Game.ObjectInteraction;
+﻿using Game.ObjectInteraction.Commands;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Items.Network;
@@ -95,7 +95,7 @@ namespace Game.Drop
             GameObject.World.TryGetGameObject(playerProfile.CharacterObjectID, out var character);
             if (character != null)
             {
-                character.SendCommand(new EndObjectInteractionCommand() { ObjectId = GameObject.ID });
+                character.SendCommand(new InteractionEndNotificationCommand() { ObjectId = GameObject.ID });
             }
         }
 
@@ -107,11 +107,10 @@ namespace Game.Drop
         public override void OnDestroy()
         {
             //Disconnect all players
-            foreach (var player in _players)
+            for (int i = _players.Count - 1; i >= 0; i--)
             {
-                OnClientDisconnected?.Invoke(player);
+                DisconnectClient(_players[i]);
             }
-            _players.Clear();
         }
     }
 }

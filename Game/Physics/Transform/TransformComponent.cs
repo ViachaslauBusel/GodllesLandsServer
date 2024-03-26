@@ -18,6 +18,7 @@ namespace Game.Physics.Transform
         private List<TransformEvent> m_eventsForSynchronization = new List<TransformEvent>();
         private List<TransformEvent> m_synchronizedEvents = new List<TransformEvent>();
 
+        public event Action<Vector3> OnPositionChanged;
 
         public Vector3 Position => m_position;
 
@@ -33,12 +34,14 @@ namespace Game.Physics.Transform
             m_velocity = velocity;
             m_inMove = inMove;
             m_version++;
+            OnPositionChanged?.Invoke(position);
             return m_version;
         }
         internal void UpdatePosition(Vector3 position)
         {
             m_position = position;
             m_version++;
+            OnPositionChanged?.Invoke(position);
         }
 
         internal void UpdateRotation(float angle)
@@ -89,6 +92,7 @@ namespace Game.Physics.Transform
         {
             m_position = newPostion;
             m_version++;
+            OnPositionChanged?.Invoke(newPostion);
             m_playerSceneController?.PrepareScene(newPostion);
         }
     }

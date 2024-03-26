@@ -12,4 +12,8 @@ namespace Game.Inventory.Commands
     {
         public List<Item> Items;
     }
+    public struct AddItemToInventoryCommandNoRet : ICommand
+    {
+        public List<Item> Items;
+    }
 }

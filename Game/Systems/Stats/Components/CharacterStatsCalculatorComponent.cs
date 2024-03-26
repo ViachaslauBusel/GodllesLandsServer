@@ -14,7 +14,6 @@ namespace Game.Systems.Stats.Components
 {
     internal class CharacterStatsCalculatorComponent : Component
     {
-        private bool _isDirty = true;
         private EquipmentComponent _equipment;
         private StatsComponent _stats;
 
@@ -26,20 +25,22 @@ namespace Game.Systems.Stats.Components
             _equipment.OnEquipmentChanged += OnEquipmentChanged;
         }
 
-        private void OnEquipmentChanged() => MarkAsDirty();
-
-        public override void LateUpdate()
+        private void OnEquipmentChanged()
         {
-            if (_isDirty)
-            {
-                CalculateStats();
-                _isDirty = false;
-            }
+            CalculateStat(StatType.PAttack);   
         }
 
-        private void CalculateStats()
+        public void CalculateStat(StatType type)
         {
-            CalculatePAttack();
+            switch (type)
+            {
+                case StatType.PAttack:
+                    CalculatePAttack();
+                    break;
+                case StatType.MoveSpeed:
+                    CalculateMoveSpeed();
+                    break;
+            }
         }
 
         private void CalculatePAttack()
@@ -53,12 +54,15 @@ namespace Game.Systems.Stats.Components
                 maxPAttack += weaponData.MaxDamage;
             }
             _stats.SetStat(StatCode.MinPattack, minPAttack);
-            _stats.SetStat(StatCode.MaxPAttack, maxPAttack);
+            _stats.SetStat(StatCode.MaxPattack, maxPAttack);
         }
 
-        public void MarkAsDirty()
+        private void CalculateMoveSpeed()
         {
-            _isDirty = true;
+            int moveSpeed = _stats.GetStat(StatCode.BlockMove) > 0 ? 0 : 600;
+            
+            _stats.SetStat(StatCode.MoveSpeed, moveSpeed);
         }
+  
     }
 }

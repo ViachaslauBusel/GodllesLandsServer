@@ -103,12 +103,22 @@ namespace Game.Systems.Stats.Components
             }
         }
 
-        private void HandleDeath()
+        public void HandleDeath()
         {
             if (_isAlive == false)
             {
                 _animator.SetState(AnimationStateID.Dead, true);
                 OnDeath?.Invoke();
+            }
+        }
+
+        public void Kill()
+        {
+            if (_isAlive)
+            {
+                _isAlive = false;
+                _stats.SetStat(StatCode.HP, 0);
+                HandleDeath();
             }
         }
 

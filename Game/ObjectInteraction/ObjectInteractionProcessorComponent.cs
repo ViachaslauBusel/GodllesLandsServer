@@ -1,82 +1,140 @@
-﻿using Game.NetworkTransmission;
+﻿using Game.Messenger;
+using Game.NetworkTransmission;
+using Game.ObjectInteraction.Commands;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol;
-using Protocol.Data.Replicated.ObjectInteraction;
+using Protocol.MSG.Game.Messenger;
 using Protocol.MSG.Game.ObjectInteraction;
 using RUCP;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.ObjectInteraction
 {
-    public class ObjectInteractionProcessorComponent : Component, IReactCommand<EndObjectInteractionCommand>
+    public class ObjectInteractionProcessorComponent : Component, IReactCommand<InteractionEndNotificationCommand>
     {
+        private MessageBroadcastComponent _messageBroadcast;
         private NetworkTransmissionComponent _networkTransmission;
-        private int _interactObjectId = -1;
+        private GameObject _interactObject = null;
         private bool _inProgress = false;
+
+        public event Action<int> OnInteractionStarted;
+        public event Action<int> OnInteractionEnded;
+
+        public int InteractObjectId => _interactObject != null ? _interactObject.ID : -1;
 
         public override void Init()
         {
+            _messageBroadcast = GetComponent<MessageBroadcastComponent>();
             _networkTransmission = GetComponent<NetworkTransmissionComponent>();
         }
 
         public override void Start()
         {
-            _networkTransmission.RegisterHandler(Opcode.MSG_OBJECT_INTERACTION_REQUEST, OnObjectInteractionRequest);
+            _networkTransmission.RegisterHandler(Opcode.MSG_OBJECT_INTERACTION_REQUEST, HandleObjectInteractionRequest);
         }
-        public void ReactCommand(ref EndObjectInteractionCommand command)
+
+        private void HandleObjectInteractionRequest(Packet packet)
         {
-            if (IsInteractionInProgress() || CanProcessCommand(command.ObjectId) == false)
+            packet.Read(out MSG_OBJECT_INTERACTION_REQUEST_CS request);
+            InitiateInteraction(request.ObjectId);
+        }
+
+        /// <summary>
+        /// Cancel object interaction
+        /// This command is sent by the object when the interaction has been completed or canceled
+        /// </summary>
+        /// <param name="command"></param>
+        public void ReactCommand(ref InteractionEndNotificationCommand command)
+        {
+            // if has interaction in progress or object id does not match the current interaction object id
+            if (IsHasActiveProcces() || CanProcessCommandFrom(command.ObjectId) == false)
             {
+                _messageBroadcast.SendMessage(MsgLayer.System, "Object interaction has been completed. Notify");
                 return;
             }
 
-            EndInteraction();
+            _messageBroadcast.SendMessage(MsgLayer.System, "Object interaction has been completed");
+            EndInteractionWithObject();
         }
 
-        private async void OnObjectInteractionRequest(Packet packet)
+        // Send request to the object for interaction
+        public async void InitiateInteraction(int objectId)
         {
-            if (IsInteractionInProgress() || _interactObjectId != -1)
+            if (IsHasActiveProcces() || _interactObject != null)
+            {
+               // LogError("Object interaction request already in progress");
+                _messageBroadcast.SendMessage(MsgLayer.System, "You are already interacting with another object");
+                return;
+            }
+
+            BeginInteractionProcess();
+        
+
+            if (GameObject.World.TryGetGameObject(objectId, out GameObject gameObject) == false)
+            {
+                EndInteractionProccess();
+                return;
+            }
+
+            var cmd = new RequestObjectInteractionCommand
+            {
+                PlayerCharacterObject = GameObject,
+                PlayerProfile = _networkTransmission.PlayerProfile,
+                State = InteractionState.StartInteraction
+            };
+            long startTime = Time.Milliseconds;
+            var interactionJob = gameObject.SendCommandAndReturnResult<RequestObjectInteractionCommand, bool>(cmd, 100);
+
+            await interactionJob;
+
+            _messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction request has been completed in {Time.Milliseconds - startTime} ms");
+
+            EndInteractionProccess();
+
+            if (interactionJob.IsFaulted || interactionJob.GetResult() == false)
+            {
+                _messageBroadcast.SendMessage(MsgLayer.System, "Failed to interact with the object");
+                return;
+            }
+
+            _interactObject = gameObject;
+
+            _messageBroadcast.SendMessage(MsgLayer.System, "Object interaction has been started");
+            OnInteractionStarted?.Invoke(objectId);
+        }
+
+        
+        public async void StopInteraction(int objectId)
+        {
+            if (IsHasActiveProcces() || CanProcessCommandFrom(objectId) == false)
             {
                 LogError("Object interaction request already in progress");
                 return;
             }
 
-            StartInteraction();
+            BeginInteractionProcess();
 
-            packet.Read(out MSG_OBJECT_INTERACTION_REQUEST_CS request);
-
-            if (!TryGetGameObject(request.ObjectId, out GameObject gameObject))
+            var cmd = new RequestObjectInteractionCommand
             {
-                EndInteraction();
-                return;
-            }
+                PlayerCharacterObject = GameObject,
+                PlayerProfile = _networkTransmission.PlayerProfile,
+                State = InteractionState.EndInteraction
+            };
 
-            var cmd = new RequestObjectInteractionCommand { PlayerProfile = _networkTransmission.PlayerProfile };
-            var job = gameObject.SendCommandAndReturnResult<RequestObjectInteractionCommand, bool>(cmd, 100);
+            long startTime = Time.Milliseconds;
+            bool result = await _interactObject.SendCommandAndReturnResult<RequestObjectInteractionCommand, bool>(cmd, 200);
 
-            await job;
+            if(result == false) LogError("Failed to stop interaction with the object");
 
-            EndInteraction();
-
-            if (job.IsFaulted)
-            {
-                LogError("Error while processing object interaction request");
-                return;
-            }
-
-            _interactObjectId = request.ObjectId;
-
-            Debug.Log.Info($"[OBJECT_INTERACTION_REQUEST]: GameObject with id {request.ObjectId} found");
+            EndInteractionProccess();
+            EndInteractionWithObject();
+            _messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction has been stopped in {Time.Milliseconds - startTime} ms");
+            OnInteractionEnded?.Invoke(objectId);
         }
 
-        private bool CanProcessCommand(int objectId)
+        private bool CanProcessCommandFrom(int objectId)
         {
-            if (_interactObjectId != objectId)
+            if (InteractObjectId != objectId)
             {
                 LogError("Object id does not match the current interaction object id");
                 return false;
@@ -85,38 +143,29 @@ namespace Game.ObjectInteraction
             return true;
         }
 
-        private bool IsInteractionInProgress()
+        private bool IsHasActiveProcces()
         {
             return _inProgress;
         }
 
-        private void StartInteraction()
+        private void BeginInteractionProcess()
         {
             _inProgress = true;
         }
 
-        private bool TryGetGameObject(int objectId, out GameObject gameObject)
-        {
-            if (GameObject.World.TryGetGameObject(objectId, out gameObject) == false)
-            {
-                LogError($"GameObject with id {objectId} not found");
-                _interactObjectId = -1;
-                return false;
-            }
-
-            return true;
-        }
-
-        private void EndInteraction()
+        private void EndInteractionProccess()
         {
             _inProgress = false;
-            _interactObjectId = -1;
+        }
+
+        private void EndInteractionWithObject()
+        {
+            _interactObject = null;
         }
 
         private void LogError(string message)
         {
             Debug.Log.Error($"[OBJECT_INTERACTION_REQUEST]: {message}");
         }
-
     }
 }

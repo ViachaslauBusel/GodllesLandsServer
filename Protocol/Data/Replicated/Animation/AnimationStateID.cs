@@ -8,5 +8,6 @@ namespace Protocol.Data.Replicated.Animation
     {
         None = 0,
         Dead = 1,
+        Mining = 2,
     }
 }
