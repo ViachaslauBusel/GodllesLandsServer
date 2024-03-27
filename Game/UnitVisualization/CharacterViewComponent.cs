@@ -12,6 +12,7 @@ namespace Game.UnitVisualization
     public class CharacterViewComponent : BaseViewComponent, IReadData<CharacterSkinData>
     {
         private int _weaponId;
+        private int _toolId;
 
         public override IViewComponent Clone()
         {
@@ -30,6 +31,9 @@ namespace Game.UnitVisualization
                 case EquipmentType.WeaponRightHand:
                     _weaponId = partId;
                     break;
+                case EquipmentType.PickaxeTool:
+                    _toolId = partId;
+                    break;
             }
             _version++;
         }
@@ -40,6 +44,7 @@ namespace Game.UnitVisualization
             data.Version = _version;
 
             data.WeaponId = _weaponId;
+            data.ToolId = _toolId;
         }
     }
 }

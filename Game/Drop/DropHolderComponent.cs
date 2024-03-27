@@ -10,26 +10,15 @@ namespace Game.Drop
     public class DropHolderComponent : Component
     {
         private List<Item> _dropList = new List<Item>();
-        private ItemsFactory _itemsFactory;
 
         public IReadOnlyList<Item> DropList => _dropList;
 
         public event Action OnUpdateDropList;
 
-        [Inject]
-        private void InjectServices(ItemsFactory itemsFactory)
-        {
-            _itemsFactory = itemsFactory;
-        }
 
         public override void Init()
         {
-            Item item = _itemsFactory.CreateItem(1, count: RandomHelper.Range(1, 5));
-            item.SetOwner(1);
-            _dropList.Add(item);
-            item = _itemsFactory.CreateItem(3, count: 1);
-            item.SetOwner(2);
-            _dropList.Add(item);
+         
         }
 
         public void Clear()
@@ -48,6 +37,7 @@ namespace Game.Drop
 
         public void AddItem(Item item)
         {
+            item.SetOwner(_dropList.Count + 1);
             _dropList.Add(item);
             OnUpdateDropList?.Invoke();
         }

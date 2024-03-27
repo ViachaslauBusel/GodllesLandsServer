@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Game\Game.csproj" />
+    <ProjectReference Include="..\Game\Godless Lands Game.csproj" />
   </ItemGroup>
 
 </Project>

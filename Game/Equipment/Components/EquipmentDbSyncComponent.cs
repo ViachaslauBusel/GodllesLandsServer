@@ -51,6 +51,10 @@ namespace Game.Equipment.Components
             }
             foreach (var itemData in _items)
             {
+                if(itemData.item_uid == 0)
+                {
+                    continue;
+                }
                 Item item = _itemStorage.GetItem(itemData.item_uid);
                 if(item == null)
                 {
@@ -75,7 +79,7 @@ namespace Game.Equipment.Components
                 if (equipmentSlot.IsDataSyncWithDbPending == false) continue;
 
                 jobs.Add(
-                JobsManager.Execute(GameDatabaseProvider.Call($"CALL save_equipment('{_characterInfoHolder.CharacterID}', {(int)equipmentSlot.EquipmentType}, {equipmentSlot.Item.UniqueID})")));
+                JobsManager.Execute(GameDatabaseProvider.Call($"CALL save_equipment('{_characterInfoHolder.CharacterID}', {(int)equipmentSlot.EquipmentType}, {equipmentSlot.Item?.UniqueID ?? 0})")));
             }
             await Job.WhenAll(jobs);
             return jobs.All(j => j.GetResult());

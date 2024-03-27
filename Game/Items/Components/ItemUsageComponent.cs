@@ -1,4 +1,5 @@
 ﻿using Game.Items.ItemUsageLogic;
+using Godless_Lands_Game.Items.ItemUsageLogic;
 using NetworkGameEngine;
 using Protocol.Data.Items;
 using System;
@@ -18,6 +19,7 @@ namespace Game.Items.Components
             _itemUsageLogics = new Dictionary<Type, IItemUsageLogic>();
             _itemUsageLogics.Add(typeof(RestorePointsItemData), new RestorePointUsageLogic());
             _itemUsageLogics.Add(typeof(WeaponItemData), new WeaponUsageLogic());
+            _itemUsageLogics.Add(typeof(PickaxeItemData), new PickaxeUsageLogic());
 
             foreach (var item in _itemUsageLogics.Values)
             {

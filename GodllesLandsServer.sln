@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Protocol", "Protocol\Protoc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godless Lands Login", "Godless Lands Login\Godless Lands Login.csproj", "{8AD70636-D5BA-4081-876A-B34CB36A0B95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "Game\Game.csproj", "{40834153-DFE6-405F-AC02-0C5FA72FDC40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Godless Lands Game", "Game\Godless Lands Game.csproj", "{40834153-DFE6-405F-AC02-0C5FA72FDC40}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{E51EE986-65B4-40A3-B08F-6821A2C9ED1C}"
 EndProject

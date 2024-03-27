@@ -10,6 +10,7 @@ namespace Protocol.Data.Replicated.Skins
         public bool InNeedChaceVisual { get; set; }
 
         public int WeaponId { get; set; }
+        public int ToolId { get; set; }
         public int HeadId { get; set; }
     }
 }

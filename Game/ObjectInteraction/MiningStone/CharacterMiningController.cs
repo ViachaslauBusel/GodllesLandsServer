@@ -1,9 +1,11 @@
 ﻿using Game.Animation;
+using Game.Equipment.Components;
 using Game.Messenger;
 using Game.ObjectInteraction.MiningStone.Commands;
 using Game.Physics.Transform;
 using NetworkGameEngine;
 using Protocol.Data.Replicated.Animation;
+using Protocol.MSG.Game.Equipment;
 using Protocol.MSG.Game.Messenger;
 using System.Numerics;
 
@@ -15,6 +17,7 @@ namespace Game.ObjectInteraction.MiningStone
         private ObjectInteractionProcessorComponent _objectInteractionProcessor;
         private AnimatorComponent _animator;
         private MessageBroadcastComponent _messageBroadcast;
+        private EquipmentComponent _equipment;
         private long _endMiningTime;
         private Vector3 _startInteractPoint;
         private GameObject _miningStone;
@@ -31,11 +34,20 @@ namespace Game.ObjectInteraction.MiningStone
             _objectInteractionProcessor = GetComponent<ObjectInteractionProcessorComponent>();
             _animator = GetComponent<AnimatorComponent>();
             _messageBroadcast = GetComponent<MessageBroadcastComponent>();
+            _equipment = GetComponent<EquipmentComponent>();
         }
 
         public override void Start()
         {
             _endMiningTime = Time.Milliseconds + 5_000;
+
+            if (_equipment.GetItem(EquipmentType.PickaxeTool) == null)
+            {
+                _messageBroadcast.SendMessage(MsgLayer.System, "You need a pickaxe to mine");
+                _objectInteractionProcessor.StopInteraction(_miningStone.ID);
+                DestroyComponent<CharacterMiningController>();
+                return;
+            }
             _startInteractPoint = _transform.Position;
             StartMining();
         }

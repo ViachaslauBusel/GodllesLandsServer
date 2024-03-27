@@ -1,18 +1,14 @@
-﻿using Autofac.Features.OwnedInstances;
-using Game.GameObjectFactory;
+﻿using Game.GameObjectFactory;
 using Game.GridMap.Scripts;
+using Game.Items;
 using Game.Physics.Transform;
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using Game.Systems.Target.Commands;
+using Game.Tools;
 using Game.UnitVisualization;
 using NetworkGameEngine;
-using NetworkGameEngine.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zenject;
 
 namespace Game.Drop
 {
@@ -21,7 +17,14 @@ namespace Game.Drop
         private TransformComponent _transform;
         private BodyComponent _bodyComponent;
         private TargetedUnitTrackerComponent _targetedUnitTracker;
+        private ItemsFactory _itemsFactory;
         private IViewComponent _viewComponent;
+
+        [Inject]
+        private void InjectServices(ItemsFactory itemsFactory)
+        {
+            _itemsFactory = itemsFactory;
+        }
 
         public override void Init()
         {
@@ -44,6 +47,14 @@ namespace Game.Drop
             GameObject.DestroyComponent<EntityTagComponent>();
 
             var dropHolder = new DropHolderComponent();
+
+            Item item = _itemsFactory.CreateItem(1, count: RandomHelper.Range(1, 5));
+            dropHolder.AddItem(item);
+            item = _itemsFactory.CreateItem(3, count: 1);
+            dropHolder.AddItem(item);
+            item = _itemsFactory.CreateItem(2, count: 1);
+            dropHolder.AddItem(item);
+
             var viewComponent = _viewComponent.Clone();
             viewComponent.SetVisualObjecId(GameObject.ID);
             _viewComponent.SetNeedChaceVisual(true);
