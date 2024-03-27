@@ -22,16 +22,26 @@ namespace Game.Inventory.Components
         private NetworkTransmissionComponent _networkTransmission;
         private InventoryComponent _inventory;
         private ItemUsageComponent _itemUsage;
+        private ItemStorageComponent _itemStorage;
 
         public override void Init()
         {
             _networkTransmission = GetComponent<NetworkTransmissionComponent>();
             _inventory = GetComponent<InventoryComponent>();
             _itemUsage = GetComponent<ItemUsageComponent>();
+            _itemStorage = GetComponent<ItemStorageComponent>();
 
             _networkTransmission.RegisterHandler(Opcode.MSG_USE_ITEM, UseItem);
             _networkTransmission.RegisterHandler(Opcode.MSG_SWAMP_ITEMS, SwampItems);
             _networkTransmission.RegisterHandler(Opcode.MSG_TRANSFER_ITEM_TO_ANOTHER_BAG, TransferItemToAnotherBag);
+            _networkTransmission.RegisterHandler(Opcode.MSG_DESTROY_ITEM_INVENTORY, DestroyItemInventory);
+        }
+
+        private void DestroyItemInventory(Packet packet)
+        {
+            packet.Read(out MSG_DESTROY_ITEM_INVENTORY_CS destroy_item_inventory);
+            Item item = _inventory.TakeItem(destroy_item_inventory.ItemUID);
+            _itemStorage.DestroyItem(item);
         }
 
         private void TransferItemToAnotherBag(Packet packet)
@@ -83,6 +93,7 @@ namespace Game.Inventory.Components
         {
             _networkTransmission.UnregisterHandler(Opcode.MSG_USE_ITEM);
             _networkTransmission.UnregisterHandler(Opcode.MSG_SWAMP_ITEMS);
+            _networkTransmission.UnregisterHandler(Opcode.MSG_TRANSFER_ITEM_TO_ANOTHER_BAG);
         }
     }
 }

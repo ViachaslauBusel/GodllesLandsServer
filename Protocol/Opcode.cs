@@ -45,5 +45,7 @@
         public const short MSG_EQUIPMENT_SYNC = 42;
         public const short MSG_UNEQUIP_ITEM_TO_INVENTORY = 43;
         public const short MSG_SWITCH_COMBAT_MODE = 44;
+        public const short MSG_DESTROY_ITEM_INVENTORY = 45;
+        public const short MSG_DESTROY_ITEM_EQUIPMENT = 46;
     }
 }
