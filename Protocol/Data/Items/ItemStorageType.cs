@@ -10,5 +10,7 @@ namespace Protocol.Data.Items
         Equipment,
         PrimaryBag,
         SecondaryBag,
+        SmelerComponent,
+        SmelterFuel,
     }
 }

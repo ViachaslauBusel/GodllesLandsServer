@@ -145,9 +145,9 @@ namespace Game.Inventory
             return null;
         }
 
-        internal bool RemoveItem(Item item, int count)
+        internal bool RemoveItem(long itemUID, int count)
         {
-           int itemIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == item.UniqueID);
+           int itemIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == itemUID);
             if (itemIndex != -1)
             {
                 if (_cells[itemIndex].Item.Data.IsStackable && _cells[itemIndex].Item.Count < count)
@@ -156,9 +156,13 @@ namespace Game.Inventory
                     return false;
                 }
                 SetDataSyncPending();
-                _currentItemsCount--;
-                _currentWeight -= item.Data.Weight * count;
+              
+                _currentWeight -= _cells[itemIndex].Item.Data.Weight * count;
                 _cells[itemIndex].RemoveItem(count);
+                if (_cells[itemIndex].IsEmpty)
+                {
+                    _currentItemsCount--;
+                }
                 SetDataSyncPending();
                 return true;
             }

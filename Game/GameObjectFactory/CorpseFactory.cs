@@ -2,10 +2,12 @@
 using Game.Drop;
 using Game.GridMap.Scripts;
 using Game.NetworkTransmission;
+using Game.ObjectInteraction;
 using Game.Physics.DynamicObjects;
 using Game.Physics.Transform;
 using Game.Units.Corpse;
 using Game.UnitVisualization;
+using Godless_Lands_Game.Drop;
 using NetworkGameEngine;
 using System.Numerics;
 
@@ -24,7 +26,9 @@ namespace Game.GameObjectFactory
             corpse.AddComponent(new AnimatorComponent());
             corpse.AddComponent(dropHolder);
             corpse.AddComponent(new CorpseControllerComponent());
+            corpse.AddComponent(new InteractiveObjectTagComponent());
             corpse.AddComponent(new DropInteractionComponent());
+            corpse.AddComponent(new DropClientSyncComponent());
             corpse.AddComponent(new DropListenerComponent());
             corpse.AddComponent(new PlayersNetworkTransmissionComponent());
             corpse.AddComponent(new TimedDestructionComponent());

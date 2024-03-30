@@ -25,5 +25,6 @@ namespace Game.Resources
         public static string TerrainCollision { get; } = "terrainMeshColliders.dat";
         public static string RespawnPoints { get; } = "spawnPoints.dat";
         public static string MiningStones { get; } = "miningStones.dat";
+        public static string Workbenches { get; } = "machines.dat";
     }
 }

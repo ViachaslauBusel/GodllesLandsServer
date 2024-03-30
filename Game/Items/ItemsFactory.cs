@@ -18,7 +18,7 @@ namespace Game.Items
             _uniqueIdGenerator = uniqueIdGenerator;
         }
 
-        public Item CreateItem(int id, long uniqueId = 0, int count = 1)
+        public Item CreateItem(int id, long uniqueId, int count)
         {
             ItemData data = ItemsDataManager.GetData(id);
             if (data == null) return null;

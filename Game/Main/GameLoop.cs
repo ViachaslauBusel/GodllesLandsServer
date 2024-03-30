@@ -6,6 +6,8 @@ using Game.Replication;
 using Game.RespawnPoints;
 using Game.Units.MiningStones;
 using Game.Units.Monsters;
+using Godless_Lands_Game.Recipes;
+using Godless_Lands_Game.Units.Workbenches;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using RUCP;
@@ -41,6 +43,7 @@ namespace Game.Main
             MainWorld.RegisterService(itemUniqueIdGenerator);
             MainWorld.RegisterService(new ItemsFactory(itemUniqueIdGenerator));
             MainWorld.RegisterService(new RespawnPointsService());
+            MainWorld.RegisterService(new RecipesDataStorageService());
            
            
             MainWorld.Init(8);
@@ -50,6 +53,7 @@ namespace Game.Main
 
             MonsterSpawner.SpawnMonster(MainWorld);
             MiningStoneSpawner.SpawnStones(MainWorld);
+            WorkbenchSpawner.SpawnWorkbenches(MainWorld);
         }
 
         private static void Loop()

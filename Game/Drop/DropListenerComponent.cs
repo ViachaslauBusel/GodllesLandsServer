@@ -35,13 +35,13 @@ namespace Game.Drop
      
         }
 
-        private void OnClientDisconnected(IPlayerNetworkProfile playerProfile)
+        private void OnClientDisconnected(GameObject charObj, IPlayerNetworkProfile playerProfile)
         {
             Debug.Log.Info($"Player {playerProfile.CharacterObjectID} disconnected from drop interaction >>>");
             _playersNetworkTransmission.UnregisterHandler(playerProfile, Opcode.MSG_TAKE_DROP);
         }
 
-        private void OnClientConnected(IPlayerNetworkProfile playerProfile)
+        private void OnClientConnected(GameObject charObj, IPlayerNetworkProfile playerProfile, List<Component> components)
         {
             Debug.Log.Info($"Player {playerProfile.CharacterObjectID} connected to drop interaction <<<");
             _playersNetworkTransmission.RegisterHandler(playerProfile, Opcode.MSG_TAKE_DROP, OnTakeDrop);
@@ -62,7 +62,7 @@ namespace Game.Drop
                     TakeAllDrop(playerProfile);
                     break;
                 case DropCommandType.EndInteraction:
-                    _dropInteraction.DisconnectClient(playerProfile);
+                    _dropInteraction.DisconnectClient(playerProfile.CharacterObjectID);
                     break;
             }
         }
@@ -82,7 +82,7 @@ namespace Game.Drop
 
         private void TakeAllDrop(IPlayerNetworkProfile playerProfile)
         {
-            _dropInteraction.DisconnectClient(playerProfile);
+            _dropInteraction.DisconnectClient(playerProfile.CharacterObjectID);
 
             var allDrop = _dropHolder.TakeAll();
 

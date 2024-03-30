@@ -32,7 +32,7 @@ namespace Game.Items.ItemUsageLogic
                 return false;
             }
 
-            if(_inventoryComponent.RemoveItem(item, 1) == false)
+            if(_inventoryComponent.RemoveItem(item.UniqueID, 1) == false)
             {
                 Debug.Log.Error($"Item {item.UniqueID} not found in inventory");
                 return false;

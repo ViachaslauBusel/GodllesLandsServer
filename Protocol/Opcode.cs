@@ -47,5 +47,8 @@
         public const short MSG_SWITCH_COMBAT_MODE = 44;
         public const short MSG_DESTROY_ITEM_INVENTORY = 45;
         public const short MSG_DESTROY_ITEM_EQUIPMENT = 46;
+        public const short MSG_WORKBENCH_TOGGLE_WINDOW = 47;
+        public const short MSG_WORKBENCH_CLOSE_WINDOW = 48;
+        public const short MSG_WORKBENCH_CREATE_ITEM = 49;
     }
 }

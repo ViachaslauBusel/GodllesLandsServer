@@ -48,11 +48,11 @@ namespace Game.Drop
 
             var dropHolder = new DropHolderComponent();
 
-            Item item = _itemsFactory.CreateItem(1, count: RandomHelper.Range(1, 5));
+            Item item = _itemsFactory.CreateItem(1, 0, count: RandomHelper.Range(1, 5));
             dropHolder.AddItem(item);
-            item = _itemsFactory.CreateItem(3, count: 1);
+            item = _itemsFactory.CreateItem(3, 0, count: 1);
             dropHolder.AddItem(item);
-            item = _itemsFactory.CreateItem(2, count: 1);
+            item = _itemsFactory.CreateItem(2, 0, count: 1);
             dropHolder.AddItem(item);
 
             var viewComponent = _viewComponent.Clone();

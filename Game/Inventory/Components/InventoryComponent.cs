@@ -95,15 +95,15 @@ namespace Game.Inventory.Components
             return null;
         }
 
-        internal bool RemoveItem(Item item, int count)
+        internal bool RemoveItem(long itemUID, int count)
         {
-            if(_primaryInventory.HasItem(item.UniqueID))
+            if(_primaryInventory.HasItem(itemUID))
             {
-               return _primaryInventory.RemoveItem(item, count);
+               return _primaryInventory.RemoveItem(itemUID, count);
             }
-            else if(_secondaryInventory.HasItem(item.UniqueID))
+            else if(_secondaryInventory.HasItem(itemUID))
             {
-              return  _secondaryInventory.RemoveItem(item, count);
+              return  _secondaryInventory.RemoveItem(itemUID, count);
             }
 
             return false;

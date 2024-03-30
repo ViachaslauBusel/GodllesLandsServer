@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Game.ObjectInteraction
 {
+    /// <summary>
+    /// This component is responsible for marking the object as interactive.
+    /// </summary>
     public class InteractiveObjectTagComponent : Component, IReadData<InteractionObjectData>
     {
         //private byte _version;

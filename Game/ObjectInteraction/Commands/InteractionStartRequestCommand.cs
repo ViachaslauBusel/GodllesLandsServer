@@ -12,10 +12,9 @@ namespace Game.ObjectInteraction.Commands
     /// <summary>
     /// This command send from the character to the interaction object
     /// </summary>
-    public struct RequestObjectInteractionCommand : ICommand
+    public struct InteractionStartRequestCommand : ICommand
     {
         public GameObject PlayerCharacterObject { get; set; }
         public IPlayerNetworkProfile PlayerProfile { get; set; }
-        public InteractionState State { get; internal set; }
     }
 }
