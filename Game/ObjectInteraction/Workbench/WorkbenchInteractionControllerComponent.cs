@@ -3,6 +3,7 @@ using Godless_Lands_Game.UnitVisualization;
 using NetworkGameEngine;
 using NetworkGameEngine.JobsSystem;
 using Protocol;
+using Protocol.Data.Workbenches;
 using Protocol.MSG.Game.Workbench;
 using RUCP;
 
@@ -30,9 +31,23 @@ namespace Godless_Lands_Game.ObjectInteraction.Workbench
 
             ToggleWorkbenchWindow(profile, true, false);
 
-            var controller = new CharacterSmelterControllerComponent(_workbenchView.WorkbenchType);
-            components.Add(controller);
-            await new WaitUntil(() => controller.IsReadyForWork);
+            ICharacterWorkbenchController characterWorkbenchController = null;
+
+            switch (_workbenchView.WorkbenchType)
+            {
+                case WorkbenchType.Tannery:
+                case WorkbenchType.Grindstone:
+                case WorkbenchType.Smelter:
+                    characterWorkbenchController = new CharacterSmelterControllerComponent(_workbenchView.WorkbenchType);
+                    components.Add((Component)characterWorkbenchController);
+                    break;
+                case WorkbenchType.Workbench:
+                    characterWorkbenchController = new CharacterCraftControllerComponent(_workbenchView.WorkbenchType);
+                    components.Add((Component)characterWorkbenchController);
+                    break;
+            }
+            
+            await new WaitUntil(() => characterWorkbenchController.IsReadyForWork);
 
             if (_workbenchInteraction.IsClientConnected(profile))
             { ToggleWorkbenchWindow(profile, true, true); }

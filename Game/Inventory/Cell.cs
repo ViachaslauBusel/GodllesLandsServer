@@ -2,6 +2,7 @@
 using Game.Items;
 using Game.Items.Components;
 using NetworkGameEngine.Debugger;
+using Protocol.Data.Items;
 using Protocol.MSG.Game.Inventory;
 
 namespace Game.Inventory
@@ -9,16 +10,16 @@ namespace Game.Inventory
     public class Cell : ClientAndDbSyncElement
     {
         private long _uid;
-        private InventoryBagType _bagId;
+        private ItemStorageType _bagId;
         private int _slotIndex;
         private ItemStorageComponent _itemStorage;
 
         public Item Item => _itemStorage.GetItem(_uid);
         public int SlotIndex => _slotIndex;
-        public bool IsEmpty => _uid == 0;
-        public InventoryBagType BagType => _bagId;
+        public bool IsEmpty => _itemStorage.ContainsItem(_uid) == false;
+        public ItemStorageType BagType => _bagId;
 
-        public Cell(ItemStorageComponent itemStorage, InventoryBagType bagId, int slotIndex)
+        public Cell(ItemStorageComponent itemStorage, ItemStorageType bagId, int slotIndex)
         {
             _itemStorage = itemStorage;
             _uid = 0;

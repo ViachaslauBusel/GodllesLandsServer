@@ -78,5 +78,7 @@ namespace Game.Items.Components
             AddQuery(new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID));
             _items.Remove(item.UniqueID);
         }
+
+        internal bool ContainsItem(long uid) => _items.ContainsKey(uid);
     }
 }

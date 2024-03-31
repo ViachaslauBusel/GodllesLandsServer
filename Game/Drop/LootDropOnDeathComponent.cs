@@ -54,6 +54,8 @@ namespace Game.Drop
             dropHolder.AddItem(item);
             item = _itemsFactory.CreateItem(2, 0, count: 1);
             dropHolder.AddItem(item);
+            item = _itemsFactory.CreateItem(12, 0, count: 1);
+            dropHolder.AddItem(item);
 
             var viewComponent = _viewComponent.Clone();
             viewComponent.SetVisualObjecId(GameObject.ID);

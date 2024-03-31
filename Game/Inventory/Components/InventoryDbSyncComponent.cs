@@ -6,6 +6,7 @@ using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;
 using NetworkGameEngine.Units.Characters;
+using Protocol.Data.Items;
 using Protocol.MSG.Game.Inventory;
 using Zenject;
 
@@ -59,9 +60,9 @@ namespace Game.Inventory.Components
                 {
                     Debug.Log.Error($"Item:{itemData.uniqueId} cannot be added to the inventory");
                 }
-                _inventory.PrimaryInventory.MarkDataAsSyncedWithDb();
-                _inventory.SecondaryInventory.MarkDataAsSyncedWithDb();
             }
+            _inventory.PrimaryInventory.MarkDataAsSyncedWithDb();
+            _inventory.SecondaryInventory.MarkDataAsSyncedWithDb();
             _items = null;
         }
 
@@ -72,7 +73,7 @@ namespace Game.Inventory.Components
 
         private bool AddItemToInventory(Item item, CellDbData itemData)
         {
-            if (itemData.bagIndex == (int)InventoryBagType.Primary)
+            if (itemData.bagIndex == (int)ItemStorageType.PrimaryBag)
             {
                 return _inventory.PrimaryInventory.AddItem(item, itemData.slotIndex)
                     || _inventory.SecondaryInventory.AddItem(item);

@@ -7,10 +7,10 @@ namespace Protocol.Data.Items
     public enum ItemStorageType: byte
     {
         None,
-        Equipment,
-        PrimaryBag,
-        SecondaryBag,
-        SmelerComponent,
-        SmelterFuel,
+        Equipment = 1,
+        PrimaryBag = 2,
+        SecondaryBag = 3,
+        SmelerComponent = 4,
+        SmelterFuel = 5,
     }
 }

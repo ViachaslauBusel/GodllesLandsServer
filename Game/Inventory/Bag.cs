@@ -1,12 +1,9 @@
 ﻿using Game.Items;
 using Game.Items.Components;
+using Godless_Lands_Game.Inventory;
 using NetworkGameEngine.Debugger;
+using Protocol.Data.Items;
 using Protocol.MSG.Game.Inventory;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game.Inventory
 {
@@ -14,7 +11,8 @@ namespace Game.Inventory
     {
         private Cell[] _cells;
         private ItemStorageComponent _itemStorage;
-        private InventoryBagType _bagId;
+        private ItemsFactory _itemFactory;
+        private ItemStorageType _bagId;
         private int _maxItemsCount;
         private int _maxWeight;
         private int _currentWeight;
@@ -26,15 +24,16 @@ namespace Game.Inventory
         public bool IsDataSyncWithDbPending => _isDataSyncWithDbPending;
         public IReadOnlyCollection<Cell> Cells => _cells;
 
-        public InventoryBagType BagType => _bagId;
+        public ItemStorageType BagType => _bagId;
         public int CurrentWeight => _currentWeight;
         public int MaxWeight => _maxWeight;
         public int MaxItems => _maxItemsCount;
         public int CurrentItemsCount => _currentItemsCount;
 
-        public Bag(ItemStorageComponent itemStorage, InventoryBagType bagId, int maxItems, int maxWeight)
+        public Bag(ItemStorageComponent itemStorage, ItemsFactory itemsFactory, ItemStorageType bagId, int maxItems, int maxWeight)
         {
             _itemStorage = itemStorage;
+            _itemFactory = itemsFactory;
             _bagId = bagId;
             _maxItemsCount = maxItems;
             _maxWeight = maxWeight;
@@ -145,6 +144,40 @@ namespace Game.Inventory
             return null;
         }
 
+        internal void TakeItemByItemId(int itemID, int amount, in List<ItemSlot> items)
+        {
+            foreach(var cell in _cells)
+            {
+                if(cell.IsEmpty || cell.Item.Data.ID != itemID)
+                {
+                    continue;
+                }
+
+                if(cell.Item.Count > amount)
+                {
+                    Item item = _itemFactory.CreateItem(cell.Item.Data.ID, 0, amount);
+                    items.Add(new ItemSlot(_bagId, cell.SlotIndex, item));
+                    cell.RemoveItem(amount);
+                    _currentWeight -= cell.Item.Data.Weight * amount;
+                    SetDataSyncPending();
+                    return;
+                }
+                else
+                {
+                    _currentItemsCount--;
+                    _currentWeight -= cell.Item.Data.Weight * cell.Item.Count;
+                    amount -= cell.Item.Count;
+                    items.Add(new ItemSlot(_bagId, cell.SlotIndex, cell.TakeItem()));
+                    SetDataSyncPending();
+                }
+
+                if(amount == 0)
+                {
+                    return;
+                }
+            }
+        }
+
         internal bool RemoveItem(long itemUID, int count)
         {
            int itemIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == itemUID);
@@ -182,5 +215,7 @@ namespace Game.Inventory
             _cells[toCellIndex].PutItem(temp);
             SetDataSyncPending();
         }
+
+        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Game.Items;
 using Game.Items.Components;
+using Godless_Lands_Game.Inventory;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Items;
@@ -15,6 +16,7 @@ namespace Game.Inventory.Components
 {
     public class InventoryComponent : Component
     {
+        private ItemsFactory _itemsFactory;
         private ItemStorageComponent _itemStorage;
         private Bag _primaryInventory;
         private Bag _secondaryInventory;
@@ -23,17 +25,17 @@ namespace Game.Inventory.Components
         public Bag SecondaryInventory => _secondaryInventory;
 
         [Inject]
-        public void InjectServices(ItemUniqueIdGenerator itemUniqueIdGenerator)
+        public void InjectServices(ItemsFactory itemsFactory)
         {
-           
+            _itemsFactory = itemsFactory;
         }
 
         public override void Init()
         {
             _itemStorage = GetComponent<ItemStorageComponent>();
 
-            _primaryInventory = new Bag(_itemStorage, InventoryBagType.Primary, 20, 5_000);
-            _secondaryInventory = new Bag(_itemStorage, InventoryBagType.Secondary, 40, 10_000);
+            _primaryInventory = new Bag(_itemStorage, _itemsFactory, ItemStorageType.PrimaryBag, 20, 5_000);
+            _secondaryInventory = new Bag(_itemStorage, _itemsFactory, ItemStorageType.SecondaryBag, 40, 10_000);
         }
 
         public bool AddItem(Item item)
@@ -95,6 +97,35 @@ namespace Game.Inventory.Components
             return null;
         }
 
+        /// <summary>
+        /// This method is used to get item from both primary and secondary inventories
+        /// It's remove item from inventory but not from storage
+        /// </summary>
+        /// <param name="itemID"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        internal List<ItemSlot> TakeItemByItemId(int itemID, int amount)
+        {
+            List<ItemSlot> takedItems = new List<ItemSlot>();
+            _primaryInventory.TakeItemByItemId(itemID, amount, in takedItems);
+
+            if (takedItems.Sum(i => i.Item.Count) >= amount) return takedItems;
+
+            int countFromPrimary = takedItems.Count;
+
+            _secondaryInventory.TakeItemByItemId(itemID, amount, in takedItems);
+
+            if (takedItems.Sum(i => i.Item.Count) >= amount) return takedItems;
+
+            // If items are not enough, return items to inventory
+            for (int i = 0; i < takedItems.Count; i++)
+            {
+               AddItem(takedItems[i].BagType, takedItems[i].SlotIndex, takedItems[i].Item);
+            }
+
+            return null;
+        }
+
         internal bool RemoveItem(long itemUID, int count)
         {
             if(_primaryInventory.HasItem(itemUID))
@@ -121,6 +152,6 @@ namespace Game.Inventory.Components
             }
         }
 
-
+       
     }
 }
