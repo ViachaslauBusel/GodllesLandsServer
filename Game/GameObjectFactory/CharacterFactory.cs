@@ -21,6 +21,7 @@ using Game.Systems.Target;
 using Game.Systems.TargetSystem;
 using Game.Tests;
 using Game.UnitVisualization;
+using Godless_Lands_Game.Professions.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Units.Characters;
 
@@ -84,6 +85,12 @@ namespace Game.GameObjectFactory
             //Combat mode
             character.AddComponent(new CombatModeComponent());
             character.AddComponent(new CombatModeListenerComponent());
+
+            //Professions
+            character.AddComponent(new ProfessionsComponent());
+            character.AddComponent(new ProfessionsClientSyncComponent());
+            character.AddComponent(new ProfessionsDbSyncComponent());
+            character.AddComponent(new ProfessionsCommandHandlerComponent());
             return character;
         }
     }

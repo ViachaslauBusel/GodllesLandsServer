@@ -2,13 +2,10 @@
 using Game.Inventory.Commands;
 using Game.ObjectInteraction.MiningStone.Commands;
 using Game.Systems.Stats.Components;
+using Godless_Lands_Game.Professions.Commands;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Protocol.MSG.Game.Professions;
 
 namespace Game.ObjectInteraction.MiningStone
 {
@@ -29,7 +26,7 @@ namespace Game.ObjectInteraction.MiningStone
         {
             if (_bodyComponent.IsAlive == false)
             {
-                Debug.Log.Warn("MiningStoneCommandHandlerComponent:ReactCommand: Mining stone is dead");
+                Debug.Log.Warn("MiningStoneCommandHandlerComponent:ReactCommand: Mining stone is already destroyed");
                 return;
             }
 
@@ -40,6 +37,9 @@ namespace Game.ObjectInteraction.MiningStone
                 Items = _dropHolder.TakeAll()
             };
             command.CharacterObj.SendCommand(addItems);
+
+            var addExperience = new AddExperienceToProfessionCommand(ProfessionType.Mining, 50);
+            command.CharacterObj.SendCommand(addExperience);
 
             _miningStoneInteraction.DisconnectAll();
         }
