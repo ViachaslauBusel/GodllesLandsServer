@@ -7,6 +7,7 @@ using Game.RespawnPoints;
 using Game.Units.MiningStones;
 using Game.Units.Monsters;
 using Godless_Lands_Game.Recipes;
+using Godless_Lands_Game.Units.NPCs;
 using Godless_Lands_Game.Units.Workbenches;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
@@ -54,6 +55,7 @@ namespace Game.Main
             MonsterSpawner.SpawnMonster(MainWorld);
             MiningStoneSpawner.SpawnStones(MainWorld);
             WorkbenchSpawner.SpawnWorkbenches(MainWorld);
+            NPCsSpawner.SpawnNPC(MainWorld);
         }
 
         private static void Loop()

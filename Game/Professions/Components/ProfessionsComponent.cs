@@ -12,12 +12,11 @@ namespace Godless_Lands_Game.Professions.Components
     {
         private Dictionary<ProfessionType, Profession> _professions;
 
-
         public IReadOnlyCollection<Profession> Professions => _professions.Values;
-
 
         public ProfessionsComponent()
         {
+            // Register all professions that are in the ProfessionType enumeration
             _professions = new Dictionary<ProfessionType, Profession>();
             foreach (ProfessionType professionType in Enum.GetValues(typeof(ProfessionType)))
             {
@@ -27,6 +26,7 @@ namespace Godless_Lands_Game.Professions.Components
             }
         }
 
+        // Get profession by type
         internal bool TryGetProfession(ProfessionType profession_type, out Profession profession)
         {
             return _professions.TryGetValue(profession_type, out profession);

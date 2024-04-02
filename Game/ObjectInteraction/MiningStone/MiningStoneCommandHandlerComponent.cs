@@ -24,22 +24,28 @@ namespace Game.ObjectInteraction.MiningStone
 
         public void ReactCommand(ref MiningCompletionCommand command)
         {
+            GameObject characterObject = command.CharacterObj;
+
+            // if mining stone is already destroyed
             if (_bodyComponent.IsAlive == false)
             {
                 Debug.Log.Warn("MiningStoneCommandHandlerComponent:ReactCommand: Mining stone is already destroyed");
                 return;
             }
 
+            // Destroy the mining stone
             _bodyComponent.Kill();
 
+            // Add items from the mining stone to the character's inventory
             var addItems = new AddItemToInventoryCommandNoRet()
             {
                 Items = _dropHolder.TakeAll()
             };
-            command.CharacterObj.SendCommand(addItems);
+            characterObject.SendCommand(addItems);
 
+            // Add experience to the mining profession
             var addExperience = new AddExperienceToProfessionCommand(ProfessionType.Mining, 50);
-            command.CharacterObj.SendCommand(addExperience);
+            characterObject.SendCommand(addExperience);
 
             _miningStoneInteraction.DisconnectAll();
         }

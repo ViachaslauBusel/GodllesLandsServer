@@ -89,12 +89,12 @@ namespace Game.ObjectInteraction
                 PlayerCharacterObject = GameObject,
                 PlayerProfile = _networkTransmission.PlayerProfile,
             };
-            long startTime = Time.Milliseconds;
+            //long startTime = Time.Milliseconds;
             var interactionJob = gameObject.SendCommandAndReturnResult<InteractionStartRequestCommand, InteractionStartConfirmation>(cmd, 100);
 
             await interactionJob;
 
-            _messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction request has been completed in {Time.Milliseconds - startTime} ms");
+            //_messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction request has been completed in {Time.Milliseconds - startTime} ms");
 
             EndInteractionProccess();
 
@@ -137,15 +137,15 @@ namespace Game.ObjectInteraction
                 PlayerCharacterObjectID = GameObject.ID,
             };
 
-            long startTime = Time.Milliseconds;
+            //long startTime = Time.Milliseconds;
             bool result = await _interactionContext.Object.SendCommandAndReturnResult<InteractionEndRequestCommand, bool>(cmd, 200);
 
             if(result == false) LogError("Failed to stop interaction with the object");
 
             EndInteractionProccess();
             _interactionContext.EndInteractionWithObject();
-            Debug.Log.Info($"Object interaction with object {objectId} has been stopped");
-            _messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction has been stopped in {Time.Milliseconds - startTime} ms");
+            //Debug.Log.Info($"Object interaction with object {objectId} has been stopped");
+            //_messageBroadcast.SendMessage(MsgLayer.System, $"Object interaction has been stopped in {Time.Milliseconds - startTime} ms");
             OnInteractionEnded?.Invoke(objectId);
         }
 
