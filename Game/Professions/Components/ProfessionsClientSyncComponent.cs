@@ -39,6 +39,8 @@ namespace Godless_Lands_Game.Professions.Components
                 MSG_PROFESSIONS_SYNC_SC msg = new MSG_PROFESSIONS_SYNC_SC();
                 msg.Professions = _syncData;
                 _networkTransmissionComponent.Socket.Send(msg);
+
+                _syncData.Clear();
             }
         }
     }

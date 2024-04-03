@@ -1,16 +1,12 @@
-﻿using Autofac;
-using Autofac.Core;
-using Cmd.Terminal;
+﻿using Cmd.Terminal;
 using Database;
 using Game.Items;
 using Game.Main;
-using Game.Physics.Terrain;
 using Game.RespawnPoints;
 using Game.Skills.Data;
-using Game.Skills.Handler;
+using Godless_Lands_Game.Quests.Data;
 using NetworkGameEngine.Debugger;
 using RUCP;
-using System;
 
 namespace NetworkGameEngine
 {
@@ -27,6 +23,7 @@ namespace NetworkGameEngine
             SkillsDataStore.Load();
             ItemsDataManager.Load();
             RespawnPointsStore.Load();
+            QuestsDataStore.Load();
 
             GameDatabaseConfig.DatabaseName = "GD_GAME";
             LoginDatabaseConfig.DatabaseName = "GD_LOGIN";

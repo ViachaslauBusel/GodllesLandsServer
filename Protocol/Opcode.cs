@@ -51,5 +51,6 @@
         public const short MSG_WORKBENCH_CLOSE_WINDOW = 48;
         public const short MSG_WORKBENCH_CREATE_ITEM = 49;
         public const short MSG_PROFESSIONS_SYNC = 50;
+        public const short MSG_QUESTS_SYNC = 51;
     }
 }
