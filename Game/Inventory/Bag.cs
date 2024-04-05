@@ -216,6 +216,9 @@ namespace Game.Inventory
             SetDataSyncPending();
         }
 
-        
+        internal int GetItemCount(int itemId)
+        {
+            return _cells.Where(cell => cell.Item != null && cell.Item.Data.ID == itemId).Sum(cell => cell.Item.Count);
+        }
     }
 }

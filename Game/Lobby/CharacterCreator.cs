@@ -1,5 +1,8 @@
 ﻿using Database;
+using Game.Items;
+using Game.Main;
 using NetworkGameEngine.Debugger;
+using NetworkGameEngine.Units.Characters;
 using Newtonsoft.Json;
 using Protocol;
 using Protocol.MSG.Game;
@@ -63,6 +66,9 @@ namespace NetworkGameEngine.Lobby
 
             bool isCreatedPosition = await GameDatabaseProvider.Call($"CALL set_character_position('{characterData.CharacterID}', {1180.0f}, {183.0f}, {1884.0f})");
             if (!isCreatedPosition) { Debug.Log.Fatal($"Failed to set position when creating character"); }
+
+            await GameDatabaseProvider.SelectObject<bool>($"SELECT upsert_item('{characterData.CharacterID}', {item.UniqueID}, {item.Data.ID}, {item.Count})");
+
 
             response.InformationCode = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
             profile.Client.Send(response);

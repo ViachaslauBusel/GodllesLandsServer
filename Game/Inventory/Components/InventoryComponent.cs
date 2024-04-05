@@ -152,6 +152,10 @@ namespace Game.Inventory.Components
             }
         }
 
-       
+        internal bool ContainsItem(int itemId, int amount)
+        {
+            int count = _primaryInventory.GetItemCount(itemId) + _secondaryInventory.GetItemCount(itemId);
+            return count >= amount;
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Protocol.MSG.Game.Quests
 {
+    [MessageObject]
     public struct QuestSyncData
     {
         public int QuestId { get; set; }

@@ -22,6 +22,8 @@ namespace Godless_Lands_Game.Quests.Components
             // Check if any quest has data that needs to be synced with the client
             if (_questController.Quests.Any(q => q.IsDataSyncWithClientPending))
             {
+                _syncData.Clear();
+
                 foreach (Quest quest in _questController.Quests)
                 {
                     // If data is pending, add it to the sync data list and mark it as synced with the client
@@ -35,8 +37,6 @@ namespace Godless_Lands_Game.Quests.Components
                 MSG_QUESTS_SYNC_SC msg = new MSG_QUESTS_SYNC_SC();
                 msg.Quests = _syncData;
                 _networkTransmissionComponent.Socket.Send(msg);
-
-                _syncData.Clear();
             }
         }
     }

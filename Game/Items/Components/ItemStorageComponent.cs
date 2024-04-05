@@ -1,13 +1,6 @@
 ﻿using Game.Items.Queries;
-using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.Units.Characters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using Zenject;
 
 namespace Game.Items.Components
@@ -69,9 +62,9 @@ namespace Game.Items.Components
 
         internal void DestroyItem(Item item)
         {
-            if(item.UniqueID == 0)
+            if(item == null || item.UniqueID == 0)
             {
-                Debug.Log.Warn($"Cannot destroy item:{item.UniqueID} because it has no unique id");
+                Debug.Log.Warn($"Cannot destroy item:{item?.UniqueID ?? 0} because it has no unique id");
                 return;
             }
 

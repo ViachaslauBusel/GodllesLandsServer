@@ -13,7 +13,7 @@ namespace Godless_Lands_Game.Quests.Components
         public int stage_id;
     }
 
-    public class QuestDbSyncComponent : Component
+    public class QuestDbSyncComponent : Component, IDatabaseReadable, IDatabaseWritable
     {
         private CharacterInfoHolder _characterInfoHolder;
         private QuestControllerComponent _questController;

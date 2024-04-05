@@ -22,6 +22,7 @@ using Game.Systems.TargetSystem;
 using Game.Tests;
 using Game.UnitVisualization;
 using Godless_Lands_Game.Professions.Components;
+using Godless_Lands_Game.Quests.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Units.Characters;
 
@@ -91,6 +92,13 @@ namespace Game.GameObjectFactory
             character.AddComponent(new ProfessionsClientSyncComponent());
             character.AddComponent(new ProfessionsDbSyncComponent());
             character.AddComponent(new ProfessionsCommandHandlerComponent());
+
+            //Quests
+            character.AddComponent(new QuestControllerComponent());
+            character.AddComponent(new QuestClientSyncComponent());
+            character.AddComponent(new QuestDbSyncComponent());
+            character.AddComponent(new QuestNodeHandlerStorageComponent());
+            character.AddComponent(new QuestsListenerComponent());
             return character;
         }
     }

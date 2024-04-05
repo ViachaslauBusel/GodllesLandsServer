@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Protocol.Data.Quests.Nodes;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Protocol.Data.Quests
@@ -11,6 +13,16 @@ namespace Protocol.Data.Quests
         public readonly int ID;
 
         public IReadOnlyCollection<QuestNode> Nodes => _nodes;
+
+        public QuestNode GetStartNode()
+        {
+            return _nodes.FirstOrDefault(n => n is StartQuestNode);
+        }
+
+        public QuestNode GetNode(int currentStageID)
+        {
+            return _nodes.FirstOrDefault(n => n.ID == currentStageID);
+        }
 
         public QuestData(int id, List<QuestNode> nodes)
         {

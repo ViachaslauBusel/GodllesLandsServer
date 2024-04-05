@@ -101,5 +101,21 @@ namespace Game.GridMap
                 }
             }
         }
+
+        public IEnumerable<GameObject> GetGameObjectsAround(int gameObjectID)
+        {
+            if (TryGetLocation(gameObjectID, out Location location))
+            {
+                foreach (Location l in new LocationAround(location))
+                {
+                    Tile tile = GetTile(l);
+                    if (tile == null) continue;
+                    foreach (var entity in tile.Entities)
+                    {
+                        yield return entity.GameObject;
+                    }
+                }
+            }
+        }
     }
 }

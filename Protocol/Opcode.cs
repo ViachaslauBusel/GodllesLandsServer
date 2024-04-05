@@ -52,5 +52,7 @@
         public const short MSG_WORKBENCH_CREATE_ITEM = 49;
         public const short MSG_PROFESSIONS_SYNC = 50;
         public const short MSG_QUESTS_SYNC = 51;
+        public const short MSG_QUEST_STAGE_UP_REQUEST = 52;
+        public const short MSG_QUEST_STAGE_UP_RESPONSE = 53;
     }
 }

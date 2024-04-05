@@ -19,5 +19,6 @@ namespace Game.GridMap
         bool TryGetLocation(int gameObjID, out Location location);
         Tile GetTile(Location location);
         IEnumerable<PlayerEntity> GetPlayersAround(int iD, int range);
+        IEnumerable<GameObject> GetGameObjectsAround(int gameObjectID);
     }
 }
