@@ -2,6 +2,7 @@
 using Game.DB;
 using Game.NetworkTransmission;
 using NetworkGameEngine;
+using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;
 using NetworkGameEngine.Units.Characters;
 using Protocol;
@@ -26,7 +27,10 @@ namespace Game.Hotbar
             _characterInfoHolder = GetComponent<CharacterInfoHolder>();
             _networkTransmission = GetComponent<NetworkTransmissionComponent>();
             _networkTransmission.RegisterHandler(Opcode.MSG_HOTBAR_SET_CELL_VALUE, HotbarSetCellValue);
+            _networkTransmission.RegisterHandler(Opcode.MSG_HOTBAT_SWAMP_CELLS, HotbarSwampCells);
         }
+
+        
 
         public async Job ReadFromDatabaseAsync()
         {
@@ -71,6 +75,29 @@ namespace Game.Hotbar
             HasDataToSave = true;
         }
 
+        private void HotbarSwampCells(Packet packet)
+        {
+            packet.Read(out MSG_HOTBAT_SWAMP_CELLS_CS swamp_request);
+
+            HotbarCellHolder FromCell = GetOrCreateCell(swamp_request.FromCellIndex);
+            HotbarCellHolder ToCell = GetOrCreateCell(swamp_request.ToCellIndex);
+
+            if(FromCell == null || ToCell == null)
+            {
+                Debug.Log.Error("Cannot find cell");
+                return;
+            }
+
+            HotbarCellType tempType = FromCell.CellType;
+            short tempValue = FromCell.CellValue;
+
+            FromCell.SetValue(ToCell.CellType, ToCell.CellValue);
+            ToCell.SetValue(tempType, tempValue);
+
+            SyncWithClient();
+            HasDataToSave = true;
+        }
+
         private void SyncWithClient()
         {
             _syncDump.Clear();
@@ -109,6 +136,7 @@ namespace Game.Hotbar
         public override void OnDestroy()
         {
             _networkTransmission.UnregisterHandler(Opcode.MSG_HOTBAR_SET_CELL_VALUE);
+            _networkTransmission.UnregisterHandler(Opcode.MSG_HOTBAT_SWAMP_CELLS);
         }
     }
 }

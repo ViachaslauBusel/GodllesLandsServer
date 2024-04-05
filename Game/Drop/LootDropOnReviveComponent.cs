@@ -35,10 +35,11 @@ namespace Game.Drop
             _bodyComponent = GetComponent<BodyComponent>();
             _dropHolder = GetComponent<DropHolderComponent>();
 
-            _bodyComponent.OnRevive += OnRevive;
+            CreateDrop();
+            _bodyComponent.OnRevive += CreateDrop;
         }
 
-        private void OnRevive()
+        private void CreateDrop()
         {
             _dropHolder.Clear();
 
@@ -50,6 +51,11 @@ namespace Game.Drop
                     _dropHolder.AddItem(item);
                 }
             }
+        }
+
+        public override void OnDestroy()
+        {
+            _bodyComponent.OnRevive -= CreateDrop;
         }
     }
 }

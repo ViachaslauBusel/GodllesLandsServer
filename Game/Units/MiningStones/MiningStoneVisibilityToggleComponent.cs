@@ -40,5 +40,11 @@ namespace Game.Units.MiningStones
             if (_bodyComponent.IsAlive == false) GameObject.DestroyComponent<EntityTagComponent>();
             _animator.SetState(AnimationStateID.Dead, false);
         }
+
+        public override void OnDestroy()
+        {
+            _bodyComponent.OnDeath -= OnDeath;
+            _bodyComponent.OnRevive -= OnRevive;
+        }
     }
 }

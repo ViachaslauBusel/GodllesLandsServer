@@ -40,8 +40,13 @@ namespace Game.Inventory.Components
         private void DestroyItemInventory(Packet packet)
         {
             packet.Read(out MSG_DESTROY_ITEM_INVENTORY_CS destroy_item_inventory);
-            Item item = _inventory.TakeItem(destroy_item_inventory.ItemUID);
-            _itemStorage.DestroyItem(item);
+
+            if(destroy_item_inventory.ItemCount <= 0)
+            {
+                Debug.Log.Warn($"Item count is less than 0");
+                return;
+            }
+            _inventory.RemoveItem(destroy_item_inventory.ItemUID, destroy_item_inventory.ItemCount);
         }
 
         private void TransferItemToAnotherBag(Packet packet)

@@ -190,7 +190,7 @@ namespace Game.Inventory
                 }
                 SetDataSyncPending();
               
-                _currentWeight -= _cells[itemIndex].Item.Data.Weight * count;
+                _currentWeight -= _cells[itemIndex].Item.Data.Weight * Math.Min(count, _cells[itemIndex].Item.Count);
                 _cells[itemIndex].RemoveItem(count);
                 if (_cells[itemIndex].IsEmpty)
                 {

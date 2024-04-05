@@ -9,5 +9,6 @@ namespace Protocol.MSG.Game.Inventory
     public struct MSG_DESTROY_ITEM_INVENTORY_CS 
     {
         public long ItemUID { get; set; }
+        public int ItemCount { get; set; }
     }
 }
