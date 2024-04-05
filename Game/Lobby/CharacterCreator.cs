@@ -67,7 +67,7 @@ namespace NetworkGameEngine.Lobby
             bool isCreatedPosition = await GameDatabaseProvider.Call($"CALL set_character_position('{characterData.CharacterID}', {1180.0f}, {183.0f}, {1884.0f})");
             if (!isCreatedPosition) { Debug.Log.Fatal($"Failed to set position when creating character"); }
 
-            await GameDatabaseProvider.SelectObject<bool>($"SELECT upsert_item('{characterData.CharacterID}', {item.UniqueID}, {item.Data.ID}, {item.Count})");
+            await GameDatabaseProvider.SelectObject<bool>($"CALL insert_into_items_given_offline('{characterData.CharacterID}', {4}, {1})");
 
 
             response.InformationCode = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;

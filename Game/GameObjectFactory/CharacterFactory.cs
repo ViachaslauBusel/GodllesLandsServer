@@ -21,6 +21,7 @@ using Game.Systems.Target;
 using Game.Systems.TargetSystem;
 using Game.Tests;
 using Game.UnitVisualization;
+using Godless_Lands_Game.Items.Components;
 using Godless_Lands_Game.Professions.Components;
 using Godless_Lands_Game.Quests.Components;
 using NetworkGameEngine;
@@ -77,6 +78,7 @@ namespace Game.GameObjectFactory
             //Items
             character.AddComponent(new ItemStorageComponent());
             character.AddComponent(new ItemUsageComponent());
+            character.AddComponent(new OfflineItemAdderComponent());
             //Equipment
             character.AddComponent(new EquipmentComponent());
             character.AddComponent(new EquipmentClientSyncComponent());
