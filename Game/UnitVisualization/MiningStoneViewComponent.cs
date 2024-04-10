@@ -17,21 +17,9 @@ namespace Game.UnitVisualization
             _skinID = skinID;
         }
 
-        public override void Init()
-        {
-            _isNeedChaceVisual = true;
-        }
-
-        public override IViewComponent Clone()
-        {
-            return new MiningStoneViewComponent(_skinID);
-        }
-
         public void UpdateData(ref MiningStoneSkinData data)
         {
             data.SkinID = _skinID;
-            data.InNeedChaceVisual = _isNeedChaceVisual;
-            data.VisualChaneObjectId = _visualChaneObjectId;
             data.Version = _version;
         }
     }

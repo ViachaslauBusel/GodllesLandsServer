@@ -12,8 +12,9 @@ namespace DataFileProtocol.Skills
         public int id;
         public SkillType skillType;
         public SkillBranch branch;
-        public float applyingTime;
-        public float reuseTime;
+        public int applyingTime;
+        public int usingTime;
+        public int reuseTime;
         public bool useAfter;
         public short animationId;
     }

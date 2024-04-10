@@ -43,18 +43,18 @@ namespace Game.Systems.Stats.Components
             HandleDeath();
         }
 
+        // Этот метод будет выполнен на этапе Command
         public DamageResponse ReactCommand(ref DamageCommand command)
         {
             if (!_isAlive)
             {
-                // Character is dead
+                // Unit is dead
                 return new DamageResponse { Damage = 0 };
             }
 
-            int health = _stats.GetStat(StatCode.HP);
-            var damage = CalculateDamage(command);
-            ApplyDamage(ref health, damage, command.Attacker);
-            return new DamageResponse { Damage = damage };
+            int damage = CalculateDamage(command);
+            int realDamage = ApplyDamage(damage, command.Attacker);
+            return new DamageResponse { Damage = realDamage };
         }
 
         public void Revive()
@@ -79,8 +79,9 @@ namespace Game.Systems.Stats.Components
             return damage < 0 ? 1 : damage;
         }
 
-        private void ApplyDamage(ref int health, int damage, GameObject attacker)
+        private int ApplyDamage(int damage, GameObject attacker)
         {
+            int health = _stats.GetStat(StatCode.HP);
             int realDamage = health;
             health -= damage;
             _isAlive = health > 0;
@@ -89,6 +90,7 @@ namespace Game.Systems.Stats.Components
             realDamage -= health;
             _stats.SetStat(StatCode.HP, health);
             OnDamageReceiving?.Invoke(attacker, realDamage);
+            return realDamage;
         }
 
         public void Heal(int amount)

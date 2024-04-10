@@ -27,6 +27,7 @@ namespace Game.Main
 
         public static void Start(Server server)
         {
+            MainWorld.OnLog += (message) => Debug.Log.Error(message);
             PhysicWorld.Load();
             Debug.Log.Info("Physic world loaded");
 
@@ -61,18 +62,30 @@ namespace Game.Main
         private static void Loop()
         {
             Debug.Log.Info("Game loop started");
+
             while (true)
             {
-                //m_server.ProcessPacket();
-                MainWorld.Update();
+                long startTickTime = Time.Milliseconds;
 
-                m_gridService.Update();
-                m_replicationService.Update();
+                UpdateGame();
 
-                //m_server.DistributePackets();
-
-                Thread.Sleep(100);
+                int sleepTime = CalculateSleepTime(startTickTime);
+                if (sleepTime > 0)
+                    Thread.Sleep(sleepTime);
             }
+        }
+
+        private static void UpdateGame()
+        {
+            Time.NextTick();
+            MainWorld.Update();
+            m_gridService.Update();
+            m_replicationService.Update();
+        }
+
+        private static int CalculateSleepTime(long startTickTime)
+        {
+            return (int)(Time.fixedDeltaTimeMillis - (Time.Milliseconds - startTickTime));
         }
     }
 }

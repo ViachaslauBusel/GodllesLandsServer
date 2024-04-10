@@ -103,30 +103,29 @@ namespace Game.Skills.Handler
             stamina -= _data.staminaCost;
             _stats?.SetStat(StatCode.Stamina, stamina);
 
-            _animator.Play((AnimationID)_data.animationId, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000), direction);
+            _animator.Play((AnimationID)_data.animationId, AnimationLayer.TimeAnimation, _data.usingTime, direction);
 
             _target = target;
             return true;
            
         }
 
-        public async void PostProcessSkill()
+        public async void ApplySkill()
         {
-            GameObject target = _target;
-            _target = null;
-            if (target == null)
+            if (_target == null)
             {
                 _messageBroadcast?.SendMessage(MsgLayer.System, "Target is null");
                 return;
             }
 
-            if(_body.IsAlive == false)
+            if (_body.IsAlive == false)
             {
                 _messageBroadcast?.SendMessage(MsgLayer.System, "You are dead");
                 return;
             }
 
-            target.ReadData(out TransformData targetTransform);
+            // Считывание местоположения обьекта по которому будет произведен удар из потоко безопасного буфера
+            _target.ReadData(out TransformData targetTransform);
             float distance = Vector3.Distance(_transform.Position.ClearY(), targetTransform.Position.ClearY());
 
             if (distance > _data.range + 1f)
@@ -135,13 +134,22 @@ namespace Game.Skills.Handler
                 return;
             }
 
+            // Создание команды, которая будет наносить урон
             DamageCommand damageCommand = new DamageCommand();
             damageCommand.Attacker = _stats.GameObject;
             damageCommand.PAttack = 77 * RandomHelper.Range(_stats.GetStat(StatCode.MinPattack), _stats.GetStat(StatCode.MaxPattack)) + _data.damage;
 
-            var result = await target.SendCommandAndReturnResult<DamageCommand, DamageResponse>(damageCommand);
+            // Отправка команды на стадии Update() игровому объекту, по которому будет произведен удар, и получение результата с нанесенным уроном
+            var result = await _target.SendCommandAndReturnResult<DamageCommand, DamageResponse>(damageCommand, 500);
 
+            // Этот код будет выполнен в этом же тике на стадии Job
             _messageBroadcast?.SendMessage(MsgLayer.System, $"You hit the target for {result.Damage} damage");
+        }
+
+        public void PostProcessSkill()
+        {
+            GameObject target = _target;
+            _target = null;
         }
     }
 }

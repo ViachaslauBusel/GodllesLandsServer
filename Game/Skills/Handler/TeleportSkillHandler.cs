@@ -39,9 +39,13 @@ namespace Game.Skills.Handler
         public bool PreProcessSkill(GameObject target)
         {
          
-            _animator.Play((AnimationID)_data.animationId, AnimationLayer.TimeAnimation, (int)(_data.applyingTime * 1_000));
+            _animator.Play((AnimationID)_data.animationId, AnimationLayer.TimeAnimation, _data.applyingTime);
             _inUse = true;
             return true;
+        }
+
+        public void ApplySkill()
+        {
         }
 
         public void PostProcessSkill()
@@ -49,5 +53,7 @@ namespace Game.Skills.Handler
             _inUse = false;
             _transform.TeleportTo(_respawnPointsService.GetNeareatPoint(_transform.Position));
         }
+
+       
     }
 }

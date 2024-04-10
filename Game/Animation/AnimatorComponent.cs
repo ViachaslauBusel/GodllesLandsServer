@@ -16,15 +16,6 @@ namespace Game.Animation
         private List<AnimationData> _events = new List<AnimationData>();
         private AnimationStateData _activeState;
 
-        public override void Init()
-        {
-            _activeState = new AnimationStateData()
-            {
-                AnimationStateID = AnimationStateID.None,
-                Version = 0
-            };
-        }
-
 
         public void Play(AnimationID id, AnimationLayer layer) => Play(id, layer, 0, null);
         public void Play(AnimationID id, AnimationLayer layer, int playbackTime) => Play(id, layer, playbackTime, null);

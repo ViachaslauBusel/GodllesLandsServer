@@ -1,4 +1,5 @@
-﻿using NetworkGameEngine;
+﻿using Godless_Lands_Game.UnitVisualization;
+using NetworkGameEngine;
 using Protocol.Data.Replicated.Skins;
 using System;
 using System.Collections.Generic;
@@ -8,31 +9,31 @@ using System.Threading.Tasks;
 
 namespace Game.UnitVisualization
 {
-    public class MonsterViewComponent : BaseViewComponent, IReadData<MonsterSkinData>
+    public class MonsterViewComponent : BaseViewComponent, ICachedViewComponent, IReadData<MonsterSkinData>
     {
         private int _skinID;
+        private bool _inNeedChaceVisual = false;
+
+        public int SkinId => _skinID;
+
+        public int CachedObjectId => GameObject.ID;
+
+        public void SetInNeedChaceVisual(bool value)
+        {
+            _inNeedChaceVisual = value;
+            _version++;
+        }
 
         public MonsterViewComponent(int skinID)
         {
             _skinID = skinID;
         }
 
-        public override void Init()
-        {
-            _isNeedChaceVisual = true;
-        }
-
-        public override IViewComponent Clone()
-        {
-            return new MonsterViewComponent(_skinID);
-        }
-
         public void UpdateData(ref MonsterSkinData data)
         {
             data.SkinID = _skinID;
-            data.InNeedChaceVisual = _isNeedChaceVisual;
-            data.VisualChaneObjectId = _visualChaneObjectId;
             data.Version = _version;
+            data.InNeedChaceVisual = _inNeedChaceVisual;
         }
     }
 }

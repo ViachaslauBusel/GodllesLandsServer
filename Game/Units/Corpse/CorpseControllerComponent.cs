@@ -16,10 +16,6 @@ namespace Game.Units.Corpse
         public override void Init()
         {
             _animator = GetComponent<AnimatorComponent>();
-        }
-
-        public override void Start()
-        {
             _animator.SetState(AnimationStateID.Dead, true);
         }
     }

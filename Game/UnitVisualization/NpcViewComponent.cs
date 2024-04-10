@@ -13,16 +13,6 @@ namespace Godless_Lands_Game.UnitVisualization
             _skinID = skinID;
         }
 
-        public override void Init()
-        {
-            _isNeedChaceVisual = false;
-        }
-
-        public override IViewComponent Clone()
-        {
-            return new NpcViewComponent(_skinID);
-        }
-
         public void UpdateData(ref NpcSkinData data)
         {
             data.SkinID = _skinID;

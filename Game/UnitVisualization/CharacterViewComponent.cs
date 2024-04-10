@@ -14,16 +14,6 @@ namespace Game.UnitVisualization
         private int _weaponId;
         private int _toolId;
 
-        public override IViewComponent Clone()
-        {
-           return new CharacterViewComponent();
-        }
-
-        public override void Init()
-        {
-            _isNeedChaceVisual = false;
-        }
-
         public void UpdatePart(EquipmentType equipType, int partId)
         {
             switch (equipType)
@@ -40,7 +30,6 @@ namespace Game.UnitVisualization
 
         public void UpdateData(ref CharacterSkinData data)
         {
-            data.InNeedChaceVisual = _isNeedChaceVisual;
             data.Version = _version;
 
             data.WeaponId = _weaponId;

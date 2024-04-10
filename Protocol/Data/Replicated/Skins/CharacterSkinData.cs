@@ -7,7 +7,6 @@ namespace Protocol.Data.Replicated.Skins
     public struct CharacterSkinData : IReplicationData
     {
         public byte Version { get; set; }
-        public bool InNeedChaceVisual { get; set; }
 
         public int WeaponId { get; set; }
         public int ToolId { get; set; }

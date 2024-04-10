@@ -45,7 +45,7 @@ namespace Game.Pathfinding
                 return;
             }
 
-            float deltaTime = MakeStep(Time.deltaTime);
+            float deltaTime = MakeStep(Time.fixedDeltaTimeSeconds);
             while (deltaTime > 0.001f)
             {
                 deltaTime = MakeStep(deltaTime);

@@ -21,16 +21,6 @@ namespace Godless_Lands_Game.UnitVisualization
             _workbenchType = workbenchType;
         }
 
-        public override void Init()
-        {
-            _isNeedChaceVisual = true;
-        }
-
-        public override IViewComponent Clone()
-        {
-            return new WorkbenchViewComponent(_workbenchType);
-        }
-
         public void UpdateData(ref WorkbenchSkinData data)
         {
             data.WorkbenchType = _workbenchType;

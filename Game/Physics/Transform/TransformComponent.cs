@@ -21,6 +21,7 @@ namespace Game.Physics.Transform
         public event Action<Vector3> OnPositionChanged;
 
         public Vector3 Position => m_position;
+        public float Rotation => m_rotation;
 
         public override void Init()
         {

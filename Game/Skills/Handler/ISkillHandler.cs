@@ -9,6 +9,7 @@ namespace Game.Skills.Handler
 
         void Init(Component component, SkillData skill);
         bool PreProcessSkill(GameObject target);
+        void ApplySkill();
         void PostProcessSkill();
     }
 }

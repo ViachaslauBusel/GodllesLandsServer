@@ -27,6 +27,12 @@ namespace Game.Skills
         {
            return _handler?.PreProcessSkill(target) ?? false;
         }
+
+        internal void ApplySkill()
+        {
+            _handler?.ApplySkill();
+        }
+
         public void PostProcessSkill() 
         {
             _handler?.PostProcessSkill();

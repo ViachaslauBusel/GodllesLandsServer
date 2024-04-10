@@ -45,7 +45,20 @@ namespace Game.Skills
             if (skill.PreProcessSkill(_targetManager.Target))
             {
                 _skilInUse = skill;
-                await new SecondsDelayJob(_skilInUse.Data.applyingTime);
+
+                long startUsingTime = Time.Milliseconds;
+
+                if (skill.Data.applyingTime > 0)
+                {
+                    await new MillisDelayJob((int)skill.Data.applyingTime);
+                    skill.ApplySkill();
+                }
+
+                int delay = (int)(skill.Data.usingTime - (Time.Milliseconds - startUsingTime));
+                if (delay > 0)
+                    await new MillisDelayJob(delay);
+                else Debug.Log.Error($"[SkillUsageComponent] Skill:{skill.Data.id} delay is negative:{delay}");
+
                 _skilInUse.PostProcessSkill();
             }
 
