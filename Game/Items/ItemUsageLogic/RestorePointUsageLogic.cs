@@ -3,6 +3,7 @@ using Game.Systems.Stats.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Items;
+using Protocol.Data.Stats;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Game.Items.ItemUsageLogic
                 return false;
             }
 
-            _bodyComponent.Heal(data.RestoreHP);
+            _bodyComponent.Heal(data.RestoreHP, StatCode.HP, StatCode.MaxHP);
             return true;
         }
     }

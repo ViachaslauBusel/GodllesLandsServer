@@ -11,6 +11,7 @@ using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using Game.Units.Monsters.Components;
 using Game.UnitVisualization;
+using Godless_Lands_Game.Systems.Stats.Components;
 using NetworkGameEngine;
 using Protocol.Data.Monsters;
 
@@ -40,6 +41,7 @@ namespace Game.GameObjectFactory
             //Stats
             monster.AddComponent(new TargetManagerComponent());
             monster.AddComponent(new TargetedUnitTrackerComponent());
+            monster.AddComponent(new BodyRegenerationComponent());
             return monster;
         }
     }

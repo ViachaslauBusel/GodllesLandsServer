@@ -24,6 +24,7 @@ using Game.UnitVisualization;
 using Godless_Lands_Game.Items.Components;
 using Godless_Lands_Game.Professions.Components;
 using Godless_Lands_Game.Quests.Components;
+using Godless_Lands_Game.Systems.Stats.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Units.Characters;
 
@@ -66,6 +67,7 @@ namespace Game.GameObjectFactory
             character.AddComponent(new BodyComponent());
             character.AddComponent(new PlayerDeathStateComponent());
             character.AddComponent(new CharacterStatsCalculatorComponent());
+            character.AddComponent(new BodyRegenerationComponent());
             //Skills
             character.AddComponent(new CharacterSkillsStoreComponent());
             character.AddComponent(new CharacterSkillUsageComponent());

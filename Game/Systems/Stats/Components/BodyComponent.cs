@@ -93,15 +93,15 @@ namespace Game.Systems.Stats.Components
             return realDamage;
         }
 
-        public void Heal(int amount)
+        public void Heal(int amount, StatCode cuurent, StatCode max)
         {
             if (_isAlive)
             {
-                int health = _stats.GetStat(StatCode.HP);
+                int health = _stats.GetStat(cuurent);
                 health += amount;
-                int maxHP = _stats.GetStat(StatCode.MaxHP);
+                int maxHP = _stats.GetStat(max);
                 health = health > maxHP ? maxHP : health;
-                _stats.SetStat(StatCode.HP, health);
+                _stats.SetStat(cuurent, health);
             }
         }
 
