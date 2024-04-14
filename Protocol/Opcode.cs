@@ -55,5 +55,6 @@
         public const short MSG_QUEST_STAGE_UP_REQUEST = 52;
         public const short MSG_QUEST_STAGE_UP_RESPONSE = 53;
         public const short MSG_HOTBAT_SWAMP_CELLS = 54;
+        public const short MSG_DRAW_POINTS = 55;
     }
 }

@@ -1,13 +1,16 @@
-﻿using Game.PlayerScene;
+﻿using Game.NetworkTransmission;
+using Game.PlayerScene;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using Protocol.Data.Replicated.Transform;
+using Protocol.MSG.Game.Test;
 using System.Numerics;
 
 namespace Game.Physics.Transform
 {
     public class TransformComponent : Component, IReadData<TransformData>, IReadData<TransformEvents>
     {
+        private NetworkTransmissionComponent _networkTransmission;
         private PlayerSceneControllerComponent m_playerSceneController;
         protected byte m_version = 1;
         private byte m_eventsVersion = 1;
@@ -17,6 +20,7 @@ namespace Game.Physics.Transform
         private bool m_inMove;
         private List<TransformEvent> m_eventsForSynchronization = new List<TransformEvent>();
         private List<TransformEvent> m_synchronizedEvents = new List<TransformEvent>();
+        private List<Point> m_points = new List<Point>();
 
         public event Action<Vector3> OnPositionChanged;
 
@@ -25,6 +29,7 @@ namespace Game.Physics.Transform
 
         public override void Init()
         {
+            _networkTransmission = GetComponent<NetworkTransmissionComponent>();
             m_playerSceneController = GetComponent<PlayerSceneControllerComponent>();
         }
 
@@ -36,6 +41,19 @@ namespace Game.Physics.Transform
             m_inMove = inMove;
             m_version++;
             OnPositionChanged?.Invoke(position);
+
+            //if (_networkTransmission != null)
+            //{
+            //    m_points.Add(new Point() { Position = position, Color = PointColor.Green });
+            //    if (m_points.Count > 20)
+            //    {
+            //        m_points.RemoveAt(0);
+            //    }
+
+            //    MSG_DRAW_POINTS msg = new MSG_DRAW_POINTS();
+            //    msg.Points = m_points;
+            //    _networkTransmission.Socket.Send(msg);
+            //}
             return m_version;
         }
         internal void UpdatePosition(Vector3 position)

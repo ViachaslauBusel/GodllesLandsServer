@@ -2,6 +2,7 @@
 using Game.Animation;
 using Game.CombatModeControl.Components;
 using Game.Messenger;
+using Game.NetworkTransmission;
 using Game.Physics.Transform;
 using Game.Skills.Commands;
 using Game.Systems.Stats.Components;
@@ -14,12 +15,14 @@ using Protocol.Data.Replicated.Transform;
 using Protocol.Data.Stats;
 using Protocol.MSG.Game.CombatMode;
 using Protocol.MSG.Game.Messenger;
+using Protocol.MSG.Game.Test;
 using System.Numerics;
 
 namespace Game.Skills.Handler
 {
     public class MelleSkillHandler : ISkillHandler
     {
+        private NetworkTransmissionComponent _networkTransmission;
         private MessageBroadcastComponent _messageBroadcast;
         private BodyComponent _body;
         private TransformComponent _transform;
@@ -33,6 +36,7 @@ namespace Game.Skills.Handler
 
         public void Init(Component component, SkillData data)
         {
+            _networkTransmission = component.GetComponent<NetworkTransmissionComponent>();
             _messageBroadcast = component.GetComponent<MessageBroadcastComponent>();
             _body = component.GetComponent<BodyComponent>();
             _transform = component.GetComponent<TransformComponent>();
@@ -85,6 +89,15 @@ namespace Game.Skills.Handler
             Vector3 direction = targetTransform.Position.ClearY() - _transform.Position.ClearY();
             float distance = direction.Length();
             direction = direction.Normalize(distance);
+
+            //if(_networkTransmission != null)//Test
+            //{
+            //    MSG_DRAW_POINTS msg = new MSG_DRAW_POINTS();
+            //    msg.Points = new List<Point>();
+            //    msg.Points.Add(new Point() { Position = _transform.Position, Color = PointColor.Green });
+            //    msg.Points.Add(new Point() { Position = targetTransform.Position, Color = PointColor.Red });
+            //    _networkTransmission.Socket.Send(msg);
+            //}
 
             if (distance > _data.range)
             {
