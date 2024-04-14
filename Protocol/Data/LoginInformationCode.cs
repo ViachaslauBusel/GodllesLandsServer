@@ -18,5 +18,7 @@ namespace Protocol.Data
         RegistrationSuccessful = 6,
         ConnectionFail = 7,
         WrongPassword = 8,
+        AlreadyInGame = 9,
+        ServerNotReady = 10,
     }
 }

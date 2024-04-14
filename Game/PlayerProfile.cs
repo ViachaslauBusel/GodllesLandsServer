@@ -1,4 +1,5 @@
 ﻿using Game.Main;
+using Godless_Lands_Game.WorldEntry;
 using NetworkGameEngine.Authorization;
 using NetworkGameEngine.Debugger;
 using RUCP;
@@ -38,13 +39,7 @@ namespace NetworkGameEngine
         public override void CloseConnection(DisconnectReason reason)
         {
             Debug.Log.Debug($"connection closed: {reason}");
-            Debug.Log.Debug($"removing character with id {CharacterObjectID}");
-            //if (CharacterObjectID != 0) 
-            if(CharacterObject != null)
-            { 
-                CharacterObject.SendCommand(new DisconnectCommand());
-                //GameLoop.MainWorld.RemoveGameObject(CharacterObjectID); 
-            }
+            PlayerWorldEntryController.Instance.Disconnect(AuthorizationHolder.LoginID);
         }
 
         public override bool HandleException(Exception exception)

@@ -43,12 +43,12 @@ namespace Game.Inventory.Components
         {
             if(_inventory.AddItem(item))
             {
-                _messageBroadcast.SendMessage(MsgLayer.System, $"Added {item.Data.ID} to inventory");
+                _messageBroadcast.SendMessage(MsgLayer.System, $"Added %item_name:{item.Data.ID}:{item.Count} to inventory");
                 return true;
             }
             else
             {
-                _messageBroadcast.SendMessage(MsgLayer.System, $"Inventory is full. Cannot add {item.Data.ID}");
+                _messageBroadcast.SendMessage(MsgLayer.System, $"Inventory is full. Cannot add %item_name:{item.Data.ID}:{item.Count}");
                 return false;
             }
         }

@@ -47,7 +47,7 @@ namespace Game.Drop
             {
                 if(RandomHelper.Range(0, 100) < drop.Chance)
                 {
-                    Item item = _itemsFactory.CreateItem(drop.ItemID, 0, count: drop.Amount);
+                    Item item = _itemsFactory.CreateItem(drop.ItemID, 0, count: RandomHelper.Range(drop.MinAmount, drop.MaxAmount));
                     _dropHolder.AddItem(item);
                 }
             }

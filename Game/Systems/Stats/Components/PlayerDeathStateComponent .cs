@@ -41,7 +41,7 @@ namespace Game.Systems.Stats.Components
         {
             _body.OnDeath -= OnDeath;
             _body.OnRevive -= OnRevive;
-            _networkTransmission.UnregisterHandler(Opcode.MSG_SKILL_USE);
+            _networkTransmission.UnregisterHandler(Opcode.MSG_PLAYER_DEATH_STATE);
         }
     }
 }

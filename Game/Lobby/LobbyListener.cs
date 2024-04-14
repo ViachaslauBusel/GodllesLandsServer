@@ -6,6 +6,7 @@ using Game.Physics;
 using Game.Physics.DynamicObjects;
 using Game.Physics.PlayerInput.Scripts;
 using Game.UnitVisualization;
+using Godless_Lands_Game.WorldEntry;
 using NetworkGameEngine.Units.Characters;
 using Newtonsoft.Json;
 using Protocol;
@@ -44,9 +45,12 @@ namespace NetworkGameEngine.Lobby
         [Handler(Opcode.MSG_SELECT_CHARACTER)]
         public static async void SelectCharacter(PlayerProfile profile, Packet packet)
         {
+
             packet.Read(out MSG_SELECT_CHARACTER_CS request);
             MSG_SELECT_CHARACTER_SC response = new MSG_SELECT_CHARACTER_SC();
 
+
+           
             if (await GameDatabaseProvider.SelectObject($"SELECT is_character_belong('{profile.AuthorizationHolder.LoginID}', '{request.CharacterID}')") is bool isBelong && isBelong && profile.CharacterObjectID == 0)
             {//Если персонаж принадлежит игроку
                 response.InformationCode = LoginInformationCode.AuthorizationSuccessful;

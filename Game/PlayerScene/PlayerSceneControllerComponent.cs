@@ -1,8 +1,10 @@
 ﻿using Game.DB;
 using Game.NetworkTransmission;
 using Game.Physics.Transform;
+using Godless_Lands_Game.WorldEntry;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
+using NetworkGameEngine.JobsSystem;
 using Protocol;
 using Protocol.Data;
 using Protocol.MSG.Game;
@@ -10,6 +12,7 @@ using Protocol.MSG.Game.ToClient;
 using Protocol.MSG.Game.ToServer;
 using RUCP;
 using System.Numerics;
+using Zenject;
 
 namespace Game.PlayerScene
 {
@@ -17,12 +20,19 @@ namespace Game.PlayerScene
     {
         private NetworkTransmissionComponent m_networkTransmission;
         private DBControlComponent m_dbControl;
+        private PlayerWorldEntryController m_worldEntryController;
         private PlayerSceneStatus m_status = PlayerSceneStatus.LoadingFromDatabase;
         private bool m_shootdownProccess = false;
 
         public PlayerSceneStatus Status => m_status;
 
         public event Action<PlayerSceneStatus> OnChangeStatus;
+
+        [Inject]
+        private void InjectServices(PlayerWorldEntryController worldEntryController)
+        {
+            m_worldEntryController = worldEntryController;
+        }
 
         public override void Init()
         {
@@ -88,6 +98,7 @@ namespace Game.PlayerScene
             bool result = await m_dbControl.Shootdown();
 
             Debug.Log.Debug($"PlayerSceneStatusComponent DestroyProccess");
+            m_worldEntryController.DisconnectedCharacter(GameObject.ID);
             GameObject.World.RemoveGameObject(GameObject.ID);
         }
     }

@@ -9,6 +9,7 @@ using Game.Units.Monsters;
 using Godless_Lands_Game.Recipes;
 using Godless_Lands_Game.Units.NPCs;
 using Godless_Lands_Game.Units.Workbenches;
+using Godless_Lands_Game.WorldEntry;
 using NetworkGameEngine;
 using NetworkGameEngine.Debugger;
 using RUCP;
@@ -36,6 +37,7 @@ namespace Game.Main
             m_replicationService = new ReplicationService(m_gridService);
             m_raycastingService = new RaycastingService(PhysicWorld);
             var itemUniqueIdGenerator = new ItemUniqueIdGenerator();
+            var playerWorldEntryController = new PlayerWorldEntryController();
             
 
             MainWorld.RegisterService<IGridMapService>(m_gridService);
@@ -46,6 +48,7 @@ namespace Game.Main
             MainWorld.RegisterService(new ItemsFactory(itemUniqueIdGenerator));
             MainWorld.RegisterService(new RespawnPointsService());
             MainWorld.RegisterService(new RecipesDataStorageService());
+            MainWorld.RegisterService(playerWorldEntryController);
            
            
             MainWorld.Init(8);
@@ -57,6 +60,8 @@ namespace Game.Main
             MiningStoneSpawner.SpawnStones(MainWorld);
             WorkbenchSpawner.SpawnWorkbenches(MainWorld);
             NPCsSpawner.SpawnNPC(MainWorld);
+
+            playerWorldEntryController.ActivateEntarnce();
         }
 
         private static void Loop()

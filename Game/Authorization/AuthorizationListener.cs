@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Protocol;
 using Protocol.MSG.Game;
 using Database;
+using Godless_Lands_Game.WorldEntry;
+using Protocol.Data;
 
 namespace NetworkGameEngine.Authorization
 {
@@ -23,20 +25,39 @@ namespace NetworkGameEngine.Authorization
 
             if (sessionToken_object == null)
             {
-                response.InformationCode = Protocol.Data.LoginInformationCode.WrongLogin;
+                response.InformationCode = LoginInformationCode.WrongLogin;
                 profile.Client.Send(response);
                 return;
             }
             int sessionToken = (int)sessionToken_object;
             if (sessionToken != request.SessionToken)
             {
-                response.InformationCode = Protocol.Data.LoginInformationCode.WrongPassword;
+                response.InformationCode = LoginInformationCode.WrongPassword;
                 profile.Client.Send(response);
                 return;
             }
+
+            if(PlayerWorldEntryController.Activated == false)
+            {
+                response.InformationCode = LoginInformationCode.ServerNotReady;
+                profile.Client.Send(response);
+                return;
+            }
+
+            // Attempt to add the player to the list of players
+            // If such a player is already in the list, it returns false
+            if (PlayerWorldEntryController.Instance.Connect(request.LoginID, profile) == false)
+            {
+                // If the player is already in the game, disconnect them
+                PlayerWorldEntryController.Instance.InitializeDisconnect(request.LoginID);
+                response.InformationCode = LoginInformationCode.AlreadyInGame;
+                profile.Client.Send(response);
+                return;
+            }
+
             profile.AuthorizationHolder.Login(request.LoginID, request.SessionToken);
 
-            response.InformationCode = Protocol.Data.LoginInformationCode.AuthorizationSuccessful;
+            response.InformationCode = LoginInformationCode.AuthorizationSuccessful;
             profile.Client.Send(response);
         }
     }

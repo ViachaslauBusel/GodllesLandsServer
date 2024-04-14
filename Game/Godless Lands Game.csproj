@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.5.0" />
     <PackageReference Include="BepuPhysics" Version="2.4.0" />
-    <PackageReference Include="Cmd.Terminal" Version="1.1.5" />
+    <PackageReference Include="Cmd.Terminal" Version="1.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog" Version="5.2.7" />
   </ItemGroup>

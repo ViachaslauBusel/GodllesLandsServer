@@ -1,5 +1,6 @@
 ﻿using Game.GameObjectFactory;
 using Game.Main;
+using Godless_Lands_Game.WorldEntry;
 using Protocol;
 using RUCP;
 using RUCP.Handler;
@@ -19,9 +20,14 @@ namespace NetworkGameEngine.Worlds
             //while (!character.IsInitialized) { await Task.Delay(1); }
 
 
-           profile.CharacterObject = CharacterFactory.Create(profile.SelectedChacterID, profile);
+            profile.CharacterObject = CharacterFactory.Create(profile.SelectedChacterID, profile);
 
-            profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(profile.CharacterObject);
+            bool result = PlayerWorldEntryController.Instance.ConnectCharacterObject(profile.AuthorizationHolder.LoginID, profile.CharacterObject);
+
+            if (result)
+            {
+                profile.CharacterObjectID = await GameLoop.MainWorld.AddGameObject(profile.CharacterObject);
+            }
         }
     }
 }
