@@ -80,11 +80,12 @@ namespace Game.Inventory
 
             if (insertIndex >= 0)
             {
+                bool shouldIncreaseCount = _cells[insertIndex].IsEmpty;
                 bool result = _cells[insertIndex].PutItem(item);
                 if (result)
                 {
                     SetDataSyncPending();
-                    _currentItemsCount++;
+                    if(shouldIncreaseCount) _currentItemsCount++;
                     _currentWeight += item.Data.Weight * item.Count;
                 }
                 return result;
