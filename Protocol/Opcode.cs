@@ -56,5 +56,12 @@
         public const short MSG_QUEST_STAGE_UP_RESPONSE = 53;
         public const short MSG_HOTBAT_SWAMP_CELLS = 54;
         public const short MSG_DRAW_POINTS = 55;
+        public const short MSG_DROP_ITEM = 56;
+        public const short MSG_TRADE_REQUEST = 57;
+        public const short MSG_TRADE_REQUEST_RESPONSE = 58;
+        public const short MSG_OPEN_TRADE_WINDOW = 59;
+        public const short MSG_MOVE_ITEM_TO_TRADE = 60;
+        public const short MSG_SYNC_TRADE_WINDOW = 61;
+        public const short MSG_TRADE_CONTROL_COMMAND = 62;
     }
 }

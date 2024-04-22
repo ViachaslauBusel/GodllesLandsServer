@@ -1,5 +1,6 @@
 ﻿using Game.Items.Queries;
 using NetworkGameEngine.Debugger;
+using NetworkGameEngine.JobsSystem;
 using NetworkGameEngine.Units.Characters;
 using Zenject;
 
@@ -60,7 +61,7 @@ namespace Game.Items.Components
            return _items.TryGetValue(uid, out Item item) ? item : null;
         }
 
-        internal void DestroyItem(Item item)
+        internal async Job DestroyItem(Item item)
         {
             if(item == null || item.UniqueID == 0)
             {
@@ -68,8 +69,11 @@ namespace Game.Items.Components
                 return;
             }
 
-            AddQuery(new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID));
+            var query = new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID);
+            AddQuery(query);
             _items.Remove(item.UniqueID);
+
+            await new WaitUntil(() => query.IsDone);
         }
 
         internal bool ContainsItem(long uid) => _items.ContainsKey(uid);

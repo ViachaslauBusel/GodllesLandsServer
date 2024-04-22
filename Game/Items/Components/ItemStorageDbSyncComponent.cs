@@ -81,7 +81,7 @@ namespace Game.Items.Components
             }
             while (_queries.Count > 0)
             {
-                jobs.Add(JobsManager.Execute(GameDatabaseProvider.SelectObject<bool>(_queries.Dequeue().Command)));
+                jobs.Add(_queries.Dequeue().Execute());
             }
             await Job.WhenAll(jobs);
             

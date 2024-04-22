@@ -132,15 +132,24 @@ namespace Game.Inventory
             return _cells.FirstOrDefault(cell => cell.Item != null && cell.Item.UniqueID == itemUID)?.Item;
         }
 
-        internal Item TakeItem(long itemUID)
+        internal Item TakeItem(long itemUID, int amount = -1)
         {
           int cellIndex = Array.FindIndex(_cells, cell => cell.Item != null && cell.Item.UniqueID == itemUID);
             if (cellIndex != -1)
             {
                 SetDataSyncPending();
-                _currentItemsCount--;
-                _currentWeight -= _cells[cellIndex].Item.Data.Weight * _cells[cellIndex].Item.Count;
-                return _cells[cellIndex].TakeItem();
+                amount = Math.Clamp(amount, 1, _cells[cellIndex].Item.Count);
+               
+                _currentWeight -= _cells[cellIndex].Item.Data.Weight * amount;
+                if (_cells[cellIndex].Item.Count == amount)
+                {
+                    _currentItemsCount--;
+                    return _cells[cellIndex].TakeItem();
+                }
+
+                Item item = _itemFactory.CreateItem(_cells[cellIndex].Item.Data.ID, 0, amount);
+                _cells[cellIndex].RemoveItem(amount);
+                return item;
             }
             return null;
         }
@@ -220,6 +229,22 @@ namespace Game.Inventory
         internal int GetItemCount(int itemId)
         {
             return _cells.Where(cell => cell.Item != null && cell.Item.Data.ID == itemId).Sum(cell => cell.Item.Count);
+        }
+
+        internal List<Item> TakeAllItems()
+        {
+           List<Item> items = new List<Item>();
+            foreach (var cell in _cells)
+            {
+                if (!cell.IsEmpty)
+                {
+                    items.Add(cell.TakeItem());
+                }
+            }
+            _currentItemsCount = 0;
+            _currentWeight = 0;
+            SetDataSyncPending();
+            return items;
         }
     }
 }

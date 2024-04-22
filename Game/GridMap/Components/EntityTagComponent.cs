@@ -23,7 +23,7 @@ namespace Game.GridMap.Scripts
             m_mapService = mapService;
         }
 
-        public override void Start()
+        public override void Init()
         {
             m_transform = GetComponent<TransformComponent>();
 

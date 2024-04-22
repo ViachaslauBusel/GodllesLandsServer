@@ -57,7 +57,7 @@ namespace Game.Inventory.Components
 
         /// <summary>
         /// This method is used to get item from both primary and secondary inventories
-        /// It's dont remove item from inventory or storage
+        /// It's dont remove item from inventory and storage
         /// </summary>
         /// <param name="itemUID"></param>
         /// <returns></returns>
@@ -83,15 +83,15 @@ namespace Game.Inventory.Components
         /// <param name="itemUID"></param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        internal Item TakeItem(long itemUID)
+        internal Item TakeItem(long itemUID, int amount = -1)
         {
             if(_primaryInventory.HasItem(itemUID))
             {
-                return _primaryInventory.TakeItem(itemUID);
+                return _primaryInventory.TakeItem(itemUID, amount);
             }
             else if(_secondaryInventory.HasItem(itemUID))
             {
-                return _secondaryInventory.TakeItem(itemUID);
+                return _secondaryInventory.TakeItem(itemUID, amount);
             }
 
             return null;

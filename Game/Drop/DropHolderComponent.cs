@@ -15,12 +15,6 @@ namespace Game.Drop
 
         public event Action OnUpdateDropList;
 
-
-        public override void Init()
-        {
-         
-        }
-
         public void Clear()
         {
             _dropList.Clear();
@@ -44,7 +38,11 @@ namespace Game.Drop
 
         internal void AddItems(List<Item> items)
         {
-            _dropList.AddRange(items);
+            foreach (var item in items)
+            {
+                item.SetOwner(_dropList.Count + 1);
+                _dropList.Add(item);
+            }
             OnUpdateDropList?.Invoke();
         }
 

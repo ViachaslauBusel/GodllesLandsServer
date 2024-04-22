@@ -26,6 +26,7 @@ namespace Game.ObjectInteraction
         public event Action<int> OnInteractionEnded;
 
         public int InteractObjectId => _interactionContext.InteractObjectId;
+        public bool IsBusy => _inProgress || _interactionContext.HasInteraction;
 
         public override void Init()
         {
@@ -153,7 +154,7 @@ namespace Game.ObjectInteraction
         {
             if (InteractObjectId != objectId)
             {
-                LogError("Object id does not match the current interaction object id");
+                LogError($"Object id:{objectId} does not match the current interaction object id:{InteractObjectId}");
                 return false;
             }
 

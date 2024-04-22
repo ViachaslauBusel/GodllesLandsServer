@@ -21,10 +21,12 @@ using Game.Systems.Target;
 using Game.Systems.TargetSystem;
 using Game.Tests;
 using Game.UnitVisualization;
+using Godless_Lands_Game.Drop;
 using Godless_Lands_Game.Items.Components;
 using Godless_Lands_Game.Professions.Components;
 using Godless_Lands_Game.Quests.Components;
 using Godless_Lands_Game.Systems.Stats.Components;
+using Godless_Lands_Game.Trade.Components;
 using NetworkGameEngine;
 using NetworkGameEngine.Units.Characters;
 
@@ -77,10 +79,12 @@ namespace Game.GameObjectFactory
             character.AddComponent(new InventoryDbSyncComponent());
             character.AddComponent(new InventoryCommandHandlerComponent());
             character.AddComponent(new InventoryListenerComponent());
+            character.AddComponent(new InventoryDropOnDeathComponent());
             //Items
             character.AddComponent(new ItemStorageComponent());
             character.AddComponent(new ItemUsageComponent());
             character.AddComponent(new OfflineItemAdderComponent());
+            character.AddComponent(new ItemListenerComponent());
             //Equipment
             character.AddComponent(new EquipmentComponent());
             character.AddComponent(new EquipmentClientSyncComponent());
@@ -103,6 +107,10 @@ namespace Game.GameObjectFactory
             character.AddComponent(new QuestDbSyncComponent());
             character.AddComponent(new QuestNodeHandlerStorageComponent());
             character.AddComponent(new QuestsListenerComponent());
+
+            //Trade 
+            character.AddComponent(new TradeInitiatorComponent());
+            character.AddComponent(new TradeAcceptorComponent());
             return character;
         }
     }

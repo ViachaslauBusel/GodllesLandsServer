@@ -55,10 +55,10 @@ namespace Game.Inventory
 
         internal Item TakeItem()
         {
-            long uid = _uid;
+            Item item = Item;
             _uid = 0;
             SetDataSyncPending();
-            return _itemStorage.GetItem(uid);
+            return item;
         }
 
         internal void RemoveItem(int count)
