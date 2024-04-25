@@ -6,13 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="RUCP" Version="1.5.6" />
     <PackageReference Include="RUCP.MessagePack.Generator" Version="1.2.6" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="RUCP">
-      <HintPath>..\..\RUCP\RUCP\bin\Debug\netstandard2.1\RUCP.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
