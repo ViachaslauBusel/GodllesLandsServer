@@ -3,13 +3,20 @@ using Npgsql;
 
 namespace Database
 {
-    public static class DatabaseProvider
+    public class DatabaseProvider
     {
-        public async static Task<bool> Call(string cmd, string serverAddress)
+        private string _serverAddress;
+
+        public DatabaseProvider(string serverAddress)
+        {
+            _serverAddress = serverAddress;
+        }
+
+        public async Task<bool> Call(string cmd)
         {
             try
             {
-                using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+                using (NpgsqlConnection connection = new NpgsqlConnection(_serverAddress))
                 {
                     await connection.OpenAsync();
                     using (NpgsqlCommand command =
@@ -24,9 +31,9 @@ namespace Database
             return false;
         }
 
-        public async static Task<string> SelectJson(string cmd, string serverAddress)
+        public async Task<string> SelectJson(string cmd)
         {
-                using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+                using (NpgsqlConnection connection = new NpgsqlConnection(_serverAddress))
                 {
                     await connection.OpenAsync();
                     using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))
@@ -43,15 +50,15 @@ namespace Database
             return null;
         }
 
-        public static async Task<T> Select<T>(string cmd, string serverAddress)
+        public async Task<T> Select<T>(string cmd)
         {
-            string objectJson = await SelectJson(cmd, serverAddress);
+            string objectJson = await SelectJson(cmd);
             return JsonConvert.DeserializeObject<T>(objectJson);
         }
 
-        public async static Task<object> SelectObject(string cmd, string serverAddress)
+        public async Task<object> SelectObject(string cmd)
         {
-            using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+            using (NpgsqlConnection connection = new NpgsqlConnection(_serverAddress))
             {
                 await connection.OpenAsync();
                 using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))
@@ -68,9 +75,9 @@ namespace Database
             return null;
         }
 
-        public async static Task<T> SelectObject<T>(string cmd, string serverAddress)
+        public async Task<T> SelectObject<T>(string cmd)
         {
-            using (NpgsqlConnection connection = new NpgsqlConnection(serverAddress))
+            using (NpgsqlConnection connection = new NpgsqlConnection(_serverAddress))
             {
                 await connection.OpenAsync();
                 using (NpgsqlCommand command = new NpgsqlCommand(cmd, connection))

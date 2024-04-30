@@ -9,8 +9,6 @@ namespace Godless_Lands_Login
     {
         static void Main(string[] args)
         {
-             LoginDatabaseConfig.DatabaseName = "GD_LOGIN";
-
              ServerReader.Load();
              Server server = new Server(3737);
              server.SetHandler(() => new Profile()); 

@@ -5,7 +5,6 @@ using Protocol.MSG.Login;
 using RUCP;
 using RUCP.Handler;
 using System;
-using System.Net.Http.Json;
 using System.Text.Json.Serialization;
 
 namespace Godless_Lands_Login.Query
@@ -48,7 +47,7 @@ namespace Godless_Lands_Login.Query
             }
 
             LoginData loginData = new LoginData();
-            string json = await LoginDatabaseProvider.SelectJson($"SELECT get_account('{request.Login}')");
+            string json = await LoginDatabase.Provider.SelectJson($"SELECT get_account('{request.Login}')");
             if (!string.IsNullOrEmpty(json))
             {
                 JsonConvert.PopulateObject(json, loginData);
@@ -63,7 +62,7 @@ namespace Godless_Lands_Login.Query
                 {
                     sessionkey = random.Next(Int32.MinValue, Int32.MaxValue);
                 }
-                if (await LoginDatabaseProvider.Call($"CALL set_session_token('{loginData.login_id}', '{sessionkey}')"))
+                if (await LoginDatabase.Provider.Call($"CALL set_session_token('{loginData.login_id}', '{sessionkey}')"))
                 {
                     response.LoginID = loginData.login_id;
                     response.SessionKey = sessionkey;

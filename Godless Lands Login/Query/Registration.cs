@@ -11,7 +11,6 @@ namespace Godless_Lands_Login.Query
         [Handler(Opcode.MSG_REGISTRATION_Request)]
         public static async void Register(Profile profile, Packet packet)
         {
-
             packet.Read(out MSG_REGISTRATION_CS request);
 
             MSG_REGISTRATION_SC response = new MSG_REGISTRATION_SC();
@@ -24,8 +23,6 @@ namespace Godless_Lands_Login.Query
                 return;
             }
 
-
-
             //Login must not contain less than 3 or more than 30 characters
             if (request.Login.Length < 3 || request.Login.Length > 30)
             {
@@ -34,9 +31,8 @@ namespace Godless_Lands_Login.Query
                 return;
             }
 
-
             //Request whether the given login is in the database, if there is an exit with sending an error code to the client
-            if (await LoginDatabaseProvider.Call($"Call create_account('{request.Login}', '{request.Password}')"))
+            if (await LoginDatabase.Provider.Call($"Call create_account('{request.Login}', '{request.Password}')"))
             {
                 //Registration Successful
                 response.Notification = Protocol.Data.LoginInformationCode.RegistrationSuccessful;
