@@ -59,9 +59,9 @@ namespace Godless_Lands_Game.ObjectInteraction.Trade.Components
 
             switch (cmd.Command)
             {
-                case TradeControlCommand.Accept:
-                    HandleAccept(trader);
-                    break;
+                //case TradeControlCommand.Accept:
+                //    HandleAccept(trader);
+                 //   break;
                 case TradeControlCommand.Cancel:
                     HandleCancel(trader);
                     break;
@@ -77,50 +77,8 @@ namespace Godless_Lands_Game.ObjectInteraction.Trade.Components
             GameObject.World.RemoveGameObject(GameObject.ID);
         }
 
-        private void HandleAccept(Trader trader)
-        {
-            trader.AcceptTrade();
+      
 
-            if (_traderHolder.Initiator.IsAcceptTrade && _traderHolder.Acceptor.IsAcceptTrade)
-            {
-                TransferItems(_traderHolder.Initiator, _traderHolder.Acceptor);
-                TransferItems(_traderHolder.Acceptor, _traderHolder.Initiator);
-                GameObject.World.RemoveGameObject(GameObject.ID);
-            }
-            else
-            {
-                SyncWindowLock(_traderHolder.Initiator, _traderHolder.Acceptor);
-                SyncWindowLock(_traderHolder.Acceptor, _traderHolder.Initiator);
-            }
-           
-        }
-
-        private void SyncWindowLock(Trader owner, Trader partner)
-        {
-            MSG_OPEN_TRADE_WINDOW_SC msg = new MSG_OPEN_TRADE_WINDOW_SC();
-            msg.Visible = true;
-            msg.PlayerLock = owner.IsAcceptTrade;
-            msg.PartnerLock = partner.IsAcceptTrade;
-            owner.Profile?.Client.Send(msg);
-        }
-
-        private void TransferItems(Trader from, Trader to)
-        {
-            List<Item> items = new List<Item>();
-            foreach (var tradeCell in from.TradeCells)
-            {
-                if (!tradeCell.IsEmpty)
-                {
-                    items.Add(tradeCell.TakeItem());
-                }
-            }
-
-            if (items.Count > 0)
-            {
-                AddItemToInventoryCommandNoRet addItemsCmd = new AddItemToInventoryCommandNoRet();
-                addItemsCmd.Items = items;
-                to.GameObject.SendCommand(addItemsCmd);
-            }
-        }
+      
     }
 }

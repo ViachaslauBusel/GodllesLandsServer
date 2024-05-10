@@ -6,7 +6,6 @@ namespace Protocol.MSG.Game.Trade
 {
     public enum TradeControlCommand
     {
-        Accept,
         Cancel
     }
 }

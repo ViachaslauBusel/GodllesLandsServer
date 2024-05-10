@@ -126,7 +126,6 @@ namespace Game.Systems.Stats.Components
 
         public void UpdateData(ref HealtData data)
         {
-
             data.HP = _stats.GetStat(StatCode.HP);
             data.MaxHP = _stats.GetStat(StatCode.MaxHP);
             data.IsAlive = _isAlive;

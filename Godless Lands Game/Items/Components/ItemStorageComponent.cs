@@ -42,6 +42,7 @@ namespace Game.Items.Components
             if (item.UniqueID == 0)
             {
                 item.SetUniqueID(_uniqueIdGenerator.GetNextUniqueId());
+                Debug.Log.Debug($"[{_characterInfoHolder.CharacterName}] Generating unique id for item:{item.Data.ID}:{item.UniqueID}");
             }
 
             if (_items.ContainsKey(item.UniqueID))
@@ -50,6 +51,7 @@ namespace Game.Items.Components
                 return item.UniqueID;
             }
 
+            Debug.Log.Debug($"[{_characterInfoHolder.CharacterName}] Adding item:{item.UniqueID}");
             item.SetOwner(_characterInfoHolder.CharacterID);
 
             _items.Add(item.UniqueID, item);
@@ -61,17 +63,23 @@ namespace Game.Items.Components
            return _items.TryGetValue(uid, out Item item) ? item : null;
         }
 
-        internal async Job DestroyItem(Item item)
+        internal Job DestroyItem(Item item)
         {
-            if(item == null || item.UniqueID == 0)
+           return DestroyItem(item?.UniqueID ?? 0);
+        }
+
+        internal async Job DestroyItem(long itemUID)
+        {
+            if (itemUID == 0)
             {
-                Debug.Log.Warn($"Cannot destroy item:{item?.UniqueID ?? 0} because it has no unique id");
+                Debug.Log.Warn($"Cannot destroy item:{itemUID} because it has no unique id");
                 return;
             }
 
-            var query = new DestroyItemQuery(_characterInfoHolder.CharacterID, item.UniqueID);
+            Debug.Log.Debug($"[{_characterInfoHolder.CharacterName}] Destroying item:{itemUID}");
+            var query = new DestroyItemQuery(_characterInfoHolder.CharacterID, itemUID);
             AddQuery(query);
-            _items.Remove(item.UniqueID);
+            _items.Remove(itemUID);
 
             await new WaitUntil(() => query.IsDone);
         }

@@ -75,6 +75,8 @@ namespace Game.Items.Components
             {
                 if (item.IsDataSyncWithDbPending)
                 {
+                    Debug.Log.Debug($"[{_characterInfoHolder.CharacterName}] Saving item:{item.UniqueID}");
+                    item.MarkDataAsSyncedWithDb();
                     jobs.Add(
                         JobsManager.Execute(GameDatabase.Provider.SelectObject<bool>($"SELECT upsert_item('{_characterInfoHolder.CharacterID}', {item.UniqueID}, {item.Data.ID}, {item.Count})")));
                 }

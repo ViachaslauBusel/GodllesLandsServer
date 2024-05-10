@@ -63,5 +63,6 @@
         public const short MSG_MOVE_ITEM_TO_TRADE = 60;
         public const short MSG_SYNC_TRADE_WINDOW = 61;
         public const short MSG_TRADE_CONTROL_COMMAND = 62;
+        public const short MSG_CONFIRM_TRADE = 63;
     }
 }
