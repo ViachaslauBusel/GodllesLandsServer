@@ -90,14 +90,14 @@ namespace Game.Skills.Handler
             float distance = direction.Length();
             direction = direction.Normalize(distance);
 
-            if (_networkTransmission != null)//Test
-            {
-                MSG_DRAW_POINTS msg = new MSG_DRAW_POINTS();
-                msg.Points = new List<Point>();
-                msg.Points.Add(new Point() { Position = _transform.Position, Color = PointColor.Green });
-                msg.Points.Add(new Point() { Position = targetTransform.Position, Color = PointColor.Red });
-                _networkTransmission.Socket.Send(msg);
-            }
+            //if (_networkTransmission != null)//Test
+            //{
+            //    MSG_DRAW_POINTS msg = new MSG_DRAW_POINTS();
+            //    msg.Points = new List<Point>();
+            //    msg.Points.Add(new Point() { Position = _transform.Position, Color = PointColor.Green });
+            //    msg.Points.Add(new Point() { Position = targetTransform.Position, Color = PointColor.Red });
+            //    _networkTransmission.Socket.Send(msg);
+            //}
 
             if (distance > _data.range + 1f)
             {

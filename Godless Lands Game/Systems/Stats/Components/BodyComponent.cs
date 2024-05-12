@@ -89,6 +89,7 @@ namespace Game.Systems.Stats.Components
             health = _isAlive ? health : 0;
             realDamage -= health;
             _stats.SetStat(StatCode.HP, health);
+            if(realDamage > 0) _animator.Play(AnimationID.Hit, AnimationLayer.InstantAnimation);
             OnDamageReceiving?.Invoke(attacker, realDamage);
             return realDamage;
         }

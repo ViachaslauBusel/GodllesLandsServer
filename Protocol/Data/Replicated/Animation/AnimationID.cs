@@ -12,5 +12,6 @@ namespace Protocol.Data.Replicated.Animation
         AttackType_3 = 3,
         CastSpellType_0 = 5,
         DeadState = 6,
+        Hit = 7,
     }
 }

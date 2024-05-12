@@ -114,7 +114,7 @@ namespace Game.Inventory.Components
             return cell.IsEmpty
                 ? JobsManager.Execute(GameDatabase.Provider.SelectObject<bool>($"SELECT remove_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}')"))
                 : JobsManager.Execute(GameDatabase.Provider.SelectObject<bool>($"SELECT upsert_inventory('{_characterInfoHolder.CharacterID}', '{(int)cell.BagType}', '{cell.SlotIndex}', " +
-                                                                $"'{cell.Item.UniqueID}')"));
+                                                                               $"'{cell.Item.UniqueID}')"));
         }
     }
 }
