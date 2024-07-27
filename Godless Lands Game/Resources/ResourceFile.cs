@@ -15,11 +15,11 @@ namespace Game.Resources
         public static string Skills { get; } = "skills.dat";
         public static string Effects { get; } = "effects.dat";
         public static string Items { get; } = "items.dat";
-        public static string Monsters { get; } = "monsters.dat";
-        public static string MonsterSpawnPoint { get; } = "monsterSpawnPoint.dat";
+        public static string MonstersData { get; } = "monsters.dat";
+        public static string UnitsSpawnPoint { get; } = "spawn.dat";
         public static string Recipes { get; } = "recipes.dat";
         public static string Buildings { get; } = "buildings.dat";
-        public static string NPCs { get; } = "NPCs.dat";
+        public static string NPCsData { get; } = "NPCs.dat";
         public static string Quests { get; } = "quests.dat";
         public static string Bestiary { get; } = "bestiary.dat";
         public static string TerrainCollision { get; } = "terrainMeshColliders.dat";

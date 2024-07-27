@@ -21,7 +21,7 @@ namespace NetworkGameEngine
             //Container.Resolve<ICommand>(new NamedParameter("characterID", 124));
 
             SkillsDataStore.Load();
-            ItemsDataManager.Load();
+            ItemsDataRegistry.Load();
             RespawnPointsStore.Load();
             QuestsDataStore.Load();
 

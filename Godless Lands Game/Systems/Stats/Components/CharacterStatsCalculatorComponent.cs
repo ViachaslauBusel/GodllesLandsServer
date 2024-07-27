@@ -48,7 +48,7 @@ namespace Game.Systems.Stats.Components
             int minPAttack = 10;
             int maxPAttack = 20;
             Item weapon = _equipment.GetItem(EquipmentType.WeaponRightHand);
-            if (weapon != null && weapon.Data is WeaponItemData weaponData)
+            if (weapon != null && weapon.Data is WeaponItemInfo weaponData)
             {
                 minPAttack += weaponData.MinDamage;
                 maxPAttack += weaponData.MaxDamage;

@@ -25,7 +25,7 @@ namespace Game.Items.ItemUsageLogic
 
         public bool Use(Item item)
         {
-            RestorePointsItemData data = (RestorePointsItemData)item.Data;
+            ElixirItemInfo data = (ElixirItemInfo)item.Data;
 
             if (data == null)
             {

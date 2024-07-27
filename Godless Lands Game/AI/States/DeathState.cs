@@ -2,6 +2,7 @@
 using Game.Systems.Stats.Components;
 using Game.Systems.Target;
 using Game.Systems.Target.Commands;
+using Game.Tools;
 using Game.Units.Monsters.Components;
 using NetworkGameEngine.Debugger;
 using NetworkGameEngine.JobsSystem;
@@ -34,9 +35,8 @@ namespace Game.AI.States
             _targetManager.SetTarget(null);
 
 
-            // Нужно сделать воскрешение через 10 секунд
             _needDoResurrect = true;
-            _needDoResurrectTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + 10_000;
+            _needDoResurrectTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + _spawnComponent.MinSpawnTime + RandomHelper.Range(0, _spawnComponent.MaxSpawnTime);
         }
 
         public override void OnDeactive()

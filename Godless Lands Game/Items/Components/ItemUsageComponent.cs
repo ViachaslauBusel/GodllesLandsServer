@@ -17,9 +17,9 @@ namespace Game.Items.Components
         public override void Init()
         {
             _itemUsageLogics = new Dictionary<Type, IItemUsageLogic>();
-            _itemUsageLogics.Add(typeof(RestorePointsItemData), new RestorePointUsageLogic());
-            _itemUsageLogics.Add(typeof(WeaponItemData), new WeaponUsageLogic());
-            _itemUsageLogics.Add(typeof(PickaxeItemData), new PickaxeUsageLogic());
+            _itemUsageLogics.Add(typeof(ElixirItemInfo), new RestorePointUsageLogic());
+            _itemUsageLogics.Add(typeof(WeaponItemInfo), new WeaponUsageLogic());
+            _itemUsageLogics.Add(typeof(PickaxeItemInfo), new PickaxeUsageLogic());
 
             foreach (var item in _itemUsageLogics.Values)
             {

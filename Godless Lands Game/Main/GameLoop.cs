@@ -4,9 +4,10 @@ using Game.Pathfinding;
 using Game.Physics;
 using Game.Replication;
 using Game.RespawnPoints;
-using Game.Units.MiningStones;
+using Game.Units.Resources;
 using Game.Units.Monsters;
 using Godless_Lands_Game.Recipes;
+using Godless_Lands_Game.Spawner;
 using Godless_Lands_Game.Units.NPCs;
 using Godless_Lands_Game.Units.Workbenches;
 using Godless_Lands_Game.WorldEntry;
@@ -56,10 +57,12 @@ namespace Game.Main
             Thread thread = new Thread(Loop);
             thread.Start();
 
-            MonsterSpawner.SpawnMonster(MainWorld);
-            MiningStoneSpawner.SpawnStones(MainWorld);
-            WorkbenchSpawner.SpawnWorkbenches(MainWorld);
-            NPCsSpawner.SpawnNPC(MainWorld);
+            MonsterDataRegistry.LoadData();
+            ResourcesDataRegistry.LoadData();
+            //CraftingStationDataRegistry.LoadData();
+            NPCsDataRegistry.LoadData();
+
+            UnitSpawnController.SpawnAllUnits(MainWorld);
 
             playerWorldEntryController.ActivateEntarnce();
         }

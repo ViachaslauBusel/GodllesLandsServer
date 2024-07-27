@@ -14,21 +14,21 @@ using Game.UnitVisualization;
 using Godless_Lands_Game.Systems.Stats.Components;
 using NetworkGameEngine;
 using Protocol.Data.Monsters;
+using Protocol.Data.SpawnData;
 
 namespace Game.GameObjectFactory
 {
     public static class MonsterFactory
     {
-        public static GameObject CreateMonster(MonsterData data)
+        public static GameObject CreateMonster(MonsterInfo data, SpawnUnitPointData spawn)
         {
             GameObject monster = new GameObject("monster");
             monster.AddComponent(new PacketDistributorComponent());
-            monster.AddComponent(new UnitNicknameComponent(data.Name));
             monster.AddComponent(new StatsComponent());
             monster.AddComponent(new BodyComponent());
             monster.AddComponent(new TransformComponent());
-            monster.AddComponent(new SpawnComponent(data.SpawnPosition, data.SpawnRadius));
-            monster.AddComponent(new MonsterViewComponent(data.SkinID));
+            monster.AddComponent(new SpawnComponent(spawn));
+            monster.AddComponent(new MonsterViewComponent(data.ID));
             monster.AddComponent(new DynamicObjectComponent());
             monster.AddComponent(new EntityTagComponent());
             monster.AddComponent(new AnimatorComponent());

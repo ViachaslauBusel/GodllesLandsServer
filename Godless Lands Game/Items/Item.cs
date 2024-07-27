@@ -12,16 +12,16 @@ namespace Game.Items
     public class Item : ClientAndDbSyncElement
     {
         private long _uniqueID;
-        private readonly ItemData _data;
+        private readonly ItemInfo _data;
         private int _ownerID;
         private int _count;
         
         public long UniqueID => _uniqueID;
         public int OwnerID => _ownerID;
         public int Count => _count;
-        public ItemData Data => _data;
+        public ItemInfo Data => _data;
 
-        public Item(long uniqueID, ItemData data, int count)
+        public Item(long uniqueID, ItemInfo data, int count)
         {
             _uniqueID = uniqueID;
             _data = data;

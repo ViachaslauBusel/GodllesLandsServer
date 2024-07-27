@@ -20,7 +20,7 @@ namespace Game.Items
 
         public Item CreateItem(int id, long uniqueId, int count)
         {
-            ItemData data = ItemsDataManager.GetData(id);
+            ItemInfo data = ItemsDataRegistry.GetData(id);
             if (data == null) return null;
 
             return new Item(uniqueId, data, count);

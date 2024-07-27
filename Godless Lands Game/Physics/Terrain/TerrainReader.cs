@@ -1,4 +1,5 @@
 ﻿using Game.Resources;
+using NetworkGameEngine.Debugger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,28 +34,23 @@ namespace Game.Physics.Terrain
                 MapSize = stream.ReadInt32();
                 BlockCount = stream.ReadInt32();
                // HeightMapResolution = r.ReadInt32();
-                int maxTile = MapSize * BlockCount;
+                int totalTiles = (int)Math.Pow(MapSize * BlockCount, 2);
                 TileSize = 1_000.0f / BlockCount;
-                terrainData = new TerrainData[maxTile, maxTile];
-                float maxProgress = maxTile * maxTile;
-                for (int y = 0; y < maxTile; y++)
+                terrainData = new TerrainData[totalTiles, totalTiles];
+                for (int i = 0; i < totalTiles; i++)
                 {
-                    for (int x = 0; x < maxTile; x++)
-                    {
-                        bool hasData = stream.ReadBoolean();
-                        if (!hasData) continue;
-
-                        float progress = maxTile * y + x;
-                        //   Terminal.UpdatePrint($"Reading terrain:{((progress / maxProgress) * 100.0f).ToString("0.00")}%", ConsoleColor.Yellow);
-
-                        terrainData[x, y] = new TerrainData();
-                        terrainData[x, y].HeightMapResolution = stream.ReadInt32();
-                        int sizeData = stream.ReadInt32();
-                        float[] floatArray = new float[sizeData / 4];
-                        byte[] byteArray = stream.ReadBytes(sizeData);
-                        Buffer.BlockCopy(byteArray, 0, floatArray, 0, byteArray.Length);
-                        terrainData[x, y].Data = floatArray;
-                    }
+                    float progress = i / (float)totalTiles;
+                    //   Terminal.UpdatePrint($"Reading terrain:{((progress / maxProgress) * 100.0f).ToString("0.00")}%", ConsoleColor.Yellow);
+                    int x = stream.ReadInt32();
+                    int y = stream.ReadInt32();
+                    if (terrainData[x, y] != null) Debug.Log.Fatal("Terrain data already exists");
+                    terrainData[x, y] = new TerrainData();
+                    terrainData[x, y].HeightMapResolution = stream.ReadInt32();
+                    int sizeData = stream.ReadInt32();
+                    float[] floatArray = new float[sizeData / 4];
+                    byte[] byteArray = stream.ReadBytes(sizeData);
+                    Buffer.BlockCopy(byteArray, 0, floatArray, 0, byteArray.Length);
+                    terrainData[x, y].Data = floatArray;
                 }
                 //    Terminal.PrintLine($"Reading terrain:Completed    ", ConsoleColor.Green);
             });
