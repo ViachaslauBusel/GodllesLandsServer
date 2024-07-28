@@ -1,6 +1,7 @@
 ﻿using Game.Pathfinding;
 using Game.Physics.Transform;
 using Game.Tools;
+using Game.Units.Monsters.Components;
 using System.Numerics;
 using Zenject;
 
@@ -11,13 +12,13 @@ namespace Game.AI.States
         private Pathfinder m_pathfinder;
         private TransformComponent m_transformComponent;
         private UnitPathMoverComponent m_unitPathMoverComponent;
-        private Vector3 m_spawnPoint;
+        private SpawnComponent m_spawnComponent;
 
         public PatrolState(AiControllerComponent component) : base(component)
         {
             m_transformComponent = component.GetComponent<TransformComponent>();
             m_unitPathMoverComponent = component.GetComponent<UnitPathMoverComponent>();
-            m_spawnPoint = m_transformComponent.Position;
+            m_spawnComponent = component.GetComponent<SpawnComponent>();
         }
 
         [Inject]
@@ -29,12 +30,18 @@ namespace Game.AI.States
         override public void OnActive()
         {
             Vector3 targetPoint = Vector3.Zero;
-            do
+            bool isFind = false;
+            for (int i = 0; i < 10; i++)
             {
-                targetPoint = m_spawnPoint + new Vector3(RandomHelper.Range(-10, 10), 0, RandomHelper.Range(-10, 10));
+                targetPoint = m_spawnComponent.GetRandomPosition();
+                if(Vector3.Distance(m_transformComponent.Position, targetPoint) > 1)
+                {
+                    isFind = true;
+                    break;
+                }
             }
-            while (Vector3.Distance(m_transformComponent.Position, targetPoint) < 2);
 
+            if (isFind == false) return;
 
             Vector3[] path = m_pathfinder.CalculatePath(m_transformComponent.Position, targetPoint);
             m_unitPathMoverComponent.MoveAlongPath(path);

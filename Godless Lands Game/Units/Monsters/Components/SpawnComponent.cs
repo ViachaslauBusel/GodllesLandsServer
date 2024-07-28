@@ -66,7 +66,7 @@ namespace Game.Units.Monsters.Components
             UpdatePosition();
         }
 
-        private Vector3 GetRandomPosition()
+        public Vector3 GetRandomPosition()
         {
             switch (_spawnType)
             {
